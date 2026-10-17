@@ -26,12 +26,12 @@
   C('marimi', 'Căldura specifică: definiție, formulă, unitate', 'Căldura necesară pentru a crește cu un grad temperatura <b>unității de masă</b>.<br>$c = (Q)//(m·ΔT)$ ⟹ $Q = m·c·ΔT$ &nbsp; $[c] = J/(g·K)$');
   C('marimi', 'Căldura specifică molară: definiție, formulă, unitate', 'Căldura necesară pentru a crește cu un grad temperatura unui <b>mol</b>.<br>$c_m = (Q)//(ν·ΔT)$ &nbsp; $[c_m] = J/(mol·K)$');
   C('marimi', 'Căldura latentă specifică: definiție, formulă, unitate', 'Căldura necesară <b>transformării de stare</b> a unității de masă, <b>fără modificarea temperaturii</b>.<br>$λ = (Q)//(m)$ &nbsp; $[λ] = J/g$ &nbsp;(topire, vaporizare, sublimare).');
-  C('marimi', 'Cum se calculează $ΔT$?', '$ΔT = T_f − T_i$ (final − inițial).');
+  C('marimi', 'Cum se calculează $ΔT$?', '$ΔT = T_f − T_i$ (final − inițial). Are aceeași valoare în °C și în K.');
   C('marimi', 'Dacă căldura latentă este dată în kJ/mol (pe mol), ce formulă folosești?', '$Q = ν·λ$ (cu $ν$ = numărul de moli), nu $m·λ$. Verifică mereu unitatea!');
 
   /* 4 */
   C('principii', 'Principiul echilibrului termic', 'Mai multe corpuri cu temperaturi diferite, puse în contact într-un <b>sistem izolat</b>, ajung după un timp la <b>aceeași temperatură</b>.');
-  C('principii', 'Principiul egalității schimburilor de căldură', '$Q_{cedată} = Q_{primită}$, respectiv $Q_1 + Q_2 = 0$.');
+  C('principii', 'Principiul egalității schimburilor de căldură', '$Q_{cedată} = Q_{primită}$ (în modul), adică $Q_1 + Q_2 = 0$ (cu semn).');
   C('principii', 'Ce sunt procesele inverse (în calorimetrie)?', 'Căldura <b>absorbită</b> într-o transformare este egală, ca valoare, cu cea <b>degajată</b> în transformarea inversă. Ex.: topire ↔ solidificare.');
 
   /* 5 */
@@ -39,7 +39,7 @@
   C('principiul1', 'Ce știi despre energia internă $U$?', '„U” <b>nu poate fi măsurată experimental</b> (de aceea nici entalpia nu poate fi măsurată direct).');
 
   /* 6 */
-  C('exo-endo', 'Reacție exotermă: definiție și ecuație', 'Reacție cu <b>degajare</b> de căldură: [[reactanți -> produși + Q]]<br>$Q < 0$, $ΔH < 0$. Ex.: neutralizarea.');
+  C('exo-endo', 'Reacție exotermă: definiție și ecuație', 'Reacție cu <b>degajare</b> de căldură: [[reactanți -> produși + Q]]<br>$Q < 0$ (față de sistem), $ΔH < 0$. Ex.: neutralizarea.');
   C('exo-endo', 'Reacție endotermă: definiție și ecuație', 'Reacție cu <b>absorbție</b> de căldură din mediu: [[reactanți + Q -> produși]]<br>$Q > 0$, $ΔH > 0$. Ex.: descompunerea cloratului de potasiu.');
   C('exo-endo', 'Ce se întâmplă cu temperatura când amesteci soluții care reacționează exoterm?', 'Crește: $T_f > T_i$.');
 
@@ -53,6 +53,7 @@
   C('legaturi-stari', 'Energia legăturilor chimice', '<b>Ruperea</b> unei legături = <b>absorbție</b> de energie.<br><b>Formarea</b> unei legături = <b>degajare</b> de energie.');
   C('legaturi-stari', 'Care schimbări de stare sunt endoterme?', '<b>Topire, vaporizare, sublimare</b> — absorb căldură.');
   C('legaturi-stari', 'Care schimbări de stare sunt exoterme?', '<b>Solidificare, condensare, desublimare</b> — degajă căldură.');
+  C('legaturi-stari', 'Temperatura în kelvini', '$T(K) = t(°C) + 273$ (ex.: $298 K = 25 °C$).');
   C('legaturi-stari', 'Condiții standard', '$T = 298 K = 25 °C$ și $p = 1 atm$.');
   C('legaturi-stari', 'Volumul molar la condiții normale (c.n.)', 'La c.n.: $V_m = 22,4 L/mol$ (Tema 5: $ν = V//V_m$).');
 

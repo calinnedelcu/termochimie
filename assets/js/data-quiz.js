@@ -108,7 +108,7 @@
     {
       t: 'mc', q: 'Cât este $ΔT$ pentru o încălzire de la 25 °C la 75 °C?',
       opts: ['50 K', '348 K', '−50 K', '100 K'],
-      a: 0, why: '$ΔT = T_f − T_i = 75 − 25 = 50$.'
+      a: 0, why: '$ΔT = T_f − T_i = 75 − 25 = 50$. O diferență de temperatură are aceeași valoare în °C și în K.'
     }
   ];
 
@@ -233,6 +233,10 @@
       a: 0, why: 'Ca să rupi o legătură trebuie să-i dai energie; când se formează o legătură, energia se eliberează.'
     },
     {
+      t: 'match', q: 'Potrivește fiecare schimbare de stare cu sensul ei:',
+      pairs: [['topire', 'solid → lichid'], ['condensare', 'gaz → lichid'], ['sublimare', 'solid → gaz'], ['desublimare', 'gaz → solid']], why: 'Topire: solid→lichid; vaporizare: lichid→gaz; sublimare: solid→gaz; solidificare: lichid→solid; condensare: gaz→lichid; desublimare: gaz→solid.'
+    },
+    {
       t: 'multi', q: 'Alege procesele <b>exoterme</b>:',
       opts: ['topirea', 'solidificarea', 'condensarea', 'sublimarea', 'desublimarea'], a: [1, 2, 4], why: 'Topirea, vaporizarea și sublimarea absorb căldură (endoterme). Inversele lor — solidificarea, condensarea, desublimarea — o degajă.'
     },
@@ -240,6 +244,7 @@
       t: 'mc', q: 'Condițiile standard sunt…',
       opts: ['$T = 298$ K (25 °C) și $p = 1$ atm', '$T = 298$ K și $p = 0$ atm', '$T = 25$ K și $p = 1$ atm', '$T = 298$ °C și $p = 1$ atm'], a: 0, why: 'Condiții standard (marcate în caiet): 298 K = 25 °C și 1 atm.'
     },
+    { t: 'num', q: 'Exprimă temperatura de 37 °C în kelvini.', a: 310, unit: 'K', tol: 0.005, dec: 0, why: '$T(K) = t(°C) + 273 = 37 + 273 = 310$ K.' },
     {
       t: 'mc', q: 'La c.n., un mol de gaz ocupă (volumul molar $V_m$)…',
       opts: ['22,4 L', '24,5 L', '1 L', '100 L'], a: 0, why: 'În caiet (Tema 5): la c.n. $V_m = 22,4$ L/mol.'

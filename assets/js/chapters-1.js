@@ -116,7 +116,8 @@
           return K('key', 'Cantitatea de căldură necesară pentru a crește temperatura unui <b>corp</b> cu un grad.', 'Definiție') +
             '<div class="formula">$C = (Q)//(ΔT)$ &nbsp;&nbsp;&nbsp; $[C] = J/K$</div>' +
             '<div class="formula">$ΔT = T_f − T_i$</div>' +
-            '<p>$T_f$ = temperatura finală, $T_i$ = temperatura inițială. De exemplu, în problema cu apa din caiet: $ΔT = 80 − 20 = 60$ °C.</p>';
+            '<p>$T_f$ = temperatura finală, $T_i$ = temperatura inițială. De exemplu, în problema cu apa din caiet: $ΔT = 80 − 20 = 60$ °C.</p>' +
+            K('tip', '$ΔT$ este o <b>diferență</b> de temperaturi, deci are aceeași valoare în °C și în K: încălzirea de la 20 °C la 80 °C înseamnă $ΔT = 60 K = 60 °C$. Nu trebuie să convertești în kelvini când ai doar diferențe.');
         }
       },
       {
@@ -180,6 +181,7 @@
         id: 'egalitate', h: 'Principiul egalității schimburilor de căldură',
         html: function () {
           return K('key', '$Q_{cedată} = Q_{primită}$ &nbsp;&nbsp;sau&nbsp;&nbsp; $Q_1 + Q_2 = 0$', 'Enunț') +
+            '<p>Cele două scrieri spun același lucru: în prima, căldurile sunt luate <b>în modul</b> (valori pozitive); în a doua, <b>cu semn</b> — cel care cedează are $Q < 0$, cel care primește are $Q > 0$, iar suma lor e zero.</p>' +
             '<p>Pentru fiecare corp, $Q = m·c·ΔT$ (cu $ΔT = T_f − T_i$); condiția $Q_1 + Q_2 = 0$ le leagă între ele.</p>';
         }
       },

@@ -215,7 +215,7 @@
     return {
       statement: '<p>Se încălzesc <b>200 g</b> de apă de la <b>20 °C</b> la <b>80 °C</b> ($c = 4,184 J/(g·K)$, $M = 18 g/mol$).</p><p><b>a)</b> Cât este $ΔT$?</p><p><b>b)</b> Ce căldură (kJ) primește apa?</p><p><b>c)</b> Care este capacitatea calorică a acestei cantități de apă (J/K)?</p><p><b>d)</b> Care este căldura specifică molară a apei (J/(mol·K))?</p>',
       method: 'Folosește pe rând: $ΔT = t_f − t_i$; $Q = m·c·ΔT$; $C = Q/ΔT$; $c_m = Q/(ν·ΔT)$.',
-      parts: [{ id: 'a', ask: 'ΔT', a: 60, unit: '°C', dec: 0, steps: ['$ΔT = 80 − 20 = <b>60 °C</b>$.'] },
+      parts: [{ id: 'a', ask: 'ΔT', a: 60, unit: 'K', dec: 0, steps: ['$ΔT = 80 − 20 = <b>60 K</b>$ (aceeași valoare ca în °C).'] },
         { id: 'b', ask: 'Căldura primită', a: Q / 1000, unit: 'kJ', dec: 3, steps: ['$Q = m·c·ΔT = 200 · 4,184 · 60 = 50 208 J = <b>50,208 kJ</b>$.'] },
         { id: 'c', ask: 'Capacitatea calorică C', a: Cc, unit: 'J/K', dec: 1, steps: ['$C = (Q)//(ΔT) = (50208)//(60) = <b>836,8 J/K</b>$.'] },
         { id: 'd', ask: 'Căldura specifică molară', a: Cm, unit: 'J/(mol·K)', dec: 2, steps: ['$ν = (m)//(M) = (200)//(18) = 11,11 mol$.', '$c_m = (Q)//(ν·ΔT) = (50208)//(11,11 · 60) = <b>75,31 J/(mol·K)</b>$ (căldura pe mol, nu pe gram).'] }]
@@ -250,7 +250,7 @@
     id: 'calorimetrie', short: 'Formule calorimetrice', title: 'Mărimile calorimetrice: $C$, $c$, $c_m$ și $λ$',
     blurb: 'Aplici direct definițiile: Q, capacitatea calorică, căldura specifică, căldura specifică molară, căldura latentă.',
     skill: '$Q = m·c·ΔT$ · $C = Q/ΔT$ · $c_m = Q/(ν·ΔT)$', originalLabel: 'Model rezolvat',
-    intro: T.callout('tip', '<b>Alege formula după ce ți se cere:</b> temperatura se schimbă ⟹ $Q = m·c·ΔT$; corp întreg ⟹ $C = Q/ΔT$; pe mol ⟹ $c_m = Q/(ν·ΔT)$; schimbare de stare ⟹ $Q = m·λ$ (sau $ν·λ$).'),
+    intro: T.callout('tip', '<b>Alege formula după ce ți se cere:</b> temperatura se schimbă ⟹ $Q = m·c·ΔT$; corp întreg ⟹ $C = Q/ΔT$; pe mol ⟹ $c_m = Q/(ν·ΔT)$; schimbare de stare ⟹ $Q = m·λ$ (sau $ν·λ$). Nu uita: $ΔT$ în °C = $ΔT$ în K.'),
     original: calOriginal, make: calMake
   });
 

@@ -81,7 +81,7 @@
     }
     body.append(seg, two);
     draw();
-    body.append(T.h('p', { class: 'muted', html: 'În caiet, $Q$ apare și în ecuație (la produși la exoterme, la reactanți la endoterme), și cu semn: $Q < 0$ la exoterme, $Q > 0$ la endoterme.' }));
+    body.append(T.h('p', { class: 'muted', html: 'Notă: în ecuația termochimică, $Q$ scris lângă săgeată este o <b>cantitate</b> de căldură (valoare pozitivă, în kJ). Semnul „−” sau „+” apare la $ΔH$ și la $Q$ față de sistem.' }));
   });
 
   /* ---------------------------------------------------------
@@ -237,14 +237,19 @@
       holder.innerHTML = s + '</svg>';
       var c = CH[cur];
       out.className = 'wd-out ' + c.t;
-      out.innerHTML = T.rich('<b class="tag-' + c.t + '">' + c.n + '</b>: ' + (c.t === 'endo' ? 'procesul <b>absoarbe</b> căldură ⟹ <b>endoterm</b>, $Q > 0$.' : 'procesul <b>degajă</b> căldură ⟹ <b>exoterm</b>, $Q < 0$.') + (cur === 'topire' || cur === 'solidificare' ? '<br>Procese inverse (ca în caiet): <b>topire ↔ solidificare</b> — aceeași căldură, ca valoare.' : ''));
+      out.innerHTML = T.rich('<b class="tag-' + c.t + '">' + c.n + '</b> (' + c.f + '): ' + (c.t === 'endo' ? 'procesul <b>absoarbe</b> căldură ⟹ <b>endoterm</b>, $Q > 0$.' : 'procesul <b>degajă</b> căldură ⟹ <b>exoterm</b>, $Q < 0$.') + '<br>Procesul invers: <b>' + CH[inv(cur)].n.toLowerCase() + '</b> (aceeași căldură, ca valoare).');
     }
     function inv(k) { return { topire: 'solidificare', solidificare: 'topire', vaporizare: 'condensare', condensare: 'vaporizare', sublimare: 'desublimare', desublimare: 'sublimare' }[k]; }
     holder.addEventListener('click', function (e) { var g2 = e.target.closest('[data-k]'); if (g2) { cur = g2.dataset.k; drawAll(); } });
     holder.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { var g2 = e.target.closest('[data-k]'); if (g2) { e.preventDefault(); cur = g2.dataset.k; drawAll(); } } });
-    // condiții standard (marcate în caiet)
-    var std = T.h('div', { class: 'callout imp', html: '<div class="ct"><span class="ct-i">✓</span>Marcat în caiet · condiții standard</div><div class="cb">$T = 298 K = 25 °C$ &nbsp;·&nbsp; $p = 1 atm$</div>' });
+    // condiții standard + convertor
+    var cK = T.h('input', { class: 'inp sm', type: 'text', inputmode: 'decimal', value: '298', 'aria-label': 'Kelvin' });
+    var cC = T.h('input', { class: 'inp sm', type: 'text', inputmode: 'decimal', value: '25', 'aria-label': 'Grade Celsius' });
+    cK.addEventListener('input', function () { var v = T.parseNum(cK.value)[0]; if (v != null) cC.value = T.fmt(v - 273, 2); });
+    cC.addEventListener('input', function () { var v = T.parseNum(cC.value)[0]; if (v != null) cK.value = T.fmt(v + 273, 2); });
+    var std = T.h('div', { class: 'callout imp', html: '<div class="ct"><span class="ct-i">✓</span>Marcat în caiet · condiții standard</div><div class="cb">$T = 298 K = 25 °C$ &nbsp;·&nbsp; $p = 1 atm$<div class="wd-row" style="margin-top:8px"><label>$T$ în K:</label>' + '<span class="k"></span><label>= $t$ în °C:</label><span class="c"></span><span class="muted">$T(K) = t(°C) + 273$</span></div></div>' });
     body.append(holder, out, std);
+    T.$('.k', std).replaceWith(cK); T.$('.c', std).replaceWith(cC);
     drawAll();
   });
 })(window);

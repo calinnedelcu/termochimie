@@ -52,7 +52,7 @@
         id: 'exo', h: 'Reacții exoterme',
         html: function () {
           return K('exo', 'Reacții la care are loc o <b>degajare de căldură</b>.', 'Definiție') +
-            '<div class="eqn exo">[[reactanți -> produși + Q]] &nbsp;,&nbsp; $Q < 0$</div>' +
+            '<div class="eqn exo">[[reactanți -> produși + Q]] &nbsp;,&nbsp; $Q < 0$ (față de sistem)</div>' +
             K('ex', '<b>Neutralizarea</b> (exemplul din caiet):<div class="eqn">[[2NaOH(aq) + H2SO4(aq) -> Na2SO4(aq) + 2H2O(l) + Q]]</div>La amestecarea soluțiilor: <b>$T_f > T_i$</b>.') +
             '<p>Alte reacții exoterme din caiet, în exerciții: arderea metanului, reacția din exercițiul 4/14 (+ 852 kJ), transformarea glucozei în acid piruvic (+ 483 kJ).</p>';
         }
@@ -61,7 +61,7 @@
         id: 'endo', h: 'Reacții endoterme',
         html: function () {
           return K('endo', 'Reacții la care are loc o <b>absorbție de căldură din mediul exterior</b>.', 'Definiție') +
-            '<div class="eqn endo">[[reactanți + Q -> produși]] &nbsp;,&nbsp; $Q > 0$</div>' +
+            '<div class="eqn endo">[[reactanți + Q -> produși]] &nbsp;,&nbsp; $Q > 0$ (față de sistem)</div>' +
             K('ex', '<b>Descompunerea cloratului de potasiu</b> (exemplul din caiet):<div class="eqn">[[2KClO3(s) + Q -> 2KCl(s) + 3O2(g)]]</div>$Q$ apare la reactanți: reacția <b>absoarbe</b> căldură.') +
             '<p>Altă reacție endotermă din caiet, în exerciții: descompunerea etanului în etenă și hidrogen ($+ 137$ kJ la 1 mol de etan).</p>';
         }
@@ -75,7 +75,7 @@
             '<tr><td>$Q$</td><td class="c">$Q < 0$</td><td class="c">$Q > 0$</td></tr>' +
             '<tr><td>$ΔH$ (lecția 9)</td><td class="c">$ΔH < 0$</td><td class="c">$ΔH > 0$</td></tr></tbody></table></div>' +
             W('exoEndoLab') +
-            K('warn', 'În caiet, $Q$ apare scris în două feluri: în ecuația termochimică (ca $Q$ sau ca valoare, ex. „+ 393,5 kJ”), la produși la exoterme și la reactanți la endoterme; și cu semn: $Q < 0$ la exoterme, $Q > 0$ la endoterme.');
+            K('warn', '<b>Capcana semnului.</b> În ecuația termochimică $Q$ apare ca o <b>cantitate</b> de căldură (un număr pozitiv, ex. „+ 393,5 kJ”): la exoterme în dreapta (degajată), la endoterme în stânga (absorbită). Semnul „−” al exotermelor apare când judeci <b>față de sistem</b>: $Q < 0$ și $ΔH < 0$. Nu amesteca cele două moduri de scriere.');
         }
       },
       {
@@ -163,16 +163,16 @@
             '<div class="callout endo"><div class="ct">necesită absorbție de căldură (endoterme)</div><div class="cb"><b>topire, vaporizare, sublimare</b></div></div>' +
             '<div class="callout exo"><div class="ct">degajă căldură (exoterme)</div><div class="cb"><b>solidificare, condensare, desublimare</b></div></div></div>' +
             W('stateWheel') +
-            K('key', 'Cele două liste sunt scrise în aceeași ordine. Exemplul de procese inverse din caiet (lecția 4) este <b>topire ↔ solidificare</b>: aceeași căldură ca valoare, absorbită la topire, degajată la solidificare.');
+            K('key', 'Procesele din coloana a doua sunt <b>inversele</b> celor din prima (topire ↔ solidificare, vaporizare ↔ condensare, sublimare ↔ desublimare), deci degajă exact căldura pe care cele directe o absorb (lecția 4: procese inverse).');
         }
       },
       {
         id: 'cond', h: 'Condiții standard',
         html: function () {
           return K('imp', 'Condiții standard: &nbsp;<b>$T = 298 K = 25 °C$</b> &nbsp;și&nbsp; <b>$p = 1 atm$</b>.', 'Marcat în caiet') +
-            '<p>Notația $ΔH_f^{298}$ din lecția 11 se referă la aceste condiții.</p>' +
+            '<p>Notația $ΔH_f^{298}$ din lecția 11 se referă la aceste condiții. Legătura dintre scări: $T(K) = t(°C) + 273$.</p>' +
             K('note', 'La problemele cu volume de gaze, caietul folosește <b>c.n.</b>: $V_m = 22,4$ L/mol (Tema 5).') +
-            MQ('Cât este $T = 298$ K în grade Celsius?', ['25 °C', '571 °C', '−25 °C', '0 °C'], 0, 'Marcat în caiet: $298 K = 25 °C$.');
+            MQ('Cât este $T = 298$ K în grade Celsius?', ['25 °C', '571 °C', '−25 °C', '0 °C'], 0, '$t(°C) = T(K) − 273 = 298 − 273 = 25$ °C (ca în caiet: $298 K = 25 °C$).');
         }
       }
     ]

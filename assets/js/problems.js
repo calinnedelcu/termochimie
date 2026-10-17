@@ -346,7 +346,7 @@
       note: T.callout('note', 'Enunțul este reconstituit din rezolvarea din caiet (în caiet apare doar împărțirea la 1234,8; ea a fost înțeleasă ca „căldura de ardere, în kJ/mol”).'),
       method: 'a) $Q = m·c·ΔT$. b) Doar 70% din căldura degajată ajunge la apă: $0,70 · Q_{total} = Q_{apă}$. Apoi moli de etanol $ν$ din căldura de ardere (kJ/mol) și masa $m = ν · M$.',
       parts: [
-        { id: 'a', ask: 'Căldura necesară încălzirii apei', a: Q, unit: 'kJ', dec: 3, steps: ['$ΔT = 80 − 20 = 60 °C$.', '$Q = m · c · ΔT = 200 · 4,184 · 60 = 50 208 J$.', '$Q = <b>50,208 kJ</b>$.'] },
+        { id: 'a', ask: 'Căldura necesară încălzirii apei', a: Q, unit: 'kJ', dec: 3, steps: ['$ΔT = 80 − 20 = 60 °C = 60 K$.', '$Q = m · c · ΔT = 200 · 4,184 · 60 = 50 208 J$.', '$Q = <b>50,208 kJ</b>$.'] },
         { id: 'b', ask: 'Masa de etanol', a: m, unit: 'g', dec: 2, steps: ['30% se pierd ⟹ doar 70% încălzește apa: $0,70 · Q_{total} = 50,208 kJ$.', '$Q_{total} = (50,208)//(0,70) ≈ 71,73 kJ$.', '$ν = (71,73)//(1234,8) ≈ 0,0581 mol$ etanol.', '$m = ν · M = 0,0581 · 46 ≈ <b>2,67 g</b>$.'] }
       ]
     };

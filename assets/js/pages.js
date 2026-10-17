@@ -328,14 +328,14 @@
     ]);
     h += card('Mărimi calorimetrice', [
       row('Capacitate calorică', '$C = (Q)//(ΔT)$', 'J/K'),
-      row('Variația de temperatură', '$ΔT = T_f − T_i$'),
+      row('Variația de temperatură', '$ΔT = T_f − T_i$', 'K sau °C (aceeași valoare)'),
       row('Căldură specifică', '$c = (Q)//(m·ΔT)$ &nbsp;⟹&nbsp; $Q = m·c·ΔT$', 'J/(g·K)'),
       row('Căldură specifică molară', '$c_m = (Q)//(ν·ΔT)$', 'J/(mol·K)'),
       row('Căldură latentă specifică', '$λ = (Q)//(m)$ &nbsp; (în problema cu sodiul, λ pe mol: $Q = ν·λ$)', 'J/g &nbsp;(sau kJ/mol)'),
     ]);
     h += card('Principiile calorimetriei', [
       row('Echilibru termic', 'corpuri în contact, într-un sistem izolat ⟹ aceeași temperatură finală'),
-      row('Egalitatea schimburilor de căldură', '$Q_{cedată} = Q_{primită}$ &nbsp;sau&nbsp; $Q_1 + Q_2 = 0$'),
+      row('Egalitatea schimburilor de căldură', '$Q_{cedată} = Q_{primită}$ &nbsp;(în modul) &nbsp;sau&nbsp; $Q_1 + Q_2 = 0$ &nbsp;(cu semn)'),
       row('Procese inverse', '$|Q|$ absorbit într-o transformare = $|Q|$ degajat în transformarea inversă (topire ↔ solidificare)')
     ]);
     h += card('Termodinamică', [
@@ -356,7 +356,8 @@
       row('Cantitatea de substanță', '$ν = (m)//(M)$ &nbsp;·&nbsp; gaz la c.n.: $ν = (V)//(22,4)$'),
       row('Proporția', 'coeficient (mol) ↔ căldura din ecuație &nbsp;=&nbsp; cantitatea dată ↔ $x$'),
       row('Condiții standard', '$T = 298 K = 25 °C$, &nbsp; $p = 1 atm$'),
-      row('La c.n. (volume de gaze)', '$V_m = 22,4 L/mol$')
+      row('La c.n. (volume de gaze)', '$V_m = 22,4 L/mol$'),
+      row('Temperatura absolută', '$T(K) = t(°C) + 273$')
     ]);
     h += card('Căldura de formare și legea lui Hess', [
       row('Căldura de formare', '$ΔH_f$ pentru 1 mol de substanță din elemente în stare standard', 'J/mol (în caiet)'),
