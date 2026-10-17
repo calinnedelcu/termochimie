@@ -1,6 +1,5 @@
 /* =========================================================
-   widgets-calor.js — calculator de formule, curba de încălzire,
-   amestecarea corpurilor (echilibru termic)
+   widgets-calor.js — calculator de formule, curba de încălzire
    ========================================================= */
 (function (g) {
   'use strict';
@@ -14,10 +13,10 @@
   var REL = [
     { id: 'mc', tab: 'Q = m·c·ΔT', fac: ['m', 'c', 'dT'], nm: { m: ['m', 'g'], c: ['c', 'J/(g·K)'], dT: ['ΔT', 'K'] }, def: { m: 200, c: 4.184, dT: 60 } },
     { id: 'C', tab: 'Q = C·ΔT', fac: ['C', 'dT'], nm: { C: ['C', 'J/K'], dT: ['ΔT', 'K'] }, def: { C: 836.8, dT: 60 } },
-    { id: 'Cm', tab: 'Q = ν·C_m·ΔT', fac: ['n', 'Cm', 'dT'], nm: { n: ['ν', 'mol'], Cm: ['C_m', 'J/(mol·K)'], dT: ['ΔT', 'K'] }, def: { n: 2, Cm: 75.3, dT: 60 } },
+    { id: 'Cm', tab: 'Q = ν·c_m·ΔT', fac: ['n', 'Cm', 'dT'], nm: { n: ['ν', 'mol'], Cm: ['c_m', 'J/(mol·K)'], dT: ['ΔT', 'K'] }, def: { n: 2, Cm: 75.3, dT: 60 } },
     { id: 'lam', tab: 'Q = m·λ', fac: ['m', 'lam'], nm: { m: ['m', 'g'], lam: ['λ', 'J/g'] }, def: { m: 10, lam: 334 } }
   ];
-  var SUBST = [['apă', 4.184], ['aluminiu', 0.9], ['fier', 0.45], ['cupru', 0.385], ['sodiu (solid)', 1.23]];
+  var SUBST = [['apă (din caiet)', 4.184], ['sodiu, solid (din caiet)', 1.23]];
 
   T.widget('calcLab', function (el) {
     var body = T.shell(el, {
@@ -96,25 +95,16 @@
      --------------------------------------------------------- */
   var PRESETS = {
     sodiu: {
-      name: 'Sodiu (problema din caiet)', m: 10, mMax: 50, T0: 20,
-      segs: function () { return [{ k: 'heat', T0: 20, T1: 98, c: 1.23, st: 'solid' }, { k: 'melt', T: 98, lam: 2600 / 23, st: 'topire' }]; },
-      note: 'Sodiu: $c = 1,23 J/(g·K)$ (solid), temperatura de topire 98 °C, $λ = 2,6 kJ/mol$ (adică $2600/23 ≈ 113 J/g$, cu $M = 23 g/mol$).'
-    },
-    apa: {
-      name: 'Apă (exemplu ilustrativ)', m: 10, mMax: 50, T0: -20,
-      segs: function () {
-        return [{ k: 'heat', T0: -20, T1: 0, c: 2.09, st: 'gheață' }, { k: 'melt', T: 0, lam: 334, st: 'topire' },
-          { k: 'heat', T0: 0, T1: 100, c: 4.184, st: 'apă lichidă' }, { k: 'melt', T: 100, lam: 2260, st: 'vaporizare' },
-          { k: 'heat', T0: 100, T1: 130, c: 2.01, st: 'vapori' }];
-      },
-      note: 'Valori ilustrative pentru apă: $c_{gheață} ≈ 2,09$, $c_{apă} = 4,184$, $c_{vapori} ≈ 2,01 J/(g·K)$; $λ_{topire} ≈ 334 J/g$, $λ_{vaporizare} ≈ 2260 J/g$.'
+      name: 'Sodiu (Tema 8)', m: 10, mMax: 50, T0: 20,
+      segs: function () { return [{ k: 'heat', T0: 20, T1: 98, c: 1.23, st: 'solid' }, { k: 'melt', T: 98, lam: 2600 / 23, lamMol: 2600, M: 23, st: 'topire' }]; },
+      note: 'Datele din Tema 8 (sodiu): $c = 1,23 J/(g·K)$ (sodiu solid), de la 20 °C până la 98 °C, apoi topirea, cu $λ = 2,6 kJ/mol$ (pe mol, $M = 23 g/mol$). În caiet: $Q = m·c·ΔT + ν·λ$.'
     }
   };
 
   T.widget('heatingCurve', function (el) {
     var body = T.shell(el, {
       title: 'Curba de încălzire: temperatura în funcție de căldura primită',
-      help: 'Cât timp temperatura crește, folosești $Q = m·c·ΔT$. Cât timp se schimbă starea, temperatura stă pe loc („palierul”) și folosești $Q = m·λ$. Mută cursorul „căldura primită”.'
+      help: 'Cât timp temperatura crește, folosești $Q = m·c·ΔT$. Cât timp se schimbă starea, temperatura rămâne constantă și folosești $Q = ν·λ$ (λ dat pe mol). Mută cursorul „căldura primită”.'
     });
     var pre = 'sodiu', m = PRESETS.sodiu.m, frac = 0.55;
     var holder = T.h('div', { class: 'wd-svg' }), out = T.h('div', { class: 'wd-out' }), tbl = T.h('div', { class: 'tbl-wrap' }), note = T.h('p', { class: 'muted' });
@@ -171,7 +161,7 @@
       out.innerHTML = T.rich('<b>Q = ' + T.fmt(Q / qs, 3) + ' ' + qu + '</b> ⟹ t = <b>' + T.fmt(cur.t, 1) + ' °C</b> · ' + cur.text);
 
       var rows = C.segs.map(function (sg, i) {
-        var f = sg.k === 'heat' ? '$Q_' + (i + 1) + ' = m·c·ΔT = ' + T.fmt(m, 2) + ' · ' + T.fmt(sg.c, 3) + ' · ' + T.fmt(sg.T1 - sg.T0, 1) + '$' : '$Q_' + (i + 1) + ' = m·λ = ' + T.fmt(m, 2) + ' · ' + T.fmt(sg.lam, 1) + '$';
+        var f = sg.k === 'heat' ? '$Q_' + (i + 1) + ' = m·c·ΔT = ' + T.fmt(m, 2) + ' · ' + T.fmt(sg.c, 3) + ' · ' + T.fmt(sg.T1 - sg.T0, 1) + '$' : '$Q_' + (i + 1) + ' = ν·λ = (' + T.fmt(m, 2) + ')//(' + sg.M + ') · ' + T.fmt(sg.lamMol, 0) + '$';
         return '<tr><td>' + sg.st + '</td><td>' + f + '</td><td class="c"><b>' + T.fmt(sg.Q, 1) + ' J</b></td></tr>';
       }).join('');
       tbl.innerHTML = T.rich('<table class="tbl"><thead><tr><th>Etapa</th><th>Calcul</th><th class="c">Căldura</th></tr></thead><tbody>' + rows +
@@ -189,95 +179,15 @@
             return { t: t, plateau: false, text: 'se încălzește (' + sg.st + '); temperatura crește pe măsură ce primește căldură.' };
           }
           var pct = Math.round(f * 100);
-          return { t: sg.T, plateau: true, text: sg.st + ' în curs: ' + pct + '% din substanță și-a schimbat starea; <b>temperatura rămâne constantă</b> (palier).' };
+          return { t: sg.T, plateau: true, text: sg.st + ' în curs: ' + pct + '% din substanță și-a schimbat starea; <b>temperatura rămâne constantă</b>.' };
         }
       }
       return { t: 0, text: '' };
     }
 
-    var preSeg = T.seg([{ v: 'sodiu', label: 'Sodiu (din caiet)' }, { v: 'apa', label: 'Apă (exemplu)' }], pre, function (v) { pre = v; m = PRESETS[v].m; mSl.set(m); mSl.input.max = PRESETS[v].mMax; draw(); }, 'Substanța');
-    mSl = T.slider({ label: 'Masa m', min: 1, max: PRESETS.sodiu.mMax, step: 1, value: m, unit: 'g', onInput: function (v) { m = v; draw(); } });
+        mSl = T.slider({ label: 'Masa m', min: 1, max: PRESETS.sodiu.mMax, step: 1, value: m, unit: 'g', onInput: function (v) { m = v; draw(); } });
     qSl = T.slider({ label: 'Căldura primită (% din total)', min: 0, max: 100, step: 1, value: Math.round(frac * 100), unit: '%', onInput: function (v) { frac = v / 100; draw(); } });
-    body.append(T.h('div', { class: 'wd-ctrl' }, T.h('div', { class: 'wd-row' }, T.h('label', { text: 'Substanța:' }), preSeg), mSl, qSl), holder, out, tbl, note);
-    draw();
-  });
-
-  /* ---------------------------------------------------------
-     Amestecarea a două corpuri
-     --------------------------------------------------------- */
-  function tcol(t) {                  // culoare după temperatură (0 °C albastru … 100 °C portocaliu)
-    var p = T.clamp(t / 100, 0, 1) * 100;
-    return 'color-mix(in oklch, var(--exo) ' + Math.round(p) + '%, var(--endo))';
-  }
-  T.widget('mixing', function (el) {
-    var body = T.shell(el, {
-      title: 'Amestecarea a două corpuri: ajung la aceeași temperatură',
-      help: 'Corpul cald cedează căldură, cel rece o primește — exact aceeași cantitate. Apasă „Pornește” sau mută cursorul de progres.'
-    });
-    var S = { m1: 200, T1: 80, c1: 4.184, m2: 300, T2: 20, c2: 4.184, t: 0 };
-    var holder = T.h('div', { class: 'wd-svg' }), out = T.h('div', { class: 'wd-out' }), raf = null;
-    var cs = [['apă', 4.184], ['aluminiu', 0.9], ['fier', 0.45], ['cupru', 0.385]];
-    function res() {
-      var A = S.m1 * S.c1, B = S.m2 * S.c2;
-      var Tf = (A * S.T1 + B * S.T2) / (A + B);
-      return { Tf: Tf, Q1: A * (Tf - S.T1), Q2: B * (Tf - S.T2) };
-    }
-    function beaker(x, w, level, t, label, sub) {
-      var top = 70, bot = 190, h = (bot - top) * level;
-      return '<path class="se-beaker" d="M' + x + ' ' + top + ' L' + x + ' ' + (bot - 14) + ' Q' + x + ' ' + bot + ' ' + (x + 16) + ' ' + bot + ' L' + (x + w - 16) + ' ' + bot + ' Q' + (x + w) + ' ' + bot + ' ' + (x + w) + ' ' + (bot - 14) + ' L' + (x + w) + ' ' + top + '" fill="none"/>' +
-        '<rect x="' + (x + 2) + '" y="' + (bot - h) + '" width="' + (w - 4) + '" height="' + (h - 1) + '" rx="8" style="fill:' + tcol(t) + ';opacity:.85"/>' +
-        '<text class="se-val" x="' + (x + w / 2) + '" y="' + (bot - h / 2 + 5) + '" text-anchor="middle">' + T.fmt(t, 1) + ' °C</text>' +
-        '<text class="se-sm" x="' + (x + w / 2) + '" y="212" text-anchor="middle">' + label + '</text><text class="se-sm" x="' + (x + w / 2) + '" y="228" text-anchor="middle">' + sub + '</text>';
-    }
-    function draw() {
-      var R = res(), t = S.t;
-      var t1 = S.T1 + (R.Tf - S.T1) * t, t2 = S.T2 + (R.Tf - S.T2) * t;
-      var q1 = R.Q1 * t, q2 = R.Q2 * t;
-      var s = '<svg viewBox="0 0 560 330" role="img" aria-label="Două corpuri care ating echilibrul termic">' + T.svgs.defs('mx');
-      var l1 = Math.min(1, 0.35 + S.m1 / 600), l2 = Math.min(1, 0.35 + S.m2 / 600);
-      s += beaker(60, 130, l1, t1, 'corpul 1', 'm = ' + S.m1 + ' g') + beaker(370, 130, l2, t2, 'corpul 2', 'm = ' + S.m2 + ' g');
-      var hotLeft = t1 >= t2, gap = Math.abs(t1 - t2);
-      if (gap > 0.3) {
-        var w = 2 + gap / 8;
-        s += '<line class="wa exo" x1="' + (hotLeft ? 205 : 355) + '" y1="130" x2="' + (hotLeft ? 355 : 205) + '" y2="130" style="stroke-width:' + w + 'px" marker-end="url(#mx-exo)"/><text class="se-q exo" x="280" y="118" text-anchor="middle">Q</text>';
-      } else s += '<text class="se-val" x="280" y="134" text-anchor="middle">echilibru termic</text>';
-      // bare Q
-      var x0 = 280, sc = 150 / Math.max(1, Math.abs(R.Q1), Math.abs(R.Q2));
-      s += '<line class="ed-ax" x1="' + x0 + '" y1="248" x2="' + x0 + '" y2="318"/>';
-      s += '<rect class="hb bq" x="' + (x0 + Math.min(0, q1 * sc)) + '" y="252" width="' + Math.max(1, Math.abs(q1 * sc)) + '" height="24" rx="4"/><text class="se-sm" x="' + (x0 + (q1 >= 0 ? 6 : -6) + q1 * sc) + '" y="269" text-anchor="' + (q1 >= 0 ? 'start' : 'end') + '">' + 'Q₁ = ' + T.fmt(q1, 0) + ' J</text>';
-      s += '<rect class="hb bl" x="' + (x0 + Math.min(0, q2 * sc)) + '" y="284" width="' + Math.max(1, Math.abs(q2 * sc)) + '" height="24" rx="4"/><text class="se-sm" x="' + (x0 + (q2 >= 0 ? 6 : -6) + q2 * sc) + '" y="301" text-anchor="' + (q2 >= 0 ? 'start' : 'end') + '">' + 'Q₂ = +' + T.fmt(q2, 0) + ' J</text>';
-      holder.innerHTML = s + '</svg>';
-      var inRange = R.Tf >= Math.min(S.T1, S.T2) - 1e-9 && R.Tf <= Math.max(S.T1, S.T2) + 1e-9;
-      out.className = 'wd-out ' + (inRange ? 'ok' : 'bad');
-      out.innerHTML = T.rich('$T_f = (m_1 c_1 T_1 + m_2 c_2 T_2)//(m_1 c_1 + m_2 c_2) = (' + T.fmt(S.m1 * S.c1, 1) + ' · ' + S.T1 + ' + ' + T.fmt(S.m2 * S.c2, 1) + ' · ' + S.T2 + ')//(' + T.fmt(S.m1 * S.c1 + S.m2 * S.c2, 1) + ') = ' + T.fmt(R.Tf, 2) + '$ °C' +
-        '<br>$Q_1 = ' + T.fmt(R.Q1, 0) + '$ J &nbsp;·&nbsp; $Q_2 = +' + T.fmt(R.Q2, 0) + '$ J &nbsp;⟹&nbsp; $Q_1 + Q_2 = ' + T.fmt(R.Q1 + R.Q2, 0) + '$ ✓');
-    }
-    function csel(key) {
-      var sel = T.h('select', { class: 'inp sm', style: { maxWidth: '240px' }, 'aria-label': 'Substanța corpului' }, cs.map(function (c) { return T.h('option', { value: c[1], text: c[0] + ' (c = ' + T.fmt(c[1], 3) + ')', selected: c[1] === S[key] ? true : null }); }));
-      sel.addEventListener('change', function () { S[key] = +sel.value; draw(); });
-      return sel;
-    }
-    var tSl;
-    function play() {
-      if (raf) { cancelAnimationFrame(raf); raf = null; return; }
-      var start = null, from = S.t >= 1 ? 0 : S.t;
-      function step(ts) {
-        if (start == null) start = ts;
-        S.t = Math.min(1, from + (ts - start) / 2600);
-        tSl.set(Math.round(S.t * 100)); draw();
-        raf = S.t < 1 ? requestAnimationFrame(step) : null;
-      }
-      raf = requestAnimationFrame(step);
-    }
-    var sls = [
-      T.slider({ label: 'm₁ (corpul 1)', min: 50, max: 500, step: 10, value: S.m1, unit: 'g', onInput: function (v) { S.m1 = v; draw(); } }),
-      T.slider({ label: 't₁ inițial', min: 0, max: 100, step: 1, value: S.T1, unit: '°C', onInput: function (v) { S.T1 = v; draw(); } }),
-      T.slider({ label: 'm₂ (corpul 2)', min: 50, max: 500, step: 10, value: S.m2, unit: 'g', onInput: function (v) { S.m2 = v; draw(); } }),
-      T.slider({ label: 't₂ inițial', min: 0, max: 100, step: 1, value: S.T2, unit: '°C', onInput: function (v) { S.T2 = v; draw(); } })
-    ];
-    tSl = T.slider({ label: 'Progresul amestecării', min: 0, max: 100, step: 1, value: 0, unit: '%', onInput: function (v) { if (raf) { cancelAnimationFrame(raf); raf = null; } S.t = v / 100; draw(); } });
-    body.append(T.h('div', { class: 'wd-ctrl' }, T.h('div', { class: 'wd-row' }, T.h('label', { text: 'Substanța 1:' }), csel('c1'), T.h('label', { text: 'Substanța 2:' }), csel('c2')), sls, tSl,
-      T.h('div', { class: 'wd-row' }, T.btn('▶ Pornește / oprește', play, 'primary'), T.btn('Resetează progresul', function () { S.t = 0; tSl.set(0); draw(); }, 'ghost'))), holder, out);
+    body.append(T.h('div', { class: 'wd-ctrl' }, mSl, qSl), holder, out, tbl, note);
     draw();
   });
 })(window);

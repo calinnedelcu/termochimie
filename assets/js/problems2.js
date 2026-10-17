@@ -30,7 +30,7 @@
   function targetStr(t) { return T.hessEqStr({ L: t.L, R: t.R }); }
   function hessSteps(cfg) {
     var tnet = T.targetNet(cfg.target), st = [];
-    st.push('Țintă: ' + targetStr(cfg.target) + '. Pentru fiecare ecuație dată caut o substanță din țintă care apare doar în ea și o potrivesc (parte + coeficient).');
+    st.push('Țintă: ' + targetStr(cfg.target) + '. Pentru fiecare substanță din țintă caut ecuația dată în care apare și o potrivesc (parte + coeficient).');
     cfg.eqs.forEach(function (e, i) { st.push(T.hessWhy(e, '(' + (i + 1) + ')', tnet)); });
     var terms = '', first = true;
     cfg.eqs.forEach(function (e, i) {
@@ -93,7 +93,7 @@
     id: 'hess', short: 'Legea lui Hess', title: 'Legea lui Hess: calculul lui ΔH din alte ecuații',
     blurb: 'Exercițiul „important” din caiet și variații: inversezi, înmulțești, aduni ecuațiile — și aduni valorile ΔH.',
     skill: 'inversare · înmulțire · adunare',
-    intro: T.callout('key', '<b>Reguli:</b> inversezi ecuația ⟹ $ΔH$ își schimbă semnul; o înmulțești cu $k$ ⟹ $ΔH$ se înmulțește cu $k$; adunând ecuațiile, adunăm și valorile $ΔH$. Începe mereu cu substanțele din țintă care apar într-o <b>singură</b> ecuație. Sub problemă ai un <b>combinator</b> cu care poți testa multiplicatorii.'),
+    intro: T.callout('key', '<b>Reguli:</b> inversezi ecuația ⟹ $ΔH$ își schimbă semnul; o înmulțești cu $k$ ⟹ $ΔH$ se înmulțește cu $k$; adunând ecuațiile, adunăm și valorile $ΔH$.  Sub problemă ai un <b>combinator</b> cu care poți testa multiplicatorii.'),
     original: hessOriginal, make: hessMake
   });
 
@@ -108,7 +108,7 @@
     { n: 'arderea acetilenei', L: [[1, 'C2H2(g)'], [2.5, 'O2(g)']], R: [[2, 'CO2(g)'], [1, 'H2O(l)']] },
     { n: 'arderea metanolului', L: [[1, 'CH3OH(l)'], [1.5, 'O2(g)']], R: [[1, 'CO2(g)'], [2, 'H2O(l)']] },
     { n: 'arderea etanolului', L: [[1, 'C2H5OH(l)'], [3, 'O2(g)']], R: [[2, 'CO2(g)'], [3, 'H2O(l)']] },
-    { n: 'reacția aluminotermică', L: [[2, 'Al(s)'], [1, 'Fe2O3(s)']], R: [[1, 'Al2O3(s)'], [2, 'Fe(s)']] },
+    { n: 'reacția din exercițiul 4/14 (Al + Fe₂O₃)', L: [[2, 'Al(s)'], [1, 'Fe2O3(s)']], R: [[1, 'Al2O3(s)'], [2, 'Fe(s)']] },
     { n: 'descompunerea carbonatului de calciu', L: [[1, 'CaCO3(s)']], R: [[1, 'CaO(s)'], [1, 'CO2(g)']] },
     { n: 'formarea oxidului de azot', L: [[1, 'N2(g)'], [1, 'O2(g)']], R: [[2, 'NO(g)']] },
     { n: 'sinteza amoniacului', L: [[1, 'N2(g)'], [3, 'H2(g)']], R: [[2, 'NH3(g)']] },
@@ -132,7 +132,7 @@
   }
   function frStepsDH(r) {
     var a = frArith(r), dH = frDH(r);
-    return ['Formula: $ΔH = Σ ν_P·ΔH_f(produși) − Σ ν_R·ΔH_f(reactanți)$. Elementele în stare standard ([[O2]], [[H2]], [[N2]], [[C(s)]], metalele) au $ΔH_f = 0$.',
+    return ['Formula: $ΔH = Σ ν_P·ΔH_f(produși) − Σ ν_R·ΔH_f(reactanți)$. Elementele au $ΔH_f = 0$ (ca în caiet, ex. [[O2]]).',
       'Produși: $' + a.P + ' = ' + N(a.sp, 2) + '$ kJ. &nbsp; Reactanți: $' + a.R + ' = ' + N(a.sr, 2) + '$ kJ.',
       '$ΔH = ' + N(a.sp, 2) + ' − (' + N(a.sr, 2) + ') = <b>' + N(dH, 2) + ' kJ</b>$ ⟹ ' + (dH < 0 ? 'exotermă.' : 'endotermă.')];
   }
@@ -142,8 +142,8 @@
     var r = FR[0], dH = frDH(r);
     return {
       statement: '<p>Se dă reacția de ardere a metanului:</p>' + eqNoQ(r) + '<p>Se cunosc căldurile de formare: ' + hfChips(r).join('; ') + '.</p><p><b>a)</b> Calculează $ΔH$ pentru reacție.</p><p><b>b)</b> Ce căldură se degajă la arderea a <b>5 mol</b> de metan?</p>',
-      data: hfChips(r).concat(['$ΔH_f$([[O2]]) = 0 (element)']), method: '$ΔH = Σ ν·ΔH_f(produși) − Σ ν·ΔH_f(reactanți)$. Nu uita coeficienții și că elementele au $ΔH_f = 0$. La b) înmulțești cu numărul de moli (reacția are 1 mol de metan).',
-      tool: { name: 'formationCalc', opts: {} },
+      data: hfChips(r).concat(['$ΔH_f$([[O2]]) = 0 (element)']), method: '$ΔH = Σ ν·ΔH_f(produși) − Σ ν·ΔH_f(reactanți)$. Nu uita coeficienții și că elementele au $ΔH_f = 0$. La b) înmulțești cu numărul de moli de metan (coeficientul lui în ecuație este 1).',
+      tool: { name: 'formationCalc', opts: { name: r.n, L: r.L, R: r.R } },
       parts: [{ id: 'a', ask: 'ΔH al reacției', a: dH, unit: 'kJ', dec: 1, tol: 0.003, steps: frStepsDH(r) },
         { id: 'b', ask: 'Căldura degajată la arderea a 5 mol de metan', a: 5 * Math.abs(dH), unit: 'kJ', dec: 1, tol: 0.003, steps: ['Pe ecuație: $1 mol$ ' + C('CH4') + ' ⟹ $' + N(Math.abs(dH), 1) + ' kJ$ degajați.', '$|Q| = 5 · ' + N(Math.abs(dH), 1) + ' = <b>' + N(5 * Math.abs(dH), 1) + ' kJ</b>$.'] }]
     };
@@ -159,7 +159,7 @@
       var mn = mainReactant(r), nmol = R.pick([2, 3, 4, 5, 10]), Q = nmol / mn[0] * Math.abs(dH);
       return {
         statement: '<p>Se dă reacția (' + r.n + '):</p>' + eqNoQ(r) + '<p>Se cunosc: ' + hfChips(r).join('; ') + '.</p><p><b>a)</b> Calculează $ΔH$ pentru reacție.</p><p><b>b)</b> Ce căldură se ' + word + ' când reacționează <b>' + nmol + ' mol</b> de ' + C(mn[1]) + '?</p>',
-        method: '$ΔH = Σ ν·ΔH_f(produși) − Σ ν·ΔH_f(reactanți)$; elementele au $ΔH_f = 0$. La b) pornești de la ceea ce înseamnă $ΔH$: căldura pentru coeficienții scriși.', tool: { name: 'formationCalc', opts: {} },
+        method: '$ΔH = Σ ν·ΔH_f(produși) − Σ ν·ΔH_f(reactanți)$; elementele au $ΔH_f = 0$. La b) pornești de la ceea ce înseamnă $ΔH$: căldura pentru coeficienții scriși.', tool: { name: 'formationCalc', opts: { name: r.n, L: r.L, R: r.R } },
         parts: [{ id: 'a', ask: 'ΔH al reacției', a: dH, unit: 'kJ', dec: 1, tol: 0.003, steps: frStepsDH(r) },
           { id: 'b', ask: 'Căldura ' + (exo ? 'degajată' : 'absorbită'), a: Q, unit: 'kJ', dec: 1, tol: 0.005, steps: ['Pe ecuație: $' + N(mn[0], 1) + ' mol$ ' + C(mn[1]) + ' ⟹ $|ΔH| = ' + N(Math.abs(dH), 1) + ' kJ$.', '$|Q| = (' + nmol + ' · ' + N(Math.abs(dH), 1) + ')//(' + N(mn[0], 1) + ') = <b>' + N(Q, 1) + ' kJ</b>$.'] }]
       };
@@ -189,17 +189,17 @@
     var mn3 = mainReactant(r), M3 = T.massOf(mn3[1]), kk = R.pick([0.5, 1, 2, 3]), m3 = kk * mn3[0] * M3, Q3 = kk * Math.abs(dH);
     var gp = r.R.filter(function (p) { return T.isGas(p[1]); })[0], V3 = kk * gp[0] * 22.4;
     return { statement: '<p>Se dă reacția (' + r.n + '):</p>' + eqNoQ(r) + '<p>Se cunosc: ' + hfChips(r).join('; ') + '.</p><p><b>a)</b> Calculează $ΔH$.</p><p><b>b)</b> Ce căldură se ' + word + ' la reacția a <b>' + N(m3, 1) + ' g</b> de ' + C(mn3[1]) + '?</p><p><b>c)</b> Ce volum de ' + C(gp[1]) + ' (c.n.) se formează în același timp?</p>',
-      data: mchips([mn3[1]]).concat(['$V_m = 22,4 L/mol$ (c.n.)']), method: 'a) $ΔH$ din $ΔH_f$. b) g → mol → proporție cu $|ΔH|$. c) din coeficienții ecuației: $ν_{gaz}$ pentru aceeași cantitate de reactant.', tool: { name: 'formationCalc', opts: {} },
+      data: mchips([mn3[1]]).concat(['$V_m = 22,4 L/mol$ (c.n.)']), method: 'a) $ΔH$ din $ΔH_f$. b) g → mol → proporție cu $|ΔH|$. c) din coeficienții ecuației: $ν_{gaz}$ pentru aceeași cantitate de reactant.', tool: { name: 'formationCalc', opts: { name: r.n, L: r.L, R: r.R } },
       parts: [{ id: 'a', ask: 'ΔH al reacției', a: dH, unit: 'kJ', dec: 1, tol: 0.003, steps: frStepsDH(r) },
-        { id: 'b', ask: 'Căldura ' + (exo ? 'degajată' : 'absorbită'), a: Q3, unit: 'kJ', dec: 1, tol: 0.005, steps: ['$ν = (' + N(m3, 1) + ')//(' + N(M3, 1) + ') = ' + N(m3 / M3, 3) + ' mol$ față de $' + N(mn3[0], 1) + ' mol$ pe ecuație ⟹ ' + N(kk, 2) + ' ecuații.', '$|Q| = ' + N(kk, 2) + ' · ' + N(Math.abs(dH), 1) + ' = <b>' + N(Q3, 1) + ' kJ</b>$.'] },
-        { id: 'c', ask: 'Volumul de ' + C(gp[1]) + ' (c.n.)', a: V3, unit: 'L', dec: 1, steps: ['Pe ecuație se formează $' + N(gp[0], 1) + ' mol$ ' + C(gp[1]) + '; pentru ' + N(kk, 2) + ' ecuații: $' + N(kk * gp[0], 2) + ' mol$.', '$V = ' + N(kk * gp[0], 2) + ' · 22,4 = <b>' + N(V3, 1) + ' L</b>$.'] }] };
+        { id: 'b', ask: 'Căldura ' + (exo ? 'degajată' : 'absorbită'), a: Q3, unit: 'kJ', dec: 1, tol: 0.005, steps: ['$ν = (' + N(m3, 1) + ')//(' + N(M3, 1) + ') = ' + N(m3 / M3, 3) + ' mol$; pe ecuație: $' + N(mn3[0], 1) + ' mol$ ' + C(mn3[1]) + ' ⟹ $|ΔH| = ' + N(Math.abs(dH), 1) + ' kJ$.', '$|Q| = (' + N(m3 / M3, 3) + ' · ' + N(Math.abs(dH), 1) + ')//(' + N(mn3[0], 1) + ') = <b>' + N(Q3, 1) + ' kJ</b>$.'] },
+        { id: 'c', ask: 'Volumul de ' + C(gp[1]) + ' (c.n.)', a: V3, unit: 'L', dec: 1, steps: ['Pe ecuație: $' + N(mn3[0], 1) + ' mol$ ' + C(mn3[1]) + ' ⟹ $' + N(gp[0], 1) + ' mol$ ' + C(gp[1]) + '. Pentru $' + N(m3 / M3, 3) + ' mol$ de reactant: $ν_{gaz} = ' + N(kk * gp[0], 2) + ' mol$.', '$V = ν · 22,4 = ' + N(kk * gp[0], 2) + ' · 22,4 = <b>' + N(V3, 1) + ' L</b>$.'] }] };
   }
 
   reg({
     id: 'entalpii-formare', short: 'ΔH din căldurile de formare', title: 'Căldura de reacție din căldurile de formare',
     blurb: 'ΔH = Σ(produși) − Σ(reactanți); căldura pentru n moli; ΔH_f necunoscut; stabilitate.',
-    skill: '$ΔH_R = ΣνΔH_f(P) − ΣνΔH_f(R)$',
-    intro: T.callout('warn', '<b>Atenție:</b> (1) înmulțește fiecare $ΔH_f$ cu <b>coeficientul</b> din ecuație; (2) <b>produși − reactanți</b> (nu invers); (3) elementele în stare standard au $ΔH_f = 0$; (4) la $|Q|$ pentru $n$ moli, raportezi la coeficientul substanței din ecuație.'),
+    skill: '$ΔH_r = ΣνΔH_f(P) − ΣνΔH_f(R)$',
+    intro: T.callout('warn', '<b>Atenție:</b> (1) înmulțește fiecare $ΔH_f$ cu <b>coeficientul</b> din ecuație; (2) <b>produși − reactanți</b> (nu invers); (3) elementele au $ΔH_f = 0$; (4) pentru $n$ mol dintr-o substanță, raportezi la coeficientul ei din ecuație (proporție).'),
     original: formOriginal, make: formMake
   });
 
@@ -214,29 +214,29 @@
     var m = 200, c = 4.184, dT = 60, Q = m * c * dT, Cc = m * c, Cm = 18 * c;
     return {
       statement: '<p>Se încălzesc <b>200 g</b> de apă de la <b>20 °C</b> la <b>80 °C</b> ($c = 4,184 J/(g·K)$, $M = 18 g/mol$).</p><p><b>a)</b> Cât este $ΔT$?</p><p><b>b)</b> Ce căldură (kJ) primește apa?</p><p><b>c)</b> Care este capacitatea calorică a acestei cantități de apă (J/K)?</p><p><b>d)</b> Care este căldura specifică molară a apei (J/(mol·K))?</p>',
-      method: 'Folosește pe rând: $ΔT = t_f − t_i$; $Q = m·c·ΔT$; $C = m·c$; $C_m = M·c$.',
-      parts: [{ id: 'a', ask: 'ΔT', a: 60, unit: 'K', dec: 0, steps: ['$ΔT = 80 − 20 = <b>60 K</b>$ (aceeași valoare ca în °C).'] },
+      method: 'Folosește pe rând: $ΔT = t_f − t_i$; $Q = m·c·ΔT$; $C = Q/ΔT$; $c_m = Q/(ν·ΔT)$.',
+      parts: [{ id: 'a', ask: 'ΔT', a: 60, unit: '°C', dec: 0, steps: ['$ΔT = 80 − 20 = <b>60 °C</b>$.'] },
         { id: 'b', ask: 'Căldura primită', a: Q / 1000, unit: 'kJ', dec: 3, steps: ['$Q = m·c·ΔT = 200 · 4,184 · 60 = 50 208 J = <b>50,208 kJ</b>$.'] },
-        { id: 'c', ask: 'Capacitatea calorică C', a: Cc, unit: 'J/K', dec: 1, steps: ['$C = m·c = 200 · 4,184 = <b>836,8 J/K</b>$ (sau $C = Q/ΔT = 50208/60$).'] },
-        { id: 'd', ask: 'Căldura specifică molară', a: Cm, unit: 'J/(mol·K)', dec: 2, steps: ['$C_m = M·c = 18 · 4,184 = <b>75,31 J/(mol·K)</b>$ (căldura pe mol, nu pe gram).'] }]
+        { id: 'c', ask: 'Capacitatea calorică C', a: Cc, unit: 'J/K', dec: 1, steps: ['$C = (Q)//(ΔT) = (50208)//(60) = <b>836,8 J/K</b>$.'] },
+        { id: 'd', ask: 'Căldura specifică molară', a: Cm, unit: 'J/(mol·K)', dec: 2, steps: ['$ν = (m)//(M) = (200)//(18) = 11,11 mol$.', '$c_m = (Q)//(ν·ΔT) = (50208)//(11,11 · 60) = <b>75,31 J/(mol·K)</b>$ (căldura pe mol, nu pe gram).'] }]
     };
   }
   function calMake(seed, level) {
     var R = T.rng(seed), s = R.pick(SUB), m = R.step(50, 500, 25), t1 = R.pick([10, 15, 18, 20, 25]), t2 = t1 + R.pick([20, 30, 40, 50, 60]), dT = t2 - t1;
     if (level === 1) {
       var Q = m * s.c * dT;
-      return { statement: '<p>Se încălzește o probă de <b>' + m + ' g</b> de ' + s.n + ' ($c = ' + N(s.c, 3) + ' J/(g·K)$) de la <b>' + t1 + ' °C</b> la <b>' + t2 + ' °C</b>.</p><p><b>a)</b> Ce căldură (kJ) este necesară?</p><p><b>b)</b> Care este capacitatea calorică a probei (J/K)?</p>', method: '$Q = m·c·ΔT$ și $C = m·c$.',
+      return { statement: '<p>Se încălzește o probă de <b>' + m + ' g</b> de ' + s.n + ' ($c = ' + N(s.c, 3) + ' J/(g·K)$) de la <b>' + t1 + ' °C</b> la <b>' + t2 + ' °C</b>.</p><p><b>a)</b> Ce căldură (kJ) este necesară?</p><p><b>b)</b> Care este capacitatea calorică a probei (J/K)?</p>', method: '$Q = m·c·ΔT$ și $C = Q/ΔT$.',
         parts: [{ id: 'a', ask: 'Căldura necesară', a: Q / 1000, unit: 'kJ', dec: 3, steps: ['$ΔT = ' + t2 + ' − ' + t1 + ' = ' + dT + ' K$.', '$Q = m·c·ΔT = ' + m + ' · ' + N(s.c, 3) + ' · ' + dT + ' = ' + N(Q, 1) + ' J = <b>' + N(Q / 1000, 3) + ' kJ</b>$.'] },
-          { id: 'b', ask: 'Capacitatea calorică C', a: m * s.c, unit: 'J/K', dec: 2, steps: ['$C = m·c = ' + m + ' · ' + N(s.c, 3) + ' = <b>' + N(m * s.c, 2) + ' J/K</b>$.'] }] };
+          { id: 'b', ask: 'Capacitatea calorică C', a: m * s.c, unit: 'J/K', dec: 2, steps: ['$C = (Q)//(ΔT) = (' + N(m * s.c * dT, 1) + ')//(' + dT + ') = <b>' + N(m * s.c, 2) + ' J/K</b>$.'] }] };
     }
     if (level === 2) {
       var Qj = Math.round(m * s.c * dT / 10) * 10, cc = Qj / (m * dT), opts = R.shuffle(SUB.map(function (x) { return x.n; }).filter(function (x, i) { return i < 4 || x === s.n; })).slice(0, 4);
       if (opts.indexOf(s.n) < 0) opts[0] = s.n; opts = R.shuffle(opts);
       var tbl = SUB.map(function (x) { return x.n + ' ' + N(x.c, 3); }).join(' · ');
       return { statement: '<p>Un corp metalic sau lichid de <b>' + m + ' g</b> primește <b>' + N(Qj, 0) + ' J</b> și temperatura lui crește de la <b>' + t1 + ' °C</b> la <b>' + t2 + ' °C</b>.</p><p class="muted">Căldurile specifice (J/(g·K)): ' + tbl + '.</p><p><b>a)</b> Capacitatea calorică a corpului?</p><p><b>b)</b> Căldura specifică?</p><p><b>c)</b> Din ce substanță este corpul?</p>',
-        method: '$C = Q/ΔT$, apoi $c = C/m = Q/(m·ΔT)$; compară cu tabelul.',
+        method: '$C = Q/ΔT$ și $c = Q/(m·ΔT)$; compară valoarea cu tabelul.',
         parts: [{ id: 'a', ask: 'Capacitatea calorică C', a: Qj / dT, unit: 'J/K', dec: 2, steps: ['$ΔT = ' + dT + ' K$; $C = (Q)//(ΔT) = (' + N(Qj, 0) + ')//(' + dT + ') = <b>' + N(Qj / dT, 2) + ' J/K</b>$.'] },
-          { id: 'b', ask: 'Căldura specifică c', a: cc, unit: 'J/(g·K)', dec: 3, steps: ['$c = (C)//(m) = (' + N(Qj / dT, 2) + ')//(' + m + ') = <b>' + N(cc, 3) + ' J/(g·K)</b>$.'] },
+          { id: 'b', ask: 'Căldura specifică c', a: cc, unit: 'J/(g·K)', dec: 3, steps: ['$c = (Q)//(m·ΔT) = (' + N(Qj, 0) + ')//(' + m + ' · ' + dT + ') = <b>' + N(cc, 3) + ' J/(g·K)</b>$.'] },
           { id: 'c', type: 'mc', ask: 'Substanța este:', opts: opts, correct: opts.indexOf(s.n), noShuffle: true, steps: ['Valoarea $' + N(cc, 3) + '$ J/(g·K) se potrivește cu <b>' + s.n + '</b> ($' + N(s.c, 3) + '$).'] }] };
     }
     var m3 = R.pick([10, 20, 25, 50, 100]), t0 = -R.pick([5, 10, 15, 20]), tf = R.pick([10, 20, 30]);
@@ -247,10 +247,10 @@
         { id: 'c', ask: 'Căldura totală', a: Qt / 1000, unit: 'kJ', dec: 3, steps: ['Apa lichidă: $Q_3 = ' + m3 + ' · 4,184 · ' + tf + ' = ' + N(Q3, 1) + ' J$.', '$Q = Q_1 + Q_2 + Q_3 = ' + N(Q1, 1) + ' + ' + N(Q2, 0) + ' + ' + N(Q3, 1) + ' = ' + N(Qt, 1) + ' J = <b>' + N(Qt / 1000, 3) + ' kJ</b>$.'] }] };
   }
   reg({
-    id: 'calorimetrie', short: 'Formule calorimetrice', title: 'Mărimile calorimetrice: $C$, $c$, $C_m$ și $λ$',
+    id: 'calorimetrie', short: 'Formule calorimetrice', title: 'Mărimile calorimetrice: $C$, $c$, $c_m$ și $λ$',
     blurb: 'Aplici direct definițiile: Q, capacitatea calorică, căldura specifică, căldura specifică molară, căldura latentă.',
-    skill: '$Q = m·c·ΔT$ · $C = m·c$ · $C_m = M·c$', originalLabel: 'Model rezolvat',
-    intro: T.callout('tip', '<b>Alege formula după ce ți se cere:</b> temperatura se schimbă ⟹ $Q = m·c·ΔT$; corp întreg ⟹ $C = Q/ΔT = m·c$; pe mol ⟹ $C_m = M·c$; schimbare de stare ⟹ $Q = m·λ$. Nu uita: $ΔT$ în °C = $ΔT$ în K.'),
+    skill: '$Q = m·c·ΔT$ · $C = Q/ΔT$ · $c_m = Q/(ν·ΔT)$', originalLabel: 'Model rezolvat',
+    intro: T.callout('tip', '<b>Alege formula după ce ți se cere:</b> temperatura se schimbă ⟹ $Q = m·c·ΔT$; corp întreg ⟹ $C = Q/ΔT$; pe mol ⟹ $c_m = Q/(ν·ΔT)$; schimbare de stare ⟹ $Q = m·λ$ (sau $ν·λ$).'),
     original: calOriginal, make: calMake
   });
 
@@ -262,7 +262,7 @@
     return {
       statement: '<p>Într-un sistem izolat se amestecă <b>200 g</b> de apă la <b>80 °C</b> cu <b>300 g</b> de apă la <b>20 °C</b> ($c = 4,18 J/(g·K)$).</p><p><b>a)</b> Care este temperatura finală?</p><p><b>b)</b> Ce căldură (kJ) cedează apa caldă?</p>',
       method: '$Q_{cedată} = Q_{primită}$, cu $Q = m·c·ΔT$ și aceeași substanță ⟹ $c$ se simplifică.',
-      parts: [{ id: 'a', ask: 'Temperatura finală', a: Tf, unit: '°C', dec: 1, steps: ['Apa caldă cedează: $Q_1 = 200 · c · (80 − t_f)$; apa rece primește: $Q_2 = 300 · c · (t_f − 20)$.', 'Egalăm: $200 (80 − t_f) = 300 (t_f − 20)$ ⟹ $16000 − 200 t_f = 300 t_f − 6000$.', '$500 t_f = 22000$ ⟹ $t_f = <b>44 °C</b>$ (între 20 și 80 ✓).'] },
+      parts: [{ id: 'a', ask: 'Temperatura finală', a: Tf, unit: '°C', dec: 1, steps: ['Apa caldă cedează: $Q_1 = 200 · c · (80 − t_f)$; apa rece primește: $Q_2 = 300 · c · (t_f − 20)$.', 'Egalăm: $200 (80 − t_f) = 300 (t_f − 20)$ ⟹ $16000 − 200 t_f = 300 t_f − 6000$.', '$500 t_f = 22000$ ⟹ $t_f = <b>44 °C</b>$'] },
         { id: 'b', ask: 'Căldura cedată de apa caldă', a: Q1 / 1000, unit: 'kJ', dec: 2, steps: ['$Q_1 = m·c·(80 − t_f) = 200 · 4,18 · 36 = 30 096 J = <b>30,1 kJ</b>$.'] }]
     };
   }
@@ -271,15 +271,15 @@
     if (level === 1) {
       var m1 = R.step(100, 400, 50), m2 = R.step(100, 400, 50), T1 = R.pick([60, 70, 80, 90]), T2 = R.pick([10, 15, 20, 25]), c = 4.18;
       var Tf = (m1 * T1 + m2 * T2) / (m1 + m2), Q1 = m1 * c * (T1 - Tf);
-      return { statement: '<p>Într-un sistem izolat se amestecă <b>' + m1 + ' g</b> de apă la <b>' + T1 + ' °C</b> cu <b>' + m2 + ' g</b> de apă la <b>' + T2 + ' °C</b> ($c = 4,18 J/(g·K)$).</p><p><b>a)</b> Temperatura finală?</p><p><b>b)</b> Căldura (kJ) cedată de apa caldă?</p>', method: 'Aceeași substanță ⟹ $t_f = (m_1 t_1 + m_2 t_2)//(m_1 + m_2)$.',
-        parts: [{ id: 'a', ask: 'Temperatura finală', a: Tf, unit: '°C', dec: 1, steps: ['$m_1 c (t_1 − t_f) = m_2 c (t_f − t_2)$ ⟹ $t_f = (m_1 t_1 + m_2 t_2)//(m_1 + m_2)$.', '$t_f = (' + m1 + ' · ' + T1 + ' + ' + m2 + ' · ' + T2 + ')//(' + (m1 + m2) + ') = <b>' + N(Tf, 2) + ' °C</b>$.'] },
+      return { statement: '<p>Într-un sistem izolat se amestecă <b>' + m1 + ' g</b> de apă la <b>' + T1 + ' °C</b> cu <b>' + m2 + ' g</b> de apă la <b>' + T2 + ' °C</b> ($c = 4,18 J/(g·K)$).</p><p><b>a)</b> Temperatura finală?</p><p><b>b)</b> Căldura (kJ) cedată de apa caldă?</p>', method: '$Q_1 + Q_2 = 0$ cu $Q = m·c·ΔT$; aceeași substanță ⟹ $c$ se simplifică.',
+        parts: [{ id: 'a', ask: 'Temperatura finală', a: Tf, unit: '°C', dec: 1, steps: ['Apa caldă cedează, apa rece primește (aceeași substanță ⟹ $c$ se simplifică): $m_1 (t_1 − t_f) = m_2 (t_f − t_2)$.', 'Cu valorile: $' + m1 + ' (' + T1 + ' − t_f) = ' + m2 + ' (t_f − ' + T2 + ')$ ⟹ $' + (m1 + m2) + ' · t_f = ' + (m1 * T1 + m2 * T2) + '$.', '$t_f = (' + (m1 * T1 + m2 * T2) + ')//(' + (m1 + m2) + ') = <b>' + N(Tf, 2) + ' °C</b>$.'] },
           { id: 'b', ask: 'Căldura cedată', a: Q1 / 1000, unit: 'kJ', dec: 2, steps: ['$Q = m_1 c (t_1 − t_f) = ' + m1 + ' · 4,18 · ' + N(T1 - Tf, 2) + ' = ' + N(Q1, 1) + ' J = <b>' + N(Q1 / 1000, 2) + ' kJ</b>$.'] }] };
     }
     if (level === 2) {
       var s = R.pick(SUB.slice(1, 5)), mm = R.pick([100, 150, 200, 250]), Tm = R.pick([80, 90, 100]), mw = R.pick([200, 300, 400, 500]), Tw = R.pick([15, 20, 25]);
       var A = mm * s.c, B = mw * 4.184, Tf2 = (A * Tm + B * Tw) / (A + B), Qw = B * (Tf2 - Tw);
       return { statement: '<p>Un bloc de <b>' + s.n + '</b> de <b>' + mm + ' g</b> ($c = ' + N(s.c, 3) + ' J/(g·K)$) încălzit la <b>' + Tm + ' °C</b> este introdus în <b>' + mw + ' g</b> de apă la <b>' + Tw + ' °C</b> ($c = 4,184 J/(g·K)$), într-un sistem izolat (se neglijează recipientul).</p><p><b>a)</b> Temperatura de echilibru?</p><p><b>b)</b> Câtă căldură (J) primește apa?</p>', method: '$m_1 c_1 (t_1 − t_f) = m_2 c_2 (t_f − t_2)$; rezolvi pentru $t_f$.',
-        parts: [{ id: 'a', ask: 'Temperatura de echilibru', a: Tf2, unit: '°C', dec: 2, steps: ['Metalul cedează: $' + N(A, 2) + ' (' + Tm + ' − t_f)$; apa primește: $' + N(B, 2) + ' (t_f − ' + Tw + ')$.', '$t_f = (' + N(A, 2) + ' · ' + Tm + ' + ' + N(B, 2) + ' · ' + Tw + ')//(' + N(A + B, 2) + ') = <b>' + N(Tf2, 2) + ' °C</b>$.'] },
+        parts: [{ id: 'a', ask: 'Temperatura de echilibru', a: Tf2, unit: '°C', dec: 2, steps: ['Metalul cedează: $' + N(A, 2) + ' (' + Tm + ' − t_f)$; apa primește: $' + N(B, 2) + ' (t_f − ' + Tw + ')$.', 'Egalez: $' + N(A, 2) + ' (' + Tm + ' − t_f) = ' + N(B, 2) + ' (t_f − ' + Tw + ')$ ⟹ $' + N(A + B, 2) + ' · t_f = ' + N(A * Tm + B * Tw, 2) + '$.', '$t_f = (' + N(A * Tm + B * Tw, 2) + ')//(' + N(A + B, 2) + ') = <b>' + N(Tf2, 2) + ' °C</b>$.'] },
           { id: 'b', ask: 'Căldura primită de apă', a: Qw, unit: 'J', dec: 0, steps: ['$Q = m c (t_f − t_i) = ' + N(B, 2) + ' · ' + N(Tf2 - Tw, 2) + ' = <b>' + N(Qw, 0) + ' J</b>$.'] }] };
     }
     var v = R.pick(['cal', 'masa']);
@@ -287,8 +287,8 @@
       var s3 = R.pick(SUB.slice(1, 5)), mw3 = R.pick([150, 200, 250]), Tw3 = R.pick([18, 20, 22]), Ccal = R.pick([80, 100, 120]), mx = R.pick([80, 100, 150]), Tx = R.pick([95, 100]), cx = s3.c;
       var Tf3 = (mx * cx * Tx + (mw3 * 4.18 + Ccal) * Tw3) / (mx * cx + mw3 * 4.18 + Ccal), Qp = (mw3 * 4.18 + Ccal) * (Tf3 - Tw3);
       Tf3 = T.round(Tf3, 1); var cxc = (mw3 * 4.18 + Ccal) * (Tf3 - Tw3) / (mx * (Tx - Tf3));
-      return { statement: '<p>Într-un calorimetru cu capacitatea calorică <b>' + Ccal + ' J/K</b> se află <b>' + mw3 + ' g</b> de apă la <b>' + Tw3 + ' °C</b> ($c = 4,18 J/(g·K)$). Se introduce un corp metalic de <b>' + mx + ' g</b>, încălzit la <b>' + Tx + ' °C</b>. Temperatura de echilibru este <b>' + N(Tf3, 1) + ' °C</b>.</p><p><b>a)</b> Ce căldură (J) primesc apa și calorimetrul?</p><p><b>b)</b> Care este căldura specifică a metalului (J/(g·K))?</p>', method: 'Primesc căldură: apa ($m c ΔT$) și calorimetrul ($C·ΔT$). Metalul cedează $m·c_x·(t_x − t_f)$. Egalezi.',
-        parts: [{ id: 'a', ask: 'Căldura primită de apă + calorimetru', a: (mw3 * 4.18 + Ccal) * (Tf3 - Tw3), unit: 'J', dec: 0, steps: ['$ΔT = ' + N(Tf3, 1) + ' − ' + Tw3 + ' = ' + N(Tf3 - Tw3, 1) + ' K$.', '$Q = (m·c + C)·ΔT = (' + mw3 + ' · 4,18 + ' + Ccal + ') · ' + N(Tf3 - Tw3, 1) + ' = <b>' + N((mw3 * 4.18 + Ccal) * (Tf3 - Tw3), 0) + ' J</b>$.'] },
+      return { statement: '<p>Un vas cu capacitatea calorică <b>' + Ccal + ' J/K</b> conține <b>' + mw3 + ' g</b> de apă la <b>' + Tw3 + ' °C</b> ($c = 4,18 J/(g·K)$). Se introduce un corp metalic de <b>' + mx + ' g</b>, încălzit la <b>' + Tx + ' °C</b>. Temperatura de echilibru este <b>' + N(Tf3, 1) + ' °C</b>.</p><p><b>a)</b> Ce căldură (J) primesc apa și vasul?</p><p><b>b)</b> Care este căldura specifică a metalului (J/(g·K))?</p>', method: 'Primesc căldură: apa ($m c ΔT$) și vasul ($C·ΔT$). Metalul cedează $m·c_x·(t_x − t_f)$. Egalezi.',
+        parts: [{ id: 'a', ask: 'Căldura primită de apă + vas', a: (mw3 * 4.18 + Ccal) * (Tf3 - Tw3), unit: 'J', dec: 0, steps: ['$ΔT = ' + N(Tf3, 1) + ' − ' + Tw3 + ' = ' + N(Tf3 - Tw3, 1) + ' K$.', '$Q = (m·c + C)·ΔT = (' + mw3 + ' · 4,18 + ' + Ccal + ') · ' + N(Tf3 - Tw3, 1) + ' = <b>' + N((mw3 * 4.18 + Ccal) * (Tf3 - Tw3), 0) + ' J</b>$.'] },
           { id: 'b', ask: 'Căldura specifică a metalului', a: cxc, unit: 'J/(g·K)', dec: 3, tol: 0.03, steps: ['Metalul cedează aceeași căldură: $m·c_x·(t_x − t_f) = Q$.', '$c_x = (Q)//(m·(t_x − t_f)) = (' + N((mw3 * 4.18 + Ccal) * (Tf3 - Tw3), 0) + ')//(' + mx + ' · ' + N(Tx - Tf3, 1) + ') = <b>' + N(cxc, 3) + ' J/(g·K)</b>$.'] }] };
     }
     var m1b = R.pick([200, 250, 300]), T1b = R.pick([80, 90]), T2b = R.pick([10, 15, 20]), Tt = R.pick([40, 45, 50]);
@@ -298,9 +298,9 @@
   }
   reg({
     id: 'amestec', short: 'Amestecare / echilibru', title: 'Amestecarea corpurilor: echilibru termic',
-    blurb: 'Temperatura finală, căldurile schimbate, căldura specifică a unui metal, calorimetru.',
+    blurb: 'Temperatura finală, căldurile schimbate, căldura specifică a unui metal.',
     skill: '$Q_{cedată} = Q_{primită}$', originalLabel: 'Model rezolvat',
-    intro: T.callout('key', '<b>Metoda:</b> notează $t_f$ necunoscută; pentru fiecare corp $Q = m·c·(t_f − t_i)$; pune $Q_1 + Q_2 = 0$ (sau $Q_{cedat} = Q_{primit}$ în modul). Verifică: $t_f$ trebuie să fie <b>între</b> cele două temperaturi inițiale.'),
+    intro: T.callout('key', '<b>Metoda:</b> notează $t_f$ necunoscută; pentru fiecare corp $Q = m·c·(t_f − t_i)$; pune $Q_1 + Q_2 = 0$ (sau $Q_{cedat} = Q_{primit}$ în modul).'),
     original: mixOriginal, make: mixMake
   });
 
@@ -327,9 +327,9 @@
       forms.forEach(function (f, i) {
         var id = ids[i];
         if (f === 'cede') {
-          var Qc = R.step(200, 900, 50), W = R.step(50, 400, 50), r = -Qc + W;
-          txt += '<p><b>' + id + ')</b> Un sistem cedează <b>' + Qc + ' J</b> mediului, iar asupra lui se efectuează un lucru mecanic de <b>' + W + ' J</b>. Cât este $ΔU$?</p>';
-          parts.push({ id: id, ask: 'ΔU', a: r, unit: 'J', dec: 0, steps: ['Cedează căldură: $Q = −' + Qc + ' J$. Se lucrează asupra lui: $L = −' + W + ' J$.', '$ΔU = Q − L = −' + Qc + ' − (−' + W + ') = <b>' + N(r, 0) + ' J</b>$.'] });
+          var Qc = R.step(200, 900, 50), r = -Qc;
+          txt += '<p><b>' + id + ')</b> Un sistem cedează <b>' + Qc + ' J</b> mediului și nu efectuează lucru mecanic ($L = 0$). Cât este $ΔU$?</p>';
+          parts.push({ id: id, ask: 'ΔU', a: r, unit: 'J', dec: 0, steps: ['Cedează căldură: $Q = −' + Qc + ' J$; $L = 0$.', '$ΔU = Q − L = −' + Qc + ' − 0 = <b>' + N(r, 0) + ' J</b>$.'] });
         } else if (f === 'caldura') {
           var dU2 = R.step(100, 900, 50), L2 = R.step(50, 500, 50), r2 = dU2 + L2;
           txt += '<p><b>' + id + ')</b> Energia internă a unui gaz crește cu <b>' + dU2 + ' J</b>, iar gazul efectuează un lucru mecanic de <b>' + L2 + ' J</b>. Ce căldură a primit?</p>';
@@ -340,20 +340,20 @@
           parts.push({ id: id, ask: 'Lucrul mecanic efectuat', a: L3, unit: 'J', dec: 0, steps: ['$ΔU = −' + x + ' J$, $Q = ' + Q3 + ' J$.', '$L = Q − ΔU = ' + Q3 + ' − (−' + x + ') = <b>' + L3 + ' J</b>$.'] });
         }
       });
-      return { statement: txt, method: 'Scrie $Q = ΔU + L$ și precizează semnele: $Q > 0$ primită, $L > 0$ efectuat de sistem.', parts: parts };
+      return { statement: txt, method: 'Scrie $Q = ΔU + L$ ($Q$ = căldura primită de sistem, $L$ = lucrul mecanic efectuat) și află mărimea cerută.', parts: parts };
     }
     var dUk = -R.step(200, 900, 10), pdV = R.pick([1.5, 2, 2.5, 3, 4, 5]), QV = dUk, QP = dUk + pdV;
-    return { statement: '<p>O reacție chimică are $ΔU = ' + N(dUk, 0) + ' kJ$. Se formează gaze și sistemul se dilată: $pΔV = +' + N(pdV, 1) + ' kJ$.</p><p><b>a)</b> Cât este căldura de reacție la volum constant, $Q_V$?</p><p><b>b)</b> Cât este căldura de reacție la presiune constantă, $Q_P = ΔH$?</p><p><b>c)</b> Care dintre cele două este mai mare (algebric)?</p>',
+    return { statement: '<p>O reacție chimică are $ΔU = ' + N(dUk, 0) + ' kJ$ și $pΔV = +' + N(pdV, 1) + ' kJ$.</p><p><b>a)</b> Cât este căldura de reacție la volum constant, $Q_V$?</p><p><b>b)</b> Cât este căldura de reacție la presiune constantă, $Q_P = ΔH$?</p><p><b>c)</b> Care dintre cele două este mai mare (algebric)?</p>',
       method: '$Q_V = ΔU$; $Q_P = ΔU + pΔV = ΔH$.',
       parts: [{ id: 'a', ask: 'Q_V', a: QV, unit: 'kJ', dec: 1, steps: ['La $V = ct.$: $Q_V = ΔU = <b>' + N(QV, 1) + ' kJ</b>$.'] },
         { id: 'b', ask: 'Q_P = ΔH', a: QP, unit: 'kJ', dec: 1, steps: ['$Q_P = ΔH = ΔU + pΔV = ' + N(dUk, 0) + ' + ' + N(pdV, 1) + ' = <b>' + N(QP, 1) + ' kJ</b>$.'] },
-        { id: 'c', type: 'mc', ask: 'Care este mai mare?', opts: ['$Q_P > Q_V$', '$Q_P < Q_V$', '$Q_P = Q_V$', 'nu se poate stabili'], correct: 0, noShuffle: true, steps: ['$Q_P − Q_V = pΔV = +' + N(pdV, 1) + ' kJ > 0$ ⟹ $Q_P$ este mai mare (mai puțin negativ): o parte din energie se duce în lucrul de dilatare.'] }] };
+        { id: 'c', type: 'mc', ask: 'Care este mai mare?', opts: ['$Q_P > Q_V$', '$Q_P < Q_V$', '$Q_P = Q_V$', 'nu se poate stabili'], correct: 0, noShuffle: true, steps: ['$Q_P − Q_V = pΔV = +' + N(pdV, 1) + ' kJ > 0$ ⟹ $Q_P$ este mai mare (mai puțin negativ).'] }] };
   }
   reg({
     id: 'principiul1', short: 'Primul principiu', title: 'Primul principiu: $Q = ΔU + L$; $Q_V$ și $Q_P$',
-    blurb: 'Calcule cu semne (căldură primită / cedată, lucru efectuat / suferit) și diferența dintre Q_V și Q_P.',
+    blurb: 'Calcule cu $Q = ΔU + L$ și diferența dintre Q_V și Q_P.',
     skill: '$Q = ΔU + L$ · $Q_P = ΔH$', originalLabel: 'Model rezolvat',
-    intro: T.callout('warn', '<b>Semnele:</b> $Q > 0$ dacă sistemul <b>primește</b> căldură; $L > 0$ dacă sistemul <b>efectuează</b> lucru (se dilată). Dacă asupra lui se lucrează, $L < 0$. La $V = ct.$: $L = 0$. La $p = ct.$: $Q_P = ΔH$.'),
+    intro: T.callout('key', '<b>Reține:</b> $Q$ = căldura primită de sistem, $ΔU$ = variația energiei interne, $L$ = lucrul mecanic efectuat. La $V = ct.$: $pΔV = 0$ ⟹ $Q_V = ΔU$. La $p = ct.$: $Q_P = ΔU + pΔV = ΔH$.'),
     original: p1Original, make: p1Make
   });
 
@@ -368,31 +368,40 @@
   }
   function dgFig(L) { return T.svgs.energy({ HR: L.HR, HP: L.HP, HCA: L.HCA, neutral: true, caption: false, dh: false, ea: false, vals: { HR: L.HR * L.k, HP: L.HP * L.k, HCA: L.HCA * L.k } }); }
   function dgInst(L, which) {
-    var HR = L.HR * L.k, HP = L.HP * L.k, HC = L.HCA * L.k, dH = HP - HR, Ea = HC - HR, Ei = HC - HP, exo = dH < 0;
-    var mc = { id: 'a', type: 'mc', ask: 'Reacția directă ($R → P$) este:', opts: ['exotermă', 'endotermă', 'nu se poate stabili', 'are $ΔH = 0$'], correct: exo ? 0 : 1, noShuffle: true, steps: ['$H_P ' + (exo ? '<' : '>') + ' H_R$ ⟹ $ΔH ' + (exo ? '< 0' : '> 0') + '$ ⟹ ' + (exo ? '<b>exotermă</b>' : '<b>endotermă</b>') + '.'] };
-    var pdH = { id: 'b', ask: 'ΔH al reacției directe', a: dH, unit: 'kJ/mol', dec: 0, tol: 0.001, steps: ['$ΔH = H_P − H_R = ' + HP + ' − ' + HR + ' = <b>' + N(dH, 0) + ' kJ/mol</b>$.'] };
-    var pEa = { id: 'c', ask: 'Energia de activare E_a (reacția directă)', a: Ea, unit: 'kJ/mol', dec: 0, tol: 0.001, steps: ['$E_a = H_{CA}^* − H_R = ' + HC + ' − ' + HR + ' = <b>' + N(Ea, 0) + ' kJ/mol</b>$.'] };
-    var pEi = { id: 'd', ask: 'Energia de activare a reacției inverse', a: Ei, unit: 'kJ/mol', dec: 0, tol: 0.001, steps: ['Pentru reacția inversă se pornește de la produși: $E_{a,inv} = H_{CA}^* − H_P = ' + HC + ' − ' + HP + ' = <b>' + N(Ei, 0) + ' kJ/mol</b>$ (verificare: $E_a − ΔH = ' + N(Ea, 0) + ' − (' + N(dH, 0) + ') = ' + N(Ei, 0) + '$).'] };
-    var pInv = { id: 'e', type: 'mc', ask: 'Reacția inversă ($P → R$) este:', opts: ['endotermă', 'exotermă', 'nu se poate stabili', 'are $ΔH = 0$'], correct: exo ? 0 : 1, noShuffle: true, steps: ['Reacția inversă are $ΔH_{inv} = −ΔH = ' + N(-dH, 0) + '$ ⟹ ' + (exo ? 'endotermă' : 'exotermă') + '.'] };
-    return { which: which, parts: which === 1 ? [mc, pdH] : which === 2 ? [pdH, pEa] : [pEa, pEi, pInv] };
+    var HR = L.HR * L.k, HP = L.HP * L.k, HC = L.HCA * L.k, dH = HP - HR, Ea = HC - HR, exo = dH < 0;
+    var mc = { id: 'a', type: 'mc', ask: 'Reacția ($R → P$) este:', opts: ['exotermă', 'endotermă', 'nu se poate stabili', 'are $ΔH = 0$'], correct: exo ? 0 : 1, noShuffle: true, steps: ['$H_P ' + (exo ? '<' : '>') + ' H_R$ ⟹ $ΔH ' + (exo ? '< 0' : '> 0') + '$ ⟹ ' + (exo ? '<b>exotermă</b>' : '<b>endotermă</b>') + '.'] };
+    var pdH = { id: 'b', ask: 'ΔH al reacției', a: dH, unit: 'kJ/mol', dec: 0, tol: 0.001, steps: ['$ΔH = H_P − H_R = ' + HP + ' − ' + HR + ' = <b>' + N(dH, 0) + ' kJ/mol</b>$.'] };
+    var pEa = { id: 'c', ask: 'Energia de activare E_a', a: Ea, unit: 'kJ/mol', dec: 0, tol: 0.001, steps: ['$E_a = H_{CA}^* − H_R = ' + HC + ' − ' + HR + ' = <b>' + N(Ea, 0) + ' kJ/mol</b>$.'] };
+    return { which: which, parts: which === 1 ? [mc, pdH] : which === 2 ? [pdH, pEa] : [mc, pdH, pEa] };
   }
   function dgOriginal() {
     var L = { HR: 12, HP: 24, HCA: 38, k: 5 };
-    var inst = dgInst(L, 1);
+    var inst = dgInst(L, 3);
     return { statement: '<p>Diagrama de entalpie a unei reacții este reprezentată mai jos (valori în kJ/mol).</p><div class="qn-fig" style="margin:10px 0;max-width:640px">' + dgFig(L) + '</div>',
       method: '$ΔH = H_P − H_R$ (produși − reactanți); $E_a = H_{CA}^* − H_R$ (de la reactanți la vârf).',
-      parts: [inst.parts[0], inst.parts[1], dgInst(L, 3).parts[0], dgInst(L, 3).parts[1]].map(function (p, i) { var q = Object.assign({}, p); q.id = 'abcd'[i]; return q; }) };
+      parts: inst.parts.map(function (p, i) { var q = Object.assign({}, p); q.id = 'abc'[i]; return q; }) };
   }
   function dgMake(seed, level) {
-    var R = T.rng(seed), L = dgLevels(R), D = dgInst(L, level);
+    var R = T.rng(seed), L = dgLevels(R);
+    if (level === 3) {
+      var HR = L.HR * L.k, HP = L.HP * L.k, HC = L.HCA * L.k, dH = HP - HR, Ea = HC - HR, exo = dH < 0;
+      return { statement: '<p>Pentru o reacție se cunosc: $H_R = ' + HR + ' kJ/mol$, $ΔH = ' + N(dH, 0) + ' kJ/mol$ și $E_a = ' + Ea + ' kJ/mol$.</p><p><b>a)</b> Cât este $H_P$?</p><p><b>b)</b> Cât este $H_{CA}^*$?</p><p><b>c)</b> Reacția este exotermă sau endotermă?</p>',
+        method: '$ΔH = H_P − H_R$ ⟹ $H_P = H_R + ΔH$; $E_a = H_{CA}^* − H_R$ ⟹ $H_{CA}^* = H_R + E_a$.',
+        parts: [
+          { id: 'a', ask: 'H_P', a: HP, unit: 'kJ/mol', dec: 0, tol: 0.001, steps: ['$H_P = H_R + ΔH = ' + HR + ' + (' + N(dH, 0) + ') = <b>' + HP + ' kJ/mol</b>$.'] },
+          { id: 'b', ask: 'H_CA*', a: HC, unit: 'kJ/mol', dec: 0, tol: 0.001, steps: ['$H_{CA}^* = H_R + E_a = ' + HR + ' + ' + Ea + ' = <b>' + HC + ' kJ/mol</b>$.'] },
+          { id: 'c', type: 'mc', ask: 'Reacția este:', opts: ['exotermă', 'endotermă', 'nu se poate stabili', 'are $ΔH = 0$'], correct: exo ? 0 : 1, noShuffle: true, steps: ['$ΔH ' + (exo ? '< 0' : '> 0') + '$ ⟹ ' + (exo ? '<b>exotermă</b>' : '<b>endotermă</b>') + '.'] }
+        ] };
+    }
+    var D = dgInst(L, level);
     var parts = D.parts.map(function (p, i) { var q = Object.assign({}, p); q.id = 'abc'[i]; return q; });
-    return { statement: '<p>Diagrama de entalpie a unei reacții este reprezentată mai jos (valori în kJ/mol).</p><div class="qn-fig" style="margin:10px 0;max-width:640px">' + dgFig(L) + '</div>', method: '$ΔH = H_P − H_R$; $E_a = H_{CA}^* − H_R$; pentru reacția inversă, $E_{a,inv} = H_{CA}^* − H_P$.', parts: parts };
+    return { statement: '<p>Diagrama de entalpie a unei reacții este reprezentată mai jos (valori în kJ/mol).</p><div class="qn-fig" style="margin:10px 0;max-width:640px">' + dgFig(L) + '</div>', method: '$ΔH = H_P − H_R$; $E_a = H_{CA}^* − H_R$.', parts: parts };
   }
   reg({
     id: 'diagrame', short: 'Diagrame de entalpie', title: 'Citirea diagramelor de entalpie',
-    blurb: 'Din valorile de pe grafic: tipul reacției, ΔH, energia de activare, reacția inversă.',
+    blurb: 'Din valorile de pe grafic (sau din valorile date): tipul reacției, ΔH, energia de activare.',
     skill: '$ΔH = H_P − H_R$ · $E_a = H_{CA}^* − H_R$', originalLabel: 'Model rezolvat',
-    intro: T.callout('key', '<b>Citește în ordine:</b> nivelul reactanților $H_R$, nivelul produșilor $H_P$, vârful $H_{CA}^*$. Apoi: $ΔH = H_P − H_R$ (semnul ⟹ exo/endo) și $E_a = H_{CA}^* − H_R$ (mereu pozitivă).'),
+    intro: T.callout('key', '<b>Citește în ordine:</b> nivelul reactanților $H_R$, nivelul produșilor $H_P$, vârful $H_{CA}^*$. Apoi: $ΔH = H_P − H_R$ (semnul ⟹ exo/endo) și $E_a = H_{CA}^* − H_R$.'),
     original: dgOriginal, make: dgMake
   });
 })(typeof window !== 'undefined' ? window : globalThis);

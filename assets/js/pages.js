@@ -38,13 +38,13 @@
     var h = '<div class="page">';
     h += '<section class="hero"><div><div class="kicker">Material interactiv de studiu</div>' +
       '<h1>Termochimie: reacții <span class="tag-exo">exoterme</span> și <span class="tag-endo">endoterme</span></h1>' +
-      '<p class="lead">Lecții cu grafice pe care le poți mișca, probleme rezolvate pas cu pas și <b>variații fără sfârșit</b> — exact genul de exerciții din teste.</p>' +
+      '<p class="lead">Lecții cu grafice pe care le poți mișca, probleme rezolvate pas cu pas și <b>variații cu numere noi</b>, pornind de la caietul tău.</p>' +
       '<div class="btn-row"><a class="btn primary" href="#/lectia/' + first.id + '">' + (st.read ? 'Continuă: ' : 'Începe: ') + first.title + '</a>' +
       '<a class="btn" href="#/probleme">Probleme și variații</a></div></div>' +
       '<div class="hero-art">' + heroArt() + '</div></section>';
 
     h += '<div class="steps3">' +
-      '<div class="s"><b>Învață</b>12 lecții scurte, cu simulări și grafice interactive. La final, întrebări grele pe capitol.</div>' +
+      '<div class="s"><b>Învață</b>12 lecții scurte, după caiet, cu simulări și grafice interactive. La final, întrebări pe capitol.</div>' +
       '<div class="s"><b>Exersează</b>Problemele din caiet, rezolvate pas cu pas, plus variații cu numere noi de fiecare dată.</div>' +
       '<div class="s"><b>Verifică-te</b>Cartonașe pentru definiții, teste generate aleatoriu și fișa de formule.</div></div>';
 
@@ -73,8 +73,8 @@
 
     h += '<h2>Instrumente</h2><div class="cardgrid">' +
       '<a class="lcard" href="#/cartonase"><span class="ln">Memorare</span><b>Cartonașe</b><span class="sub">Definiții, formule și reguli — cu repetiție inteligentă.</span></a>' +
-      '<a class="lcard" href="#/test"><span class="ln">Autoevaluare</span><b>Test generat aleatoriu</b><span class="sub">Întrebări grele + probleme cu numere noi, cu cronometru opțional.</span></a>' +
-      '<a class="lcard" href="#/formule"><span class="ln">Referință</span><b>Formule și reguli</b><span class="sub">Tot ce trebuie să știi pe o singură pagină.</span></a></div>';
+      '<a class="lcard" href="#/test"><span class="ln">Autoevaluare</span><b>Test generat aleatoriu</b><span class="sub">Întrebări + probleme cu numere noi, cu cronometru opțional.</span></a>' +
+      '<a class="lcard" href="#/formule"><span class="ln">Referință</span><b>Formule și reguli</b><span class="sub">Formulele și regulile din caiet, pe o singură pagină.</span></a></div>';
     h += '<hr><p class="muted" style="font-size:.88rem">Progresul (lecții parcurse, scoruri, cartonașe) este salvat doar în acest browser. <button class="btn small ghost" type="button" id="resetProg">Șterge progresul</button></p>';
     return {
       title: '', html: h + '</div>', nav: 'home',
@@ -98,7 +98,7 @@
     ch.sections.forEach(function (s, i) {
       h += '<section id="' + ch.id + '-' + s.id + '"><h2><span class="sn">' + (idx + 1) + '.' + (i + 1) + '</span>' + s.h + '</h2>' + (typeof s.html === 'function' ? s.html() : s.html) + '</section>';
     });
-    h += '<section id="' + ch.id + '-quiz"><h2>Verifică-te</h2><p>Întrebări de nivel „test greu”. Citește explicația la fiecare, chiar dacă ai nimerit răspunsul.</p>' + T.QZ(ch.id) + '</section>';
+    h += '<section id="' + ch.id + '-quiz"><h2>Verifică-te</h2><p>Întrebări pe această lecție. Citește explicația la fiecare, chiar dacă ai nimerit răspunsul.</p>' + T.QZ(ch.id) + '</section>';
     h += '<div class="nav-foot">' + (prev ? '<a class="btn" href="#/lectia/' + prev.id + '">← ' + prev.title + '</a>' : '<a class="btn" href="#/">← Acasă</a>') +
       '<button class="btn ' + (read ? '' : 'primary') + ' mid" type="button" id="markRead">' + (read ? '✓ Lecție parcursă (apasă ca s-o debifezi)' : 'Am parcurs lecția ✓') + '</button>' +
       (next ? '<a class="btn" href="#/lectia/' + next.id + '">' + next.title + ' →</a>' : '<a class="btn" href="#/probleme">Treci la probleme →</a>') + '</div></div>';
@@ -119,7 +119,7 @@
   /* ---------- probleme ---------- */
   function problemsHub() {
     var h = '<div class="page"><div class="kicker">Exersare</div><h1>Probleme și variații</h1>' +
-      '<p class="lead">Din astea se dau teste. Fiecare tip are <b>problema din caiet</b>, rezolvată pas cu pas, și apoi <b>variații cu numere noi</b> la trei niveluri: ca în caiet, variație și dificil.</p>' +
+      '<p class="lead">Tipurile 1–7 pornesc de la <b>problemele din caiet</b>, rezolvate pas cu pas, și continuă cu <b>variații cu numere noi</b> la trei niveluri: ca în caiet, variație și dificil. Tipurile 8–11 sunt exerciții pe noțiunile din caiet, cu un model rezolvat și variații.</p>' +
       T.callout('tip', 'Metoda sigură: scrie datele, scrie ecuația, alege <b>proporția</b> sau formula potrivită, abia apoi calculează. Verifică mereu <b>unitățile</b> (J ↔ kJ, cal ↔ kcal, g ↔ kg) și <b>semnul</b>.') +
       '<div class="plist">';
     T.problemOrder.forEach(function (id, i) {
@@ -319,25 +319,23 @@
   function formulas() {
     function row(l, r, u) { return '<div class="frow"><div class="fl">' + l + '</div><div class="fr">' + r + '</div>' + (u ? '<div class="fu">' + u + '</div>' : '') + '</div>'; }
     function card(t, rows) { return '<div class="fcard"><h3>' + t + '</h3>' + rows.join('') + '</div>'; }
-    var h = '<div class="page"><div class="kicker">Referință</div><h1>Formule și reguli</h1><p class="lead">Tot ce ai nevoie la test, pe o singură pagină.</p><p><button class="btn small" type="button" id="printF">Printează sau salvează ca PDF</button></p>';
+    var h = '<div class="page"><div class="kicker">Referință</div><h1>Formule și reguli</h1><p class="lead">Formulele și regulile din caiet, pe o singură pagină.</p><p><button class="btn small" type="button" id="printF">Printează sau salvează ca PDF</button></p>';
     h += card('Căldura', [
       row('Sistemul primește / absoarbe căldură', '$Q > 0$'),
       row('Sistemul cedează căldură mediului', '$Q < 0$'),
-      row('Conversii', '$1 cal ≈ 4,186 J$ &nbsp; (în probleme: 4,18 sau 4,184 — ia valoarea din enunț)'),
+      row('Conversii', '$1 cal ≈ 4,186 J$ &nbsp; (în exercițiul 4/14 se folosește 4,18 — ia valoarea din enunț)'),
       row('Multipli', '$1 kJ = 10^3 J$, &nbsp; $1 kcal = 10^3 cal$')
     ]);
     h += card('Mărimi calorimetrice', [
       row('Capacitate calorică', '$C = (Q)//(ΔT)$', 'J/K'),
-      row('Variația de temperatură', '$ΔT = T_f − T_i$', 'K sau °C (aceeași valoare)'),
+      row('Variația de temperatură', '$ΔT = T_f − T_i$'),
       row('Căldură specifică', '$c = (Q)//(m·ΔT)$ &nbsp;⟹&nbsp; $Q = m·c·ΔT$', 'J/(g·K)'),
-      row('Căldură specifică molară', '$C_m = (Q)//(ν·ΔT)$', 'J/(mol·K)'),
-      row('Căldură latentă specifică', '$λ = (Q)//(m)$ &nbsp; sau, pe mol: $Q = ν·λ$', 'J/g &nbsp;sau&nbsp; kJ/mol'),
-      row('Legături utile (derivate)', '$C = m·c$ &nbsp;·&nbsp; $C_m = M·c$ &nbsp;·&nbsp; $Q = C·ΔT$')
+      row('Căldură specifică molară', '$c_m = (Q)//(ν·ΔT)$', 'J/(mol·K)'),
+      row('Căldură latentă specifică', '$λ = (Q)//(m)$ &nbsp; (în problema cu sodiul, λ pe mol: $Q = ν·λ$)', 'J/g &nbsp;(sau kJ/mol)'),
     ]);
     h += card('Principiile calorimetriei', [
       row('Echilibru termic', 'corpuri în contact, într-un sistem izolat ⟹ aceeași temperatură finală'),
-      row('Egalitatea schimburilor de căldură', '$Q_{cedată} = Q_{primită}$ &nbsp;(în modul) &nbsp;sau&nbsp; $Q_1 + Q_2 = 0$ &nbsp;(cu semn)'),
-      row('Temperatura de echilibru', '$T_f = (m_1 c_1 T_1 + m_2 c_2 T_2)//(m_1 c_1 + m_2 c_2)$'),
+      row('Egalitatea schimburilor de căldură', '$Q_{cedată} = Q_{primită}$ &nbsp;sau&nbsp; $Q_1 + Q_2 = 0$'),
       row('Procese inverse', '$|Q|$ absorbit într-o transformare = $|Q|$ degajat în transformarea inversă (topire ↔ solidificare)')
     ]);
     h += card('Termodinamică', [
@@ -347,8 +345,8 @@
       row('Entalpia', '$H = U + pV$ &nbsp;·&nbsp; căldura de reacție la $p = ct.$ = $ΔH$')
     ]);
     h += card('Reacții exoterme și endoterme', [
-      row('Exotermă', '$R -> P + Q$ &nbsp;·&nbsp; $ΔH < 0$ &nbsp;·&nbsp; $H_P < H_R$ &nbsp;·&nbsp; mediul se încălzește'),
-      row('Endotermă', '$R + Q -> P$ &nbsp;·&nbsp; $ΔH > 0$ &nbsp;·&nbsp; $H_P > H_R$ &nbsp;·&nbsp; absoarbe căldură'),
+      row('Exotermă', '$R -> P + Q$ &nbsp;·&nbsp; $ΔH < 0$ &nbsp;·&nbsp; $H_P < H_R$ &nbsp;·&nbsp; degajă căldură'),
+      row('Endotermă', '$R + Q -> P$ &nbsp;·&nbsp; $ΔH > 0$ &nbsp;·&nbsp; $H_P > H_R$ &nbsp;·&nbsp; absoarbe căldură din mediul exterior'),
       row('Diagrama de entalpie', '$ΔH = H_P − H_R$ &nbsp;·&nbsp; $E_a = H_{CA}^* − H_R$'),
       row('Stări de agregare', '(s) solid · (l) lichid · (g) gaz · (aq) soluție apoasă'),
       row('Legături chimice', 'ruperea absoarbe energie · formarea degajă energie'),
@@ -357,18 +355,17 @@
     h += card('Calcule pe ecuația termochimică', [
       row('Cantitatea de substanță', '$ν = (m)//(M)$ &nbsp;·&nbsp; gaz la c.n.: $ν = (V)//(22,4)$'),
       row('Proporția', 'coeficient (mol) ↔ căldura din ecuație &nbsp;=&nbsp; cantitatea dată ↔ $x$'),
-      row('Condiții standard (pentru $ΔH°$)', '$T = 298 K = 25 °C$, &nbsp; $p = 1 atm$'),
-      row('Condiții normale (pentru volume)', '$T = 273 K = 0 °C$, $p = 1 atm$, $V_m = 22,4 L/mol$'),
-      row('Temperatura absolută', '$T(K) = t(°C) + 273$')
+      row('Condiții standard', '$T = 298 K = 25 °C$, &nbsp; $p = 1 atm$'),
+      row('La c.n. (volume de gaze)', '$V_m = 22,4 L/mol$')
     ]);
     h += card('Căldura de formare și legea lui Hess', [
-      row('Căldura de formare', '$ΔH_f$ pentru 1 mol de substanță din elemente în stare standard', 'kJ/mol'),
-      row('Elementele în stare standard', '$ΔH_f = 0$ &nbsp;(O<sub>2</sub>, H<sub>2</sub>, C grafit, Fe, …)'),
+      row('Căldura de formare', '$ΔH_f$ pentru 1 mol de substanță din elemente în stare standard', 'J/mol (în caiet)'),
+      row('Elementele', '$ΔH_f = 0$ &nbsp;(în caiet: $ΔH_f$ elem. = 0, ex. O<sub>2</sub>)'),
       row('Stabilitate', 'cu cât $ΔH_f$ e mai mică (mai negativă), cu atât substanța e mai stabilă'),
-      row('Căldura de reacție din $ΔH_f$', '$ΔH_R = Σ ν_P·ΔH_f(produși) − Σ ν_R·ΔH_f(reactanți)$'),
+      row('Căldura de reacție din $ΔH_f$', '$ΔH_r = Σ ν_P·ΔH_f(produși) − Σ ν_R·ΔH_f(reactanți)$'),
       row('Legea lui Hess', '$ΔH = ΔH_1 + ΔH_2 + ΔH_3$ — depinde doar de starea inițială și finală'),
       row('Manipularea ecuațiilor', 'inversezi ecuația ⟹ schimbi semnul lui $ΔH$ · înmulțești cu $k$ ⟹ înmulțești $ΔH$ cu $k$ · apoi aduni'),
-      row('Căldura pentru $n$ mol', '$|Q| = n·|ΔH|$ (la $ΔH$ dat pe mol de reacție)')
+      row('Căldura pentru $n$ mol', 'ca în problema 8: $|Q| = 5·ΔH$ pentru 5 mol de $CH_4$ (coeficientul 1 în ecuație)')
     ]);
     return {
       title: 'Formule', html: h + '</div>', nav: 'formule',

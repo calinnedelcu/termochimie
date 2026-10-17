@@ -44,8 +44,8 @@
       holder.innerHTML = s + '</svg>';
       cap.className = 'wd-out ' + c;
       cap.innerHTML = T.rich(c === 'exo'
-        ? '<b class="tag-exo">Exotermă:</b> reacția <b>degajă</b> căldură, care trece din sistem în mediu (mediul se încălzește). Pentru sistem, $Q < 0$.'
-        : '<b class="tag-endo">Endotermă:</b> reacția <b>absoarbe</b> căldură din mediu (mediul se răcește). Pentru sistem, $Q > 0$.');
+        ? '<b class="tag-exo">Exotermă:</b> reacția <b>degajă</b> căldură, care trece din sistem în mediul exterior. Pentru sistem, $Q < 0$.'
+        : '<b class="tag-endo">Endotermă:</b> reacția <b>absoarbe</b> căldură din mediul exterior. Pentru sistem, $Q > 0$.');
     }
     var seg = T.seg([{ v: 'exo', label: 'Reacție exotermă', cls: 'exo' }, { v: 'endo', label: 'Reacție endotermă', cls: 'endo' }], kind, function (v) { kind = v; draw(); }, 'Tipul reacției');
     body.append(T.h('div', { class: 'wd-row' }, seg), holder, cap);
@@ -57,7 +57,7 @@
       ['Paharul în care are loc reacția', 'S', 'La o reacție, sistemul include și <b>recipientul</b> în care are loc.'],
       ['Aerul din laborator', 'M', 'Tot ce se află în afara sistemului este mediul exterior.'],
       ['Masa pe care stă paharul', 'M', 'Nu participă la reacție și nu e recipientul ⟹ mediu exterior.'],
-      ['Palma care ține paharul', 'M', 'Este în afara sistemului ⟹ mediu exterior (de aceea simți paharul cald sau rece).'],
+      ['Palma care ține paharul', 'M', 'Este în afara sistemului ⟹ mediu exterior.'],
       ['Plita pe care se încălzește paharul', 'M', 'Sursa de încălzire e în afara sistemului ⟹ mediu exterior.']
     ];
     var ans = items.map(function () { return null; });
@@ -112,9 +112,10 @@
       return '<rect x="190" y="' + (176 - wh) + '" width="60" height="' + wh + '" class="water"/><rect x="198" y="' + (176 - wh - ih) + '" width="44" height="' + ih + '" rx="5" class="ice"/>';
     }
     function effectText() {
-      if (effect === 'temp') return Q > 0 ? 'Căldura primită <b>ridică temperatura</b> sistemului.' : Q < 0 ? 'Prin cedarea de căldură, temperatura sistemului <b>scade</b>.' : 'Temperatura rămâne constantă.';
-      if (effect === 'work') return Q > 0 ? 'Căldura primită poate fi folosită pentru un <b>lucru mecanic</b>: gazul se dilată și împinge pistonul.' : Q < 0 ? 'Prin cedare de căldură gazul se comprimă.' : 'Pistonul stă pe loc.';
-      return Q > 0 ? 'Căldura primită poate <b>schimba starea de agregare</b>: gheața se topește (fără să crească temperatura în timpul topirii).' : Q < 0 ? 'Prin cedare de căldură, apa îngheață (solidificare).' : 'Starea de agregare rămâne neschimbată.';
+      if (Q <= 0) return Q < 0 ? 'Sistemul cedează căldură. Efectele din caiet (↑ t°, lucru mecanic, schimbarea stării de agregare) sunt pentru căldura <b>primită</b>, $Q > 0$.' : 'Nu se schimbă căldură cu mediul.';
+      if (effect === 'temp') return 'Căldura primită poate produce <b>creșterea temperaturii</b> ($↑ t°$).';
+      if (effect === 'work') return 'Căldura primită poate produce <b>efectul unui lucru mecanic</b>: gazul împinge pistonul.';
+      return 'Căldura primită poate produce <b>schimbarea stării de agregare</b> (gheața se topește).';
     }
     function draw() {
       var col = Q > 0 ? 'endo' : Q < 0 ? 'exo' : 'ink', w = 3 + Math.abs(Q) / 12;
@@ -138,19 +139,22 @@
   });
 
   T.widget('calConv', function (el) {
-    var body = T.shell(el, { title: 'Convertor de unități pentru căldură', help: 'Scrie o valoare, alege unitatea și vezi echivalentul în celelalte. Aici folosim 1 cal = 4,186 J.' });
-    var F = { J: 1, kJ: 1000, cal: 4.186, kcal: 4186 };
+    var body = T.shell(el, { title: 'Convertor de unități pentru căldură', help: 'Scrie o valoare, alege unitatea și vezi echivalentul în celelalte. Poți alege valoarea calorie–joule: 4,186 (teorie) sau 4,18 (exercițiul 4/14).' });
+    var cal = 4.186;
+    var F = function () { return { J: 1, kJ: 1000, cal: cal, kcal: cal * 1000 }; };
     var inp = T.h('input', { class: 'inp', type: 'text', inputmode: 'decimal', value: '256,57', 'aria-label': 'Valoare' });
-    var sel = T.h('select', { class: 'inp', 'aria-label': 'Unitate' }, Object.keys(F).map(function (k) { return T.h('option', { value: k, text: k, selected: k === 'kcal' ? true : null }); }));
+    var sel = T.h('select', { class: 'inp', 'aria-label': 'Unitate' }, ['J', 'kJ', 'cal', 'kcal'].map(function (k) { return T.h('option', { value: k, text: k, selected: k === 'kcal' ? true : null }); }));
+    var cs = T.h('select', { class: 'inp sm', 'aria-label': 'Valoarea unei calorii' }, [['4.186', '1 cal = 4,186 J'], ['4.18', '1 cal = 4,18 J']].map(function (o) { return T.h('option', { value: o[0], text: o[1] }); }));
     var out = T.h('div', { class: 'wd-out' });
     function upd() {
       var v = T.parseNum(inp.value)[0];
       if (v == null) { out.textContent = 'Scrie un număr.'; return; }
-      var J = v * F[sel.value];
-      out.innerHTML = T.rich(Object.keys(F).map(function (k) { return '<span class="chip' + (k === sel.value ? ' ok' : '') + '">' + T.fmt(J / F[k], 4) + ' ' + k + '</span>'; }).join(' '));
+      cal = +cs.value;
+      var f = F(), J = v * f[sel.value];
+      out.innerHTML = T.rich(Object.keys(f).map(function (k) { return '<span class="chip' + (k === sel.value ? ' ok' : '') + '">' + T.fmt(J / f[k], 4) + ' ' + k + '</span>'; }).join(' '));
     }
-    inp.addEventListener('input', upd); sel.addEventListener('change', upd);
-    body.append(T.h('div', { class: 'wd-row' }, inp, sel), out);
+    inp.addEventListener('input', upd); sel.addEventListener('change', upd); cs.addEventListener('change', upd);
+    body.append(T.h('div', { class: 'wd-row' }, inp, sel, cs), out);
     upd();
   });
 
@@ -174,7 +178,7 @@
     if (mode === 'compare') return compare(el);
     var body = T.shell(el, {
       title: 'Primul principiu: Q = ΔU + L',
-      help: 'Căldura primită de sistem se împarte între variația energiei interne (ΔU) și lucrul mecanic efectuat de sistem (L). Mută cursoarele.'
+      help: 'Căldura primită de sistem (Q) se împarte între variația energiei interne (ΔU) și lucrul mecanic efectuat (L). Mută cursoarele.'
     });
     var Q = 60, L = 20, id = T.uid('fl');
     var holder = T.h('div', { class: 'wd-svg' }), out = T.h('div', { class: 'wd-out' });
@@ -187,9 +191,8 @@
       s += '<text class="se-sm" x="102" y="256" text-anchor="middle">gazul din cilindru</text>';
       if (Q > 3) s += arrow(102, 262, 102, 238, 'exo', id, 3 + Q / 25);
       else if (Q < -3) s += arrow(102, 238, 102, 262, 'endo', id, 3 + Math.abs(Q) / 25);
-      if (L > 3) s += arrow(160, piston - 6, 160, piston - 38, 'ea', id, 3 + L / 20) + '<text class="se-sm" x="168" y="' + (piston - 22) + '">L &gt; 0</text>';
-      else if (L < -3) s += arrow(160, piston - 38, 160, piston - 6, 'ea', id, 3 + Math.abs(L) / 20) + '<text class="se-sm" x="168" y="' + (piston - 22) + '">L &lt; 0</text>';
-      var x0 = 335, sc = 0.66, rows = [['Q — căldura primită', Q, 'bq', 70], ['L — lucrul efectuat de sistem', L, 'bl', 135], ['ΔU — variația energiei interne', dU, 'bu', 200]];
+      if (L > 3) s += arrow(160, piston - 6, 160, piston - 38, 'ea', id, 3 + L / 20) + '<text class="se-sm" x="168" y="' + (piston - 22) + '">L</text>';
+      var x0 = 335, sc = 0.66, rows = [['Q — căldura primită', Q, 'bq', 70], ['L — lucrul mecanic efectuat', L, 'bl', 135], ['ΔU — variația energiei interne', dU, 'bu', 200]];
       s += '<line class="ed-ax" x1="' + x0 + '" y1="50" x2="' + x0 + '" y2="236"/>';
       rows.forEach(function (r) {
         s += '<text class="se-sm" x="' + (x0 - 112) + '" y="' + (r[3] - 8) + '">' + r[0] + '</text>' + hbar(x0, r[3], 0, r[1], sc, r[2]);
@@ -198,11 +201,11 @@
       holder.innerHTML = s + '</svg>';
       out.className = 'wd-out';
       out.innerHTML = T.rich('<b>$Q = ΔU + L$</b> &nbsp;⟹&nbsp; <b>' + T.fmt(Q, 0) + ' = ' + T.fmt(dU, 0) + ' + ' + T.fmt(L, 0) + '</b> kJ.<br>' +
-        (dU > 0 ? '$ΔU > 0$: energia internă crește (de regulă, temperatura crește). ' : dU < 0 ? '$ΔU < 0$: energia internă scade (de regulă, temperatura scade). ' : '$ΔU = 0$: energia internă nu se schimbă. ') +
-        (L > 0 ? 'Sistemul <b>efectuează</b> lucru mecanic (se dilată).' : L < 0 ? 'Asupra sistemului se efectuează lucru mecanic (e comprimat).' : 'Nu se efectuează lucru mecanic.'));
+        (dU > 0 ? '$ΔU > 0$: energia internă crește. ' : dU < 0 ? '$ΔU < 0$: energia internă scade. ' : '$ΔU = 0$: energia internă nu se schimbă. ') +
+        (L > 0 ? 'Sistemul efectuează lucru mecanic ($L > 0$).' : 'Nu se efectuează lucru mecanic ($L = 0$).'));
     }
-    var s1 = T.slider({ label: 'Q (căldura primită)', min: -100, max: 100, step: 5, value: Q, unit: 'kJ', onInput: function (v) { Q = v; draw(); } });
-    var s2 = T.slider({ label: 'L (lucrul efectuat de sistem)', min: -50, max: 50, step: 5, value: L, unit: 'kJ', onInput: function (v) { L = v; draw(); } });
+    var s1 = T.slider({ label: 'Q (căldura primită)', min: 0, max: 100, step: 5, value: Q, unit: 'kJ', onInput: function (v) { Q = v; draw(); } });
+    var s2 = T.slider({ label: 'L (lucrul mecanic efectuat)', min: 0, max: 100, step: 5, value: L, unit: 'kJ', onInput: function (v) { L = v; draw(); } });
     body.append(T.h('div', { class: 'wd-ctrl' }, s1, s2), holder, out);
     draw();
   });
@@ -210,7 +213,7 @@
   function compare(el) {
     var body = T.shell(el, {
       title: 'Aceeași transformare, două moduri de a măsura căldura',
-      help: 'Presupunem că sistemul suferă aceeași variație a energiei interne ΔU. Dacă volumul e constant, toată căldura merge în ΔU. Dacă presiunea e constantă, mai trebuie și lucrul de dilatare pΔV.'
+      help: 'Presupunem aceeași variație a energiei interne ΔU. La V = ct.: pΔV = 0 și Q_V = ΔU. La p = ct.: Q_P = ΔU + pΔV = ΔH.'
     });
     var dU = 50, pdV = 10, id = T.uid('fc');
     var holder = T.h('div', { class: 'wd-svg' }), out = T.h('div', { class: 'wd-out' });
@@ -231,10 +234,10 @@
       s += '<text class="se-val" x="' + x0b + '" y="274" text-anchor="middle">' + T.svgs.sub('Q', 'P') + '<tspan dy="-4.500"> = ΔH = ' + T.fmt(QP, 0) + ' kJ</tspan></text>';
       holder.innerHTML = s + '</svg>';
       out.innerHTML = T.rich('<b>La $V = ct.$:</b> $pΔV = 0$ ⟹ $Q_V = ΔU = ' + T.fmt(dU, 0) + '$ kJ.<br><b>La $p = ct.$:</b> $Q_P = ΔU + pΔV = ' + T.fmt(dU, 0) + (pdV >= 0 ? ' + ' : ' − ') + T.fmt(Math.abs(pdV), 0) + ' = ' + T.fmt(QP, 0) + '$ kJ $= ΔH$.<br>' +
-        (Math.abs(pdV) < 0.5 ? 'Fără variație de volum, $Q_P = Q_V$.' : pdV > 0 ? 'Sistemul se dilată: o parte din căldură se duce în lucrul mecanic ⟹ $Q_P > Q_V$.' : 'Sistemul se contractă: mediul face lucru asupra lui ⟹ $Q_P < Q_V$.'));
+        (Math.abs(pdV) < 0.5 ? 'Cu $pΔV = 0$: $Q_P = Q_V$.' : 'Cu $pΔV > 0$: $Q_P = ΔU + pΔV > Q_V = ΔU$.'));
     }
     var s1 = T.slider({ label: 'ΔU (variația energiei interne)', min: -100, max: 100, step: 5, value: dU, unit: 'kJ', onInput: function (v) { dU = v; draw(); } });
-    var s2 = T.slider({ label: 'pΔV (lucrul de dilatare)', min: -30, max: 30, step: 2, value: pdV, unit: 'kJ', onInput: function (v) { pdV = v; draw(); } });
+    var s2 = T.slider({ label: 'pΔV (lucrul mecanic)', min: 0, max: 30, step: 2, value: pdV, unit: 'kJ', onInput: function (v) { pdV = v; draw(); } });
     body.append(T.h('div', { class: 'wd-ctrl' }, s1, s2), holder, out);
     draw();
   }

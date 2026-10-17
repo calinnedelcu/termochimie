@@ -1,6 +1,6 @@
 /* =========================================================
-   widgets-hess.js — căldura de formare, stabilitate,
-   legea lui Hess (ciclu + combinator de ecuații)
+   widgets-hess.js — căldura de formare, legea lui Hess
+   (diagrama din caiet + combinator de ecuații)
    + date: T.HF (entalpii de formare), T.HESS (exerciții)
    ========================================================= */
 (function (g) {
@@ -198,7 +198,7 @@
     function why(i) { return T.hessWhy(cfg.eqs[i], '(' + (i + 1) + ')', tnet); }
     var bHint = T.btn('Indiciu', function () {
       hint.hidden = false; hint.className = 'wd-out';
-      if (hintN === 0) hint.innerHTML = T.rich('<b>Metodă:</b> pentru fiecare ecuație dată caută o substanță din <b>ținta</b> care apare doar în ea. Compară în ce parte (reactanți / produși) este în țintă și în ecuație; dacă diferă, o <b>inversezi</b>. Apoi potrivești coeficientul înmulțind.');
+      if (hintN === 0) hint.innerHTML = T.rich('<b>Metodă (ca în caiet):</b> pentru fiecare substanță din țintă, găsește ecuația dată în care apare. Dacă e în partea <b>opusă</b>, o <b>inversezi</b>; apoi potrivești coeficientul înmulțind.');
       else hint.innerHTML = T.rich('<b>Raționament:</b><br>' + cfg.eqs.map(function (e, i) { return why(i); }).join('<br>'));
       hintN++;
     }, 'ghost');
@@ -211,49 +211,44 @@
   });
 
   /* ---------------------------------------------------------
-     Legea lui Hess: drumul nu contează (diagrama „altitudine”)
+     Legea lui Hess: diagrama din caiet (A+B → I₁ → I₂ → C+D)
      --------------------------------------------------------- */
   T.widget('hessCycle', function (el) {
     var body = T.shell(el, {
-      title: 'Legea lui Hess: aceeași schimbare, drumuri diferite',
-      help: 'Entalpia este ca o altitudine: contează doar de unde pornești și unde ajungi, nu pe ce drum mergi. Schimbă etapele și vezi că suma rămâne aceeași.'
+      title: 'Legea lui Hess: diagrama din caiet',
+      help: 'Reactanții (A + B) ajung la produși (C + D) direct, cu ΔH, sau prin stările intermediare I₁ și I₂. Schimbă etapele: ΔH este mereu suma lor.'
     });
-    var S = { d1: -90, d2: 40, d3: -60, d4: -120 }, id = T.uid('hy');
+    var S = { d1: -90, d2: 40, d3: -60 }, id = T.uid('hy');
     var holder = T.h('div', { class: 'wd-svg' }), out = T.h('div', { class: 'wd-out' });
     function draw() {
-      var tot = S.d1 + S.d2 + S.d3, d5 = tot - S.d4;
-      var lv1 = [0, S.d1, S.d1 + S.d2, tot], lv2 = [0, S.d4, tot];
-      var all = lv1.concat(lv2), lo = Math.min.apply(null, all), hi = Math.max.apply(null, all);
+      var tot = S.d1 + S.d2 + S.d3;
+      var lv = [0, S.d1, S.d1 + S.d2, tot];
+      var lo = Math.min.apply(null, lv), hi = Math.max.apply(null, lv);
       var pad = Math.max(30, (hi - lo) * 0.18); lo -= pad; hi += pad;
       var Yt = 40, Yb = 310, Y = function (v) { return Yb - (Yb - Yt) * (v - lo) / (hi - lo); };
-      var s = '<svg viewBox="0 0 620 360" role="img" aria-label="Două drumuri de la reactanți la produși, cu aceeași variație totală de entalpie">' + T.svgs.defs(id);
+      var s = '<svg viewBox="0 0 520 360" role="img" aria-label="Reactanții ajung la produși direct sau prin stări intermediare, cu aceeași variație totală de entalpie">' + T.svgs.defs(id);
       s += '<line class="ed-ax" x1="30" y1="' + Yb + '" x2="30" y2="20" marker-end="url(#' + id + '-ink)"/><text class="ed-t b" x="22" y="26" text-anchor="end">H</text>';
       function bar(x, lvl, label) { return '<line class="hy-bar" x1="' + x + '" y1="' + Y(lvl) + '" x2="' + (x + 56) + '" y2="' + Y(lvl) + '"/><text class="ed-t" x="' + (x + 28) + '" y="' + (Y(lvl) + (lvl >= 0 ? -9 : 20)) + '" text-anchor="middle">' + label + '</text>'; }
       function arr(xa, va, xb, vb, lab, cls) {
         var xm = (xa + xb) / 2, ym = (Y(va) + Y(vb)) / 2;
         return '<line class="wa ' + cls + '" x1="' + xa + '" y1="' + Y(va) + '" x2="' + xb + '" y2="' + Y(vb) + '" style="stroke-width:3px" marker-end="url(#' + id + '-' + cls + ')"/><text class="ed-t b ' + cls + '" x="' + xm + '" y="' + (ym - 8) + '" text-anchor="middle">' + lab + '</text>';
       }
-      var X1 = [60, 150, 240, 330];
-      s += '<text class="ed-t m" x="195" y="342" text-anchor="middle">Drumul 1 (trei etape)</text>';
-      s += bar(X1[0], 0, 'A + B') + bar(X1[1], lv1[1], 'I' + '₁') + bar(X1[2], lv1[2], 'I' + '₂') + bar(X1[3], lv1[3], 'C + D');
-      s += arr(X1[0] + 56, lv1[0], X1[1], lv1[1], 'ΔH₁', 'ink') + arr(X1[1] + 56, lv1[1], X1[2], lv1[2], 'ΔH₂', 'ink') + arr(X1[2] + 56, lv1[2], X1[3], lv1[3], 'ΔH₃', 'ink');
-      var X2 = [430, 500, 570];
-      s += '<text class="ed-t m" x="500" y="342" text-anchor="middle">Drumul 2 (două etape)</text>';
-      s += bar(X2[0] - 40, 0, 'A + B') + bar(X2[1] - 34, lv2[1], "I'") + bar(X2[2] - 20, lv2[2], 'C + D');
-      s += arr(X2[0] + 16, 0, X2[1] - 34, lv2[1], 'ΔH₄', 'ea') + arr(X2[1] + 22, lv2[1], X2[2] - 20, lv2[2], 'ΔH₅', 'ea');
+      var X = [60, 160, 260, 360];
+      s += bar(X[0], 0, 'A + B') + bar(X[1], lv[1], 'I' + '₁') + bar(X[2], lv[2], 'I' + '₂') + bar(X[3], lv[3], 'C + D');
+      s += arr(X[0] + 56, lv[0], X[1], lv[1], 'ΔH₁', 'ink') + arr(X[1] + 56, lv[1], X[2], lv[2], 'ΔH₂', 'ink') + arr(X[2] + 56, lv[2], X[3], lv[3], 'ΔH₃', 'ink');
+      s += '<text class="ed-t m" x="88" y="' + (Y(0) - 28) + '" text-anchor="middle">reactanți</text><text class="ed-t m" x="388" y="' + (Y(tot) + (tot >= 0 ? -28 : 40)) + '" text-anchor="middle">produși</text>';
       // săgeata directă
-      s += '<line class="hy-dir" x1="388" y1="' + Y(0) + '" x2="388" y2="' + Y(tot) + '" marker-end="url(#' + id + '-' + (tot < 0 ? 'exo' : 'endo') + ')"/>';
-      s += '<text class="ed-t b ' + (tot < 0 ? 'exo' : 'endo') + '" x="396" y="' + ((Y(0) + Y(tot)) / 2 + 5) + '">ΔH</text>';
+      s += '<line class="hy-dir" x1="448" y1="' + Y(0) + '" x2="448" y2="' + Y(tot) + '" marker-end="url(#' + id + '-' + (tot < 0 ? 'exo' : 'endo') + ')"/>';
+      s += '<text class="ed-t b ' + (tot < 0 ? 'exo' : 'endo') + '" x="458" y="' + ((Y(0) + Y(tot)) / 2 + 5) + '">ΔH</text>';
       holder.innerHTML = s + '</svg>';
       var f = function (x) { return (x > 0 ? '+' : '') + T.fmt(x, 0); };
       out.className = 'wd-out ' + (tot < 0 ? 'exo' : 'endo');
-      out.innerHTML = T.rich('<b>Drumul 1:</b> $ΔH = ΔH_1 + ΔH_2 + ΔH_3 = ' + f(S.d1) + ' ' + f(S.d2) + ' ' + f(S.d3) + ' = ' + f(tot) + '$ kJ<br><b>Drumul 2:</b> $ΔH = ΔH_4 + ΔH_5 = ' + f(S.d4) + ' ' + f(d5) + ' = ' + f(tot) + '$ kJ<br>Aceeași valoare! ⟹ ' + (tot < 0 ? '<b class="tag-exo">exotermă</b>' : tot > 0 ? '<b class="tag-endo">endotermă</b>' : 'efect termic nul') + ' (depinde doar de starea inițială și finală).');
+      out.innerHTML = T.rich('$ΔH = ΔH_1 + ΔH_2 + ΔH_3 = ' + f(S.d1) + ' ' + f(S.d2) + ' ' + f(S.d3) + ' = <b>' + f(tot) + '</b>$ kJ ⟹ ' + (tot < 0 ? '<b class="tag-exo">exotermă</b>' : tot > 0 ? '<b class="tag-endo">endotermă</b>' : '$ΔH = 0$') + '.');
     }
     var sl = [
       T.slider({ label: '$ΔH_1$', min: -150, max: 150, step: 5, value: S.d1, unit: 'kJ', dec: 0, onInput: function (v) { S.d1 = v; draw(); } }),
       T.slider({ label: '$ΔH_2$', min: -150, max: 150, step: 5, value: S.d2, unit: 'kJ', dec: 0, onInput: function (v) { S.d2 = v; draw(); } }),
-      T.slider({ label: '$ΔH_3$', min: -150, max: 150, step: 5, value: S.d3, unit: 'kJ', dec: 0, onInput: function (v) { S.d3 = v; draw(); } }),
-      T.slider({ label: '$ΔH_4$ (drumul 2, prima etapă)', min: -250, max: 250, step: 5, value: S.d4, unit: 'kJ', dec: 0, onInput: function (v) { S.d4 = v; draw(); } })
+      T.slider({ label: '$ΔH_3$', min: -150, max: 150, step: 5, value: S.d3, unit: 'kJ', dec: 0, onInput: function (v) { S.d3 = v; draw(); } })
     ];
     body.append(T.h('div', { class: 'wd-ctrl' }, sl), holder, out);
     draw();
@@ -262,25 +257,21 @@
   /* ---------------------------------------------------------
      Căldura de reacție din căldurile de formare
      --------------------------------------------------------- */
-  var FORM = [
-    { id: 'metan', name: 'Arderea metanului', L: [[1, 'CH4(g)'], [2, 'O2(g)']], R: [[1, 'CO2(g)'], [2, 'H2O(g)']] },
-    { id: 'termita', name: 'Reacția aluminotermică', L: [[2, 'Al(s)'], [1, 'Fe2O3(s)']], R: [[1, 'Al2O3(s)'], [2, 'Fe(s)']] },
-    { id: 'calcar', name: 'Descompunerea CaCO₃', L: [[1, 'CaCO3(s)']], R: [[1, 'CaO(s)'], [1, 'CO2(g)']] },
-    { id: 'azot', name: 'Formarea NO din elemente', L: [[1, 'N2(g)'], [1, 'O2(g)']], R: [[2, 'NO(g)']] },
-    { id: 'etena', name: 'Hidrogenarea etenei', L: [[1, 'C2H4(g)'], [1, 'H2(g)']], R: [[1, 'C2H6(g)']] }
-  ];
-  T.widget('formationCalc', function (el) {
+  var METAN = { id: 'metan', name: 'Arderea metanului (problema 8 din caiet)', L: [[1, 'CH4(g)'], [2, 'O2(g)']], R: [[1, 'CO2(g)'], [2, 'H2O(g)']] };
+  T.widget('formationCalc', function (el, o) {
+    var FORM = [(o && o.L && o.R) ? { id: 'cfg', name: o.name || 'Reacția din problemă', L: o.L, R: o.R } : METAN];
     var body = T.shell(el, {
       title: 'ΔH reacției din căldurile de formare',
-      help: '$ΔH_R = Σ ν_P·ΔH_f(produși) − Σ ν_R·ΔH_f(reactanți)$. Poți modifica valorile din tabel. Observă că elementele în stare standard au $ΔH_f = 0$.'
+      help: '$ΔH_r = Σ ν_P·ΔH_f(produși) − Σ ν_R·ΔH_f(reactanți)$. Valorile $ΔH_f$ din tabel sunt date de exemplu (în exerciții se dau în enunț); le poți modifica. Elementele au $ΔH_f = 0$ (ca în caiet).'
     });
-    var cur = 'metan', vals = {}, nmol = 5;
+    var cur = FORM[0].id, vals = {}, nmol = 5;
+    function mainOf(r) { var l = r.L.filter(function (x) { return x[1] !== 'O2(g)'; }); return (l.length ? l : r.L)[0]; }
     var host = T.h('div'), out = T.h('div', { class: 'wd-out' });
     function reset() { var r = FORM.find(function (x) { return x.id === cur; }); vals = {}; r.L.concat(r.R).forEach(function (p) { vals[p[1]] = T.HF[p[1]]; }); }
     function build() {
       var r = FORM.find(function (x) { return x.id === cur; });
-      var sel = T.h('select', { class: 'inp', 'aria-label': 'Reacția' }, FORM.map(function (x) { return T.h('option', { value: x.id, text: x.name, selected: x.id === cur ? true : null }); }));
-      sel.addEventListener('change', function () { cur = sel.value; reset(); build(); });
+      var sel = T.h('div', { class: 'muted', html: '<b>' + r.name + '</b>' });
+      var mainTxt = '[[' + mainOf(r)[1] + ']]';
       var eq = T.h('div', { class: 'eqn', html: '[[' + eqOf(r.L, r.R) + ']]' });
       var tbody = T.h('tbody');
       function rowFor(side, p) {
@@ -292,7 +283,7 @@
       var tbl = T.h('div', { class: 'tbl-wrap' }, T.h('table', { class: 'tbl' }, T.h('thead', null, T.h('tr', null, T.h('th', { text: 'Rol' }), T.h('th', { text: 'Substanța' }), T.h('th', { class: 'c', html: '$ν$' }), T.h('th', { class: 'c', html: '$ΔH_f$ (kJ/mol)' }))), tbody));
       var nIn = T.h('input', { class: 'inp sm', type: 'text', inputmode: 'decimal', value: String(nmol), 'aria-label': 'Numărul de moli' });
       nIn.addEventListener('input', function () { var v = T.parseNum(nIn.value)[0]; if (v != null) { nmol = v; calc(); } });
-      host.replaceChildren(T.h('div', { class: 'wd-row' }, sel), eq, tbl, T.h('div', { class: 'wd-row' }, T.h('label', { html: 'Câte <b>reacții</b> (ecuația de mai sus, de ' }), nIn, T.h('label', { text: 'ori)' })));
+      host.replaceChildren(T.h('div', { class: 'wd-row' }, sel), eq, tbl, T.h('div', { class: 'wd-row' }, T.h('label', { html: 'Câți <b>mol</b> de ' + mainTxt }), nIn, T.h('label', { text: ' (calculat prin proporție cu coeficientul din ecuație)' })));
       calc();
     }
     function calc() {
@@ -301,48 +292,11 @@
       var dH = P - Rr;
       var ps = r.R.map(function (p) { return T.fmt(p[0], 1) + '·(' + T.fmt(vals[p[1]], 1) + ')'; }).join(' + '), rs = r.L.map(function (p) { return T.fmt(p[0], 1) + '·(' + T.fmt(vals[p[1]], 1) + ')'; }).join(' + ');
       out.className = 'wd-out ' + (dH < 0 ? 'exo' : 'endo');
-      out.innerHTML = T.rich('$ΔH_R = [' + ps + '] − [' + rs + '] = ' + T.fmt(P, 1) + ' − (' + T.fmt(Rr, 1) + ') = <b>' + T.fmt(dH, 1) + ' kJ</b>$ ⟹ ' + (dH < 0 ? '<b class="tag-exo">exotermă</b> ($ΔH < 0$)' : '<b class="tag-endo">endotermă</b> ($ΔH > 0$)') +
-        '<br>Pentru ' + T.fmt(nmol, 2) + ' reacții: $|Q| = ' + T.fmt(nmol, 2) + ' · ' + T.fmt(Math.abs(dH), 1) + ' = ' + T.fmt(nmol * Math.abs(dH), 1) + ' kJ$ ' + (dH < 0 ? 'degajați' : 'absorbiți') + '.');
+      out.innerHTML = T.rich('$ΔH_r = [' + ps + '] − [' + rs + '] = ' + T.fmt(P, 1) + ' − (' + T.fmt(Rr, 1) + ') = <b>' + T.fmt(dH, 1) + ' kJ</b>$ ⟹ ' + (dH < 0 ? '<b class="tag-exo">exotermă</b> ($ΔH < 0$)' : '<b class="tag-endo">endotermă</b> ($ΔH > 0$)') +
+        '<br>Pentru ' + T.fmt(nmol, 2) + ' mol de [[' + mainOf(r)[1] + ']] (coeficient ' + T.fmt(mainOf(r)[0], 1) + ' în ecuație): $|Q| = (' + T.fmt(nmol, 2) + ' · ' + T.fmt(Math.abs(dH), 1) + ')//(' + T.fmt(mainOf(r)[0], 1) + ') = ' + T.fmt(nmol / mainOf(r)[0] * Math.abs(dH), 1) + ' kJ$ ' + (dH < 0 ? 'degajați' : 'absorbiți') + '.');
     }
     body.append(host, out);
     reset(); build();
   });
 
-  /* ---------------------------------------------------------
-     Stabilitatea substanțelor: ΔH_f în grafic
-     --------------------------------------------------------- */
-  var STAB = ['C2H2(g)', 'NO(g)', 'NO2(g)', 'NH3(g)', 'CH4(g)', 'HCl(g)', 'H2O(g)', 'H2O(l)', 'SO2(g)', 'CO2(g)', 'CaO(s)'];
-  T.widget('stabilityChart', function (el) {
-    var body = T.shell(el, {
-      title: 'Cu cât ΔH_f e mai mică (mai negativă), cu atât substanța e mai stabilă',
-      help: 'Apasă pe două bare ca să le compari.'
-    });
-    var picked = [], holder = T.h('div', { class: 'wd-svg' }), out = T.h('div', { class: 'wd-out' });
-    var data = STAB.map(function (k) { return { k: k, v: T.HF[k] }; }).sort(function (a, b) { return b.v - a.v; });
-    function draw() {
-      var W = 600, rowH = 28, top = 14, x0 = 330, sc = 215 / 650, H = top * 2 + rowH * data.length + 22;
-      var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Căldurile de formare ale unor substanțe">';
-      s += '<line class="ed-ax" x1="' + x0 + '" y1="' + (top - 4) + '" x2="' + x0 + '" y2="' + (H - 22) + '"/>';
-      data.forEach(function (d, i) {
-        var y = top + i * rowH, w = Math.abs(d.v) * sc, on = picked.indexOf(d.k) >= 0;
-        s += '<g class="sb-g' + (on ? ' on' : '') + '" data-k="' + d.k + '" tabindex="0" role="button" aria-label="' + T.uni(d.k) + '">';
-        s += '<rect class="sb-hit" x="0" y="' + y + '" width="' + W + '" height="' + (rowH - 2) + '"/>';
-        s += '<text class="ed-t" x="' + (x0 - 232) + '" y="' + (y + 18) + '">' + T.uni(d.k.replace(/\((s|l|g)\)$/, '')) + ' <tspan class="m">(' + d.k.match(/\((s|l|g)\)$/)[1] + ')</tspan></text>';
-        s += '<rect class="sb-bar ' + (d.v < 0 ? 'exo' : 'endo') + '" x="' + (d.v < 0 ? x0 - w : x0) + '" y="' + (y + 3) + '" width="' + Math.max(2, w) + '" height="' + (rowH - 8) + '" rx="4"/>';
-        s += '<text class="se-val" x="' + (d.v < 0 ? x0 - w - 6 : x0 + w + 6) + '" y="' + (y + 18) + '" text-anchor="' + (d.v < 0 ? 'end' : 'start') + '">' + T.fmt(d.v, 1) + '</text></g>';
-      });
-      s += '<text class="ed-t m" x="' + (x0 + 6) + '" y="' + (H - 6) + '">ΔH_f (kJ/mol)  →  mai pozitivă = mai puțin stabilă</text>';
-      holder.innerHTML = s + '</svg>';
-      if (picked.length === 2) {
-        var a = T.HF[picked[0]], b = T.HF[picked[1]], more = a < b ? picked[0] : picked[1], less = a < b ? picked[1] : picked[0];
-        out.className = 'wd-out ok';
-        out.innerHTML = T.rich('[[' + more + ']] ($ΔH_f = ' + T.fmt(Math.min(a, b), 1) + '$) are $ΔH_f$ <b>mai mică</b> decât [[' + less + ']] ($' + T.fmt(Math.max(a, b), 1) + '$) ⟹ [[' + more + ']] este <b>mai stabilă</b>.');
-      } else { out.className = 'wd-out'; out.textContent = picked.length ? 'Alege încă o substanță.' : 'Alege două substanțe (apasă pe bare) ca să vezi care e mai stabilă.'; }
-    }
-    function toggle(k) { var i = picked.indexOf(k); if (i >= 0) picked.splice(i, 1); else { if (picked.length === 2) picked.shift(); picked.push(k); } draw(); }
-    holder.addEventListener('click', function (e) { var gg = e.target.closest('[data-k]'); if (gg) toggle(gg.dataset.k); });
-    holder.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { var gg = e.target.closest('[data-k]'); if (gg) { e.preventDefault(); toggle(gg.dataset.k); } } });
-    body.append(holder, out);
-    draw();
-  });
 })(window);

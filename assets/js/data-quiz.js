@@ -1,5 +1,5 @@
 /* =========================================================
-   data-quiz.js — întrebări pe capitole (nivel „test greu”)
+   data-quiz.js — întrebări pe capitole
    t: 'mc' | 'multi' | 'num' | 'match'  ·  a = indexul (indecșii) corect(e)
    ========================================================= */
 (function (g) {
@@ -21,7 +21,7 @@
     {
       t: 'multi', q: 'Care dintre mărimile de mai jos sunt <b>parametri de stare</b> ai unui sistem?',
       opts: ['temperatura', 'presiunea', 'volumul', 'căldura primită în timpul unei transformări'],
-      a: [0, 1, 2], why: 'T, p, V descriu starea sistemului <b>la un moment dat</b>. Căldura primită descrie un <b>transfer</b> între două stări (un proces), nu starea în sine.'
+      a: [0, 1, 2], why: 'T, p, V descriu starea sistemului <b>la un moment dat</b>. Parametrii de stare sunt temperatura, presiunea, volumul etc.'
     },
     {
       t: 'mc', q: 'Un gaz închis într-un cilindru este încălzit și trece de la (20 °C; 1 atm) la (80 °C; 1 atm). Cum se numește trecerea de la o stare la alta?',
@@ -30,8 +30,8 @@
     },
     {
       t: 'mc', q: 'Un elev scrie: „Dacă o reacție are efect termic, atunci mediul se încălzește.” Ce este greșit?',
-      opts: ['Nimic — efectul termic înseamnă întotdeauna încălzirea mediului exterior.', 'Efectul termic poate însemna și <b>absorbție</b> de căldură, caz în care mediul se răcește.', 'Efectul termic apare doar în cazul reacțiilor în care participă gaze.', 'Efectul termic al unei reacții nu poate fi măsurat experimental.'],
-      a: 1, why: 'Reacțiile exoterme degajă căldură (mediul se încălzește), cele endoterme absorb căldură (mediul se răcește).'
+      opts: ['Nimic — efectul termic înseamnă întotdeauna încălzirea mediului exterior.', 'Efectul termic poate însemna și <b>absorbție</b> de căldură, nu doar degajare.', 'Efectul termic apare doar în cazul reacțiilor în care participă gaze.', 'Efectul termic al unei reacții nu poate fi măsurat experimental.'],
+      a: 1, why: 'Efectul termic constă în degajarea <b>sau</b> absorbția de căldură.'
     },
     {
       t: 'mc', q: 'Apa dintr-un pahar se încălzește pe o plită. Ce reprezintă plita în raport cu sistemul „apa din pahar”?',
@@ -56,7 +56,7 @@
     {
       t: 'mc', q: 'Care afirmație despre căldură este corectă?',
       opts: ['Este o formă de energie transferată între corpuri aflate la temperaturi diferite.', 'Este temperatura unui corp, măsurată în grade Celsius sau în kelvini.', 'Trece spontan de la corpul rece la cel cald, până se egalează temperaturile.', 'Este o proprietate pe care corpul o „conține”, ca masa sau volumul.'],
-      a: 0, why: 'Căldura este energie <b>în tranzit</b>, de la corpul mai cald la cel mai rece — nu o proprietate de stare și nu temperatura.'
+      a: 0, why: 'Căldura este o formă de energie <b>transferată între corpuri aflate la temperaturi diferite</b> (nu este temperatura corpului).'
     },
     {
       t: 'multi', q: 'Căldura primită de un corp poate produce:',
@@ -80,19 +80,19 @@
   Q.marimi = [
     {
       t: 'match', q: 'Potrivește fiecare mărime cu unitatea ei:',
-      pairs: [['capacitatea calorică $C$', 'J/K'], ['căldura specifică $c$', 'J/(g·K)'], ['căldura specifică molară $C_m$', 'J/(mol·K)'], ['căldura latentă specifică $λ$', 'J/g']],
-      why: '$C = Q/ΔT$ (J/K); $c = Q/(m·ΔT)$ (J/(g·K)); $C_m = Q/(ν·ΔT)$ (J/(mol·K)); $λ = Q/m$ (J/g).'
+      pairs: [['capacitatea calorică $C$', 'J/K'], ['căldura specifică $c$', 'J/(g·K)'], ['căldura specifică molară $c_m$', 'J/(mol·K)'], ['căldura latentă specifică $λ$', 'J/g']],
+      why: '$C = Q/ΔT$ (J/K); $c = Q/(m·ΔT)$ (J/(g·K)); $c_m = Q/(ν·ΔT)$ (J/(mol·K)); $λ = Q/m$ (J/g).'
     },
     { t: 'num', q: 'Câți kJ sunt necesari pentru a încălzi 500 g de apă de la 18 °C la 58 °C? ($c = 4,184 J/(g·K)$)', a: 83.68, unit: 'kJ', tol: 0.01, dec: 2, why: '$ΔT = 58 − 18 = 40 K$; $Q = m·c·ΔT = 500 · 4,184 · 40 = 83 680 J = 83,68 kJ$.' },
     {
       t: 'mc', q: 'În timpul topirii unui metal, la temperatura de topire, căldura primită…',
       opts: ['ridică temperatura metalului, la fel ca înainte de topire', 'schimbă starea de agregare, iar temperatura rămâne constantă', 'se transformă integral în lucru mecanic efectuat de metal', 'este nulă, deoarece metalul nu mai primește căldură'],
-      a: 1, why: 'Cât timp are loc topirea, căldura se consumă pentru schimbarea stării ($Q = m·λ$), iar temperatura <b>rămâne constantă</b> (palier).'
+      a: 1, why: 'Cât timp are loc topirea, căldura se consumă pentru schimbarea stării ($Q = m·λ$), iar temperatura <b>rămâne constantă</b>.'
     },
     {
-      t: 'mc', q: 'Un corp are masa $m$ și căldura specifică $c$. Capacitatea lui calorică este…',
-      opts: ['$m·c$', '$m / c$', '$c / m$', '$m + c$'],
-      a: 0, why: '$C = (Q)//(ΔT)$ și $Q = m·c·ΔT$ ⟹ $C = m·c$.'
+      t: 'mc', q: 'Care este definiția <b>capacității calorice</b> $C$?',
+      opts: ['Căldura necesară pentru a crește cu un grad temperatura unui <b>corp</b>', 'Căldura necesară pentru a crește cu un grad temperatura <b>unității de masă</b> dintr-o substanță', 'Căldura necesară transformării de stare a unității de masă, fără modificarea temperaturii', 'Căldura necesară pentru a crește cu un grad temperatura unui <b>mol</b> de substanță'],
+      a: 0, why: '$C = (Q)//(ΔT)$, în J/K, pentru un corp. Căldura specifică $c$ se referă la unitatea de masă, $c_m$ la un mol, iar $λ$ la transformarea de stare.'
     },
     { t: 'num', q: 'Un corp primește 3 kJ și temperatura lui crește cu 20 K. Care este capacitatea lui calorică?', a: 150, unit: 'J/K', tol: 0.01, dec: 0, why: '$C = (Q)//(ΔT) = (3000 J)//(20 K) = 150 J/K$. Atenție: 3 kJ = 3000 J.' },
     { t: 'num', q: 'Pentru topirea a 25 g de gheață se cunoaște $λ = 334 J/g$. Ce căldură este necesară?', a: 8.35, unit: 'kJ', tol: 0.01, dec: 2, why: '$Q = m·λ = 25 · 334 = 8350 J = 8,35 kJ$.' },
@@ -108,21 +108,17 @@
     {
       t: 'mc', q: 'Cât este $ΔT$ pentru o încălzire de la 25 °C la 75 °C?',
       opts: ['50 K', '348 K', '−50 K', '100 K'],
-      a: 0, why: '$ΔT = T_f − T_i = 75 − 25 = 50$. O diferență de temperatură are aceeași valoare în °C și în K.'
+      a: 0, why: '$ΔT = T_f − T_i = 75 − 25 = 50$.'
     }
   ];
 
   /* ---------- 4. Principiile calorimetriei ---------- */
   Q.principii = [
-    { t: 'num', q: '200 g de apă la 80 °C se amestecă cu 300 g de apă la 20 °C, într-un sistem izolat. Care este temperatura finală?', a: 44, unit: '°C', tol: 0.01, dec: 1, why: 'Aceeași substanță: $T_f = (m_1 T_1 + m_2 T_2)//(m_1 + m_2) = (200·80 + 300·20)//(500) = (22 000)//(500) = 44$ °C.' },
-    {
-      t: 'mc', q: 'Care dintre valori <b>nu</b> poate fi temperatura de echilibru atinsă de un corp aflat la 90 °C și un corp aflat la 10 °C, într-un sistem izolat?',
-      opts: ['35 °C', '50 °C', '75 °C', '95 °C'], a: 3, why: 'Temperatura de echilibru este mereu <b>între</b> cele două temperaturi inițiale. 95 °C e peste 90 °C — imposibil.'
-    },
+    { t: 'num', q: '200 g de apă la 80 °C se amestecă cu 300 g de apă la 20 °C, într-un sistem izolat. Care este temperatura finală?', a: 44, unit: '°C', tol: 0.01, dec: 1, why: 'Apa caldă cedează, apa rece primește: $Q_1 + Q_2 = 0$, iar $c$ se simplifică: $200·(80 − T_f) = 300·(T_f − 20)$ ⟹ $500·T_f = 22000$ ⟹ $T_f = 44$ °C.' },
     {
       t: 'mc', q: 'Ce exprimă relația $Q_1 + Q_2 = 0$ într-un sistem izolat?',
       opts: ['Căldura cedată (negativă) de un corp este compensată de cea primită (pozitivă) de celălalt.', 'Ambele corpuri își măresc temperatura în timpul schimbului de căldură.', 'Cele două corpuri au întotdeauna aceeași masă și aceeași căldură specifică.', 'Temperatura finală este media aritmetică a celor inițiale, oricare ar fi corpurile.'],
-      a: 0, why: 'Cel care cedează are $Q < 0$, cel care primește are $Q > 0$; suma lor este zero. Media aritmetică apare doar la aceeași substanță și mase egale.'
+      a: 0, why: 'Cel care cedează are $Q < 0$, cel care primește are $Q > 0$; suma lor este zero.'
     },
     {
       t: 'mc', q: 'Aceeași masă de apă și de fier, ambele la 20 °C, primesc aceeași căldură. Care se încălzește mai mult? ($c_{apă} > c_{fier}$)',
@@ -133,23 +129,23 @@
       opts: ['6 kJ', '3 kJ', '12 kJ', 'Nicio căldură'], a: 0, why: 'Procese inverse: cantitatea de căldură absorbită într-o transformare este egală, ca valoare, cu cea degajată în transformarea inversă.'
     },
     {
-      t: 'num', q: 'Într-un calorimetru cu capacitatea calorică $C = 100 J/K$ se află 200 g de apă la 20 °C ($c = 4,18 J/(g·K)$). Se introduce un corp metalic de 100 g aflat la 100 °C și se atinge echilibrul la 25 °C. Care este căldura specifică a metalului?',
+      t: 'num', q: 'Un vas cu capacitatea calorică $C = 100 J/K$ conține 200 g de apă la 20 °C ($c = 4,18 J/(g·K)$). Se introduce un corp metalic de 100 g aflat la 100 °C și se atinge echilibrul la 25 °C. Care este căldura specifică a metalului?',
       a: 0.624, unit: 'J/(g·K)', tol: 0.02, dec: 3,
-      why: 'Primesc căldură apa și calorimetrul: $(m·c + C)·ΔT = (200·4,18 + 100)·5 = 4680 J$. Metalul cedează $100 · c_x · 75$. Egalând: $c_x = (4680)//(7500) = 0,624 J/(g·K)$.'
+      why: 'Primesc căldură apa și vasul: $(m·c + C)·ΔT = (200·4,18 + 100)·5 = 4680 J$. Metalul cedează $100 · c_x · 75$. Egalând: $c_x = (4680)//(7500) = 0,624 J/(g·K)$.'
     },
     {
-      t: 'mc', q: 'Dizolvarea unei substanțe într-un solvent absoarbe 30 kJ. În aceleași condiții, procesul invers (cristalizarea din aceeași soluție) va…',
-      opts: ['degaja 30 kJ', 'absorbi 30 kJ', 'degaja 15 kJ', 'fi fără efect termic'], a: 0, why: 'Procese inverse ⟹ aceeași valoare a căldurii, dar sens opus: ce se absorbe într-un sens se degajă în celălalt.'
+      t: 'mc', q: 'Vaporizarea unei cantități de apă absoarbe 90 kJ. Ce se întâmplă la condensarea aceleiași cantități de vapori, în aceleași condiții?',
+      opts: ['se degajă 90 kJ', 'se absorb 90 kJ', 'se degajă 45 kJ', 'nu are efect termic'], a: 0, why: 'Procese inverse ⟹ aceeași valoare a căldurii: ce se absoarbe într-un sens se degajă în celălalt.'
     }
   ];
   /* ---------- 5. Primul principiu ---------- */
   Q.principiul1 = [
     { t: 'num', q: 'Un gaz primește 800 J sub formă de căldură și efectuează un lucru mecanic de 300 J. Cât este $ΔU$?', a: 500, unit: 'J', tol: 0.01, dec: 0, why: '$ΔU = Q − L = 800 − 300 = 500$ J.' },
-    { t: 'num', q: 'Un sistem cedează 200 J mediului, iar asupra lui se efectuează un lucru mecanic de 50 J (adică $L = −50$ J). Cât este $ΔU$?', a: -150, unit: 'J', tol: 0.01, dec: 0, why: '$Q = −200$ J (cedează), $L = −50$ J (se lucrează asupra lui): $ΔU = Q − L = −200 − (−50) = −150$ J.' },
+    { t: 'num', q: 'Un gaz primește 600 J sub formă de căldură, iar energia lui internă crește cu 450 J. Ce lucru mecanic efectuează gazul?', a: 150, unit: 'J', tol: 0.01, dec: 0, why: '$Q = ΔU + L$ ⟹ $L = Q − ΔU = 600 − 450 = 150$ J.' },
     {
-      t: 'mc', q: 'Ce înseamnă $L < 0$ în relația $Q = ΔU + L$?',
-      opts: ['Sistemul efectuează lucru mecanic asupra mediului (de exemplu, se dilată)', 'Asupra sistemului se efectuează lucru mecanic (de exemplu, este comprimat)', 'Sistemul cedează căldură mediului în timpul transformării', 'Energia internă a sistemului scade în timpul transformării'],
-      a: 1, why: '$L$ este lucrul efectuat <b>de sistem</b>. Dacă $L < 0$, mediul lucrează asupra sistemului (îl comprimă).'
+      t: 'mc', q: 'Ce reprezintă $L$ în relația $Q = ΔU + L$?',
+      opts: ['lucrul mecanic efectuat', 'variația energiei interne', 'căldura primită de sistem', 'temperatura sistemului'],
+      a: 0, why: 'În $Q = ΔU + L$: $Q$ = căldura primită de sistem, $ΔU$ = variația energiei interne, $L$ = lucrul mecanic efectuat.'
     },
     {
       t: 'mc', q: 'Un gaz este încălzit într-un vas rigid, închis ($V = ct.$). Ce afirmație este corectă?',
@@ -163,8 +159,8 @@
     },
     {
       t: 'mc', q: 'Care afirmație despre energia internă $U$ este corectă?',
-      opts: ['Nu poate fi măsurată direct; se determină variațiile ei', 'Se măsoară direct, cu ajutorul unui termometru foarte precis', 'Este întotdeauna egală cu căldura primită de sistem', 'Este întotdeauna egală cu lucrul mecanic efectuat de sistem'],
-      a: 0, why: 'Energia internă nu poate fi măsurată experimental direct. De aceea lucrăm cu <b>variația</b> ei, $ΔU$.'
+      opts: ['Nu poate fi măsurată experimental', 'Se măsoară direct, cu ajutorul unui termometru foarte precis', 'Este întotdeauna egală cu căldura primită de sistem', 'Este întotdeauna egală cu lucrul mecanic efectuat de sistem'],
+      a: 0, why: 'În caiet: „U” nu poate fi măsurată experimental (de aceea nici entalpia nu poate fi măsurată direct).'
     }
   ];
 
@@ -190,16 +186,16 @@
     },
     {
       t: 'multi', q: 'Alege procesele <b>endoterme</b>:',
-      opts: ['descompunerea cloratului de potasiu (ca în caiet)', 'arderea metanului', 'dehidrogenarea etanului la etenă', 'neutralizarea NaOH cu H₂SO₄'],
-      a: [0, 2], why: 'Reacțiile cu $Q$ la reactanți (care absorb căldură) sunt endoterme: descompunerea cloratului (ca în caiet) și dehidrogenarea etanului. Arderea și neutralizarea degajă căldură (exoterme).'
+      opts: ['descompunerea cloratului de potasiu (ca în caiet)', 'arderea metanului', 'descompunerea etanului în etenă și hidrogen (Tema 5)', 'neutralizarea NaOH cu H₂SO₄'],
+      a: [0, 2], why: 'Reacțiile cu $Q$ la reactanți (care absorb căldură) sunt endoterme: descompunerea cloratului (ca în caiet) și descompunerea etanului. Arderea și neutralizarea degajă căldură (exoterme).'
     },
     {
       t: 'mc', q: 'Reacția $A + B → C + D$ degajă 50 kJ. Reacția inversă $C + D → A + B$…',
-      opts: ['absoarbe 50 kJ', 'degajă 50 kJ', 'degajă 100 kJ', 'nu are efect termic'], a: 0, why: 'Procese inverse: aceeași valoare a căldurii, dar sens opus. Ce se degajă la reacția directă se absoarbe la cea inversă.'
+      opts: ['absoarbe 50 kJ', 'degajă 50 kJ', 'degajă 100 kJ', 'nu are efect termic'], a: 0, why: 'Procese inverse: aceeași valoare a căldurii, dar sens opus: ce se degajă într-un sens se absoarbe în celălalt.'
     },
     {
-      t: 'mc', q: 'Ce descrie corect ecuația $CaCO_3(s) + Q → CaO(s) + CO_2(g)$?',
-      opts: ['O reacție endotermă: căldura este absorbită', 'O reacție exotermă: căldura este degajată', 'O reacție fără efect termic', 'O reacție de neutralizare'], a: 0, why: '$Q$ este în stânga ⟹ se absoarbe căldură. Descompunerea termică a carbonatului de calciu cere încălzire continuă.'
+      t: 'mc', q: 'Ce descrie corect ecuația $2A + Q → B + C$?',
+      opts: ['O reacție endotermă: căldura este absorbită', 'O reacție exotermă: căldura este degajată', 'O reacție fără efect termic', 'O reacție de neutralizare'], a: 0, why: '$Q$ este în stânga ⟹ se absoarbe căldură ⟹ endotermă.'
     }
   ];
 
@@ -207,15 +203,15 @@
   Q['ec-termo'] = [
     {
       t: 'mc', q: 'Ecuația $C(s) + O_2(g) → CO_2(g) + 393,5 kJ$ arată că…',
-      opts: ['la arderea completă a 1 mol de carbon se degajă 393,5 kJ', 'la arderea unui gram de carbon se degajă 393,5 kJ', 'reacția absoarbe 393,5 kJ', 'se formează 393,5 g de CO₂'],
+      opts: ['la arderea a 1 mol de carbon se degajă 393,5 kJ', 'la arderea unui gram de carbon se degajă 393,5 kJ', 'reacția absoarbe 393,5 kJ', 'se formează 393,5 g de CO₂'],
       a: 0, why: 'Coeficienții înseamnă moli: 1 mol C (12 g) ⟹ 393,5 kJ degajați.'
     },
     { t: 'num', q: 'Ce căldură se degajă la arderea a 36 g de carbon? ($C + O_2 → CO_2 + 393,5 kJ$; $M_C = 12$ g/mol)', a: 1180.5, unit: 'kJ', tol: 0.01, dec: 1, why: '$ν = 36/12 = 3$ mol ⟹ $Q = 3 · 393,5 = 1180,5$ kJ. Sau proporție: 12 g ... 393,5 kJ; 36 g ... x.' },
     { t: 'num', q: '$2Al + Fe_2O_3 → 2Fe + Al_2O_3 + 852 kJ$. Câte grame de aluminiu reacționează când se degajă 213 kJ? ($M_{Al} = 27$ g/mol)', a: 13.5, unit: 'g', tol: 0.01, dec: 1, why: 'Pe ecuație: $2 · 27 = 54$ g Al ... 852 kJ. Pe date: $x$ ... 213 kJ. $x = (54 · 213)//(852) = 13,5$ g.' },
     {
-      t: 'mc', q: 'De ce trebuie precizate stările de agregare într-o ecuație termochimică?',
-      opts: ['Pentru că efectul termic depinde de starea de agregare a reactanților și a produșilor', 'Pentru ca ecuația să arate mai complet, dar efectul termic rămâne același', 'Pentru a putea calcula masa molară a fiecărei substanțe din ecuație', 'Nu trebuie precizate, deoarece căldura depinde doar de cantitatea de substanță'],
-      a: 0, why: 'De exemplu, arderea metanului degajă mai multă căldură dacă apa rezultată este lichidă decât dacă este gaz.'
+      t: 'match', q: 'Potrivește fiecare notație din ecuația termochimică cu starea de agregare:',
+      pairs: [['(s)', 'solid'], ['(l)', 'lichid'], ['(g)', 'gaz'], ['(aq)', 'soluție apoasă']],
+      why: 'Stările de agregare trebuie precizate: (s) = solid, (l) = lichid, (g) = gaz, (aq) = soluție apoasă.'
     },
     {
       t: 'mc', q: 'Dacă ecuația termochimică $A + B → C + 80 kJ$ se înmulțește cu 2, căldura din ecuație devine…',
@@ -237,26 +233,16 @@
       a: 0, why: 'Ca să rupi o legătură trebuie să-i dai energie; când se formează o legătură, energia se eliberează.'
     },
     {
-      t: 'mc', q: 'O reacție este exotermă atunci când…',
-      opts: ['energia degajată la formarea legăturilor noi este mai mare decât cea absorbită la ruperea celor vechi', 'energia absorbită la ruperea legăturilor vechi este mai mare decât cea degajată la formarea celor noi', 'nu se rupe nicio legătură chimică din reactanți în timpul reacției, deci nu se schimbă energia', 'în urma reacției se formează o substanță în stare gazoasă, indiferent de bilanțul energetic'],
-      a: 0, why: 'Bilanțul net este o degajare de energie ⟹ exotermă. Invers ⟹ endotermă.'
-    },
-    {
       t: 'multi', q: 'Alege procesele <b>exoterme</b>:',
       opts: ['topirea', 'solidificarea', 'condensarea', 'sublimarea', 'desublimarea'], a: [1, 2, 4], why: 'Topirea, vaporizarea și sublimarea absorb căldură (endoterme). Inversele lor — solidificarea, condensarea, desublimarea — o degajă.'
     },
     {
-      t: 'match', q: 'Potrivește fiecare schimbare de stare cu sensul ei:',
-      pairs: [['topire', 'solid → lichid'], ['condensare', 'gaz → lichid'], ['sublimare', 'solid → gaz'], ['desublimare', 'gaz → solid']], why: 'Topire: solid→lichid; vaporizare: lichid→gaz; sublimare: solid→gaz; solidificare: lichid→solid; condensare: gaz→lichid; desublimare: gaz→solid.'
-    },
-    {
       t: 'mc', q: 'Condițiile standard sunt…',
-      opts: ['$T = 298$ K (25 °C) și $p = 1$ atm', '$T = 273$ K (0 °C) și $p = 1$ atm', '$T = 298$ K și $p = 0$ atm', '$T = 25$ K și $p = 1$ atm'], a: 0, why: 'Standard: 298 K = 25 °C, 1 atm. (0 °C și 1 atm sunt condițiile <b>normale</b>, pentru $V_m = 22,4$ L/mol.)'
+      opts: ['$T = 298$ K (25 °C) și $p = 1$ atm', '$T = 298$ K și $p = 0$ atm', '$T = 25$ K și $p = 1$ atm', '$T = 298$ °C și $p = 1$ atm'], a: 0, why: 'Condiții standard (marcate în caiet): 298 K = 25 °C și 1 atm.'
     },
-    { t: 'num', q: 'Exprimă temperatura de 37 °C în kelvini.', a: 310, unit: 'K', tol: 0.005, dec: 0, why: '$T(K) = t(°C) + 273 = 37 + 273 = 310$ K.' },
     {
-      t: 'mc', q: 'La condiții normale (0 °C; 1 atm), un mol de gaz ocupă…',
-      opts: ['22,4 L', '24,5 L', '1 L', '100 L'], a: 0, why: 'La c.n. $V_m = 22,4$ L/mol. (24,5 L/mol ar fi la 25 °C — nu e valoarea folosită la „volume la c.n.”.)'
+      t: 'mc', q: 'La c.n., un mol de gaz ocupă (volumul molar $V_m$)…',
+      opts: ['22,4 L', '24,5 L', '1 L', '100 L'], a: 0, why: 'În caiet (Tema 5): la c.n. $V_m = 22,4$ L/mol.'
     },
     {
       t: 'mc', q: 'Dăm căldură unei substanțe, dar temperatura ei nu crește. Care este explicația cea mai probabilă?',
@@ -276,7 +262,7 @@
       a: 0, why: '$U$ nu poate fi măsurată experimental, deci nici $H = U + pV$. Dar $ΔH = Q_P$ se obține măsurând căldura de reacție.'
     },
     {
-      t: 'mc', q: 'O reacție la $p = ct.$ are $ΔH = −120$ kJ, iar gazele se dilată ($pΔV > 0$). Valoarea lui $ΔU$ este…',
+      t: 'mc', q: 'O reacție la $p = ct.$ are $ΔH = −120$ kJ și $pΔV > 0$. Valoarea lui $ΔU$ este…',
       opts: ['mai mică decât −120 kJ (mai negativă)', 'mai mare decât −120 kJ (mai puțin negativă)', 'egală cu −120 kJ, pentru că $ΔU = ΔH$', 'pozitivă, pentru că gazele se dilată'], a: 0, why: '$ΔU = ΔH − pΔV$. Dacă $pΔV > 0$, scazi un număr pozitiv din −120 ⟹ $ΔU < −120$ kJ.'
     },
     { t: 'mc', q: 'Relația $Q_V = ΔU$ rezultă din $Q = ΔU + pΔV$ deoarece…', opts: ['la volum constant $ΔV = 0$, deci $pΔV = 0$', 'la volum constant $p = 0$', 'la volum constant $ΔU = 0$', 'la volum constant nu există căldură'], a: 0, why: 'Volumul nu se schimbă ⟹ $ΔV = 0$ ⟹ nu se efectuează lucru de dilatare.' }
@@ -290,18 +276,17 @@
       g.T.energyQuestion(R, 'segment'),
       g.T.energyQuestion(R, 'dH'),
       g.T.energyQuestion(R, 'Ea'),
-      { t: 'mc', q: 'Care afirmație este adevărată pentru <b>orice</b> reacție chimică?', opts: ['$E_a > 0$', '$ΔH > 0$', '$ΔH < 0$', '$E_a = ΔH$'], a: 0, why: 'Orice reacție are un „deal” de trecut ($E_a > 0$). $ΔH$ poate fi pozitiv sau negativ.' },
-      { t: 'mc', q: 'O reacție <b>exotermă</b> are nevoie de energie de activare?', opts: ['Da: orice reacție are o barieră energetică, chiar dacă produșii ajung mai jos', 'Nu, pentru că degajă căldură și produșii ajung mai jos decât reactanții', 'Doar dacă este endotermă, pentru că numai atunci produșii sunt mai sus', 'Doar dacă are loc în stare gazoasă, unde moleculele se ciocnesc'], a: 0, why: 'O reacție exotermă doar coboară la final; dar mai întâi trebuie trecut „dealul” (de aceea chibritul trebuie frecat înainte să ardă).' },
-      { t: 'mc', q: 'Complexul activat este…', opts: ['o stare intermediară instabilă, cu entalpie maximă pe coordonata de reacție', 'produsul final, stabil, aflat la sfârșitul coordonatei de reacție', 'reactantul cu cea mai mică energie, de la începutul drumului de reacție', 'o substanță adăugată care scade energia de activare a reacției'], a: 0, why: 'În complexul activat legăturile vechi se rup și cele noi se formează: este „vârful dealului”.' },
-      { t: 'mc', q: 'Ce se întâmplă cu fracția de molecule care au energie $≥ E_a$ atunci când temperatura crește?', opts: ['crește', 'scade', 'rămâne aceeași', 'devine zero'], a: 0, why: 'La temperatură mai mare, distribuția energiilor se deplasează spre valori mai mari ⟹ mai multe molecule peste prag ⟹ mai multe ciocniri eficiente.' },
-      { t: 'num', q: 'Pentru o reacție: $H_R = 150$, $H_{CA}^* = 230$, $H_P = 90$ kJ/mol. Care este energia de activare a reacției <b>inverse</b> (de la produși la reactanți)?', a: 140, unit: 'kJ/mol', tol: 0.005, dec: 0, why: '$E_{a,inversă} = H_{CA}^* − H_P = 230 − 90 = 140$ kJ/mol. (Direct: $E_a = 80$; $ΔH = −60$ ⟹ $E_a − ΔH = 140$.)' }
+      { t: 'mc', q: 'Care dintre relații este corectă pentru o diagramă de entalpie?', opts: ['$ΔH = H_P − H_R$', '$ΔH = H_R − H_P$', '$ΔH = H_{CA}^* − H_R$', '$ΔH = E_a$'], a: 0, why: 'În caiet: $ΔH = H_P − H_R$ (produși − reactanți). Diferența $H_{CA}^* − H_R$ este $E_a$.' },
+      { t: 'mc', q: 'Cum se notează diferența dintre entalpia complexului activat și entalpia reactanților, $H_{CA}^* − H_R$?', opts: ['$E_a$, energia de activare', '$ΔH$', '$H_P$', '$Q_P$'], a: 0, why: '$E_a = H_{CA}^* − H_R$: de la nivelul reactanților până la vârful curbei ($CA^*$).' },
+      { t: 'mc', q: 'Care este condiția energetică pentru o ciocnire eficientă?', opts: ['Energia ciocnirii să fie cel puțin egală cu energia de prag (de activare), $E_a$', 'Energia ciocnirii să fie mai mică decât $E_a$', 'Energia ciocnirii să fie egală cu $|ΔH|$', 'Moleculele să aibă aceeași masă'], a: 0, why: 'În caiet: ciocnirea trebuie să aibă o valoare cel puțin egală cu „energia de prag” sau „energia de activare” ($E_a$).' },
+      { t: 'num', q: 'Pentru o reacție: $H_R = 150$, $H_{CA}^* = 230$, $H_P = 90$ kJ/mol. Cât este $ΔH$?', a: -60, unit: 'kJ/mol', tol: 0.005, dec: 0, why: '$ΔH = H_P − H_R = 90 − 150 = −60$ kJ/mol ⟹ $ΔH < 0$, reacție exotermă. (Iar $E_a = 230 − 150 = 80$ kJ/mol.)' }
     ];
   })();
 
   /* ---------- 11. Căldura de formare ---------- */
   Q.formare = [
     { t: 'mc', q: 'Căldura de formare $ΔH_f$ se referă la…', opts: ['formarea unui mol de substanță din elemente aflate în stare standard', 'arderea completă a unui mol de substanță în oxigen, în condiții standard', 'descompunerea unui mol de substanță compusă în elementele ei componente', 'formarea oricărei cantități de substanță din orice reactanți'], a: 0, why: 'Definiție: căldura schimbată pentru <b>un mol</b> de substanță formată <b>din elemente</b> în stare standard.' },
-    { t: 'mc', q: 'Care dintre substanțe are $ΔH_f = 0$ în starea standard?', opts: ['[[O2(g)]]', '[[CO2(g)]]', '[[H2O(l)]]', '[[CH4(g)]]'], a: 0, why: 'Elementele în stare standard (O₂, H₂, N₂, C grafit etc.) au, prin convenție, $ΔH_f = 0$.' },
+    { t: 'mc', q: 'Care dintre substanțe are $ΔH_f = 0$ în starea standard?', opts: ['[[O2(g)]]', '[[CO2(g)]]', '[[H2O(l)]]', '[[CH4(g)]]'], a: 0, why: 'Elementele au $ΔH_f = 0$ (în caiet: $ΔH_f$ elem. = 0, ex. $O_2$).' },
     { t: 'mc', q: 'Substanța A are $ΔH_f = −100$ kJ/mol, iar B are $ΔH_f = −300$ kJ/mol. Care este mai stabilă?', opts: ['Substanța B', 'Substanța A', 'Sunt la fel de stabile', 'Nu se poate spune'], a: 0, why: 'Cu cât $ΔH_f$ este mai mică (mai negativă), cu atât substanța e mai stabilă: −300 < −100.' },
     { t: 'num', q: 'Se dau: $ΔH_f(CH_4) = −74,8$; $ΔH_f(CO_2) = −393,5$; $ΔH_f(H_2O, g) = −241,8$ kJ/mol. Calculează $ΔH$ pentru $CH_4 + 2O_2 → CO_2 + 2H_2O(g)$.', a: -802.3, unit: 'kJ', tol: 0.003, dec: 1, why: '$ΔH = [−393,5 + 2·(−241,8)] − [−74,8 + 2·0] = −877,1 + 74,8 = −802,3$ kJ.' },
     { t: 'num', q: 'Arderea metanului (apă gazoasă) degajă 802,3 kJ/mol. Câtă căldură (în kJ) se degajă la arderea a 5 mol de metan?', a: 4011.5, unit: 'kJ', tol: 0.003, dec: 1, why: '$|Q| = 5 · 802,3 = 4011,5$ kJ.' },

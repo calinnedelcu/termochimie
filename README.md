@@ -1,6 +1,6 @@
 # Termochimie interactivă
 
-Material de studiu interactiv pentru **reacții exoterme și endoterme** (termochimie): lecții cu grafice care pot fi mișcate, probleme cu variații nelimitate, cartonașe, teste generate aleatoriu și o fișă de formule.
+Material de studiu interactiv pentru **reacții exoterme și endoterme** (termochimie), făcut din caietul de notițe: lecții cu grafice care pot fi mișcate, probleme cu variații nelimitate, cartonașe, teste generate aleatoriu și o fișă de formule. Teoria din lecții, cartonașe și formule este strict cea din caiet; variațiile și exercițiile folosesc doar noțiunile din caiet (datele noi se dau în enunț).
 
 ## Cum îl deschizi
 
@@ -17,9 +17,9 @@ python3 -m http.server 8000
 
 | Secțiune | Ce găsești |
 | --- | --- |
-| **Lecții (12)** | explicații scurte, simulări și grafice interactive, mini-verificări și un quiz greu la fiecare lecție |
-| **Probleme (11 tipuri)** | problema din caiet rezolvată pas cu pas + variații la 3 niveluri (ușor / mediu / dificil), cu numere noi la fiecare apăsare |
-| **Cartonașe** | 51 de definiții și reguli, cu repetiție (cele nestăpânite revin mai des) |
+| **Lecții (12)** | explicații scurte, simulări și grafice interactive, mini-verificări și un quiz la fiecare lecție |
+| **Probleme (11 tipuri)** | tipurile 1–7: problemele din caiet rezolvate pas cu pas + variații la 3 niveluri (ușor / mediu / dificil); tipurile 8–11: exerciții pe noțiunile din caiet (model rezolvat + variații), cu numere noi la fiecare apăsare |
+| **Cartonașe** | definiții și reguli din caiet, cu repetiție (cele nestăpânite revin mai des) |
 | **Test** | întrebări + probleme generate aleatoriu, cronometru opțional, scor și rezolvări |
 | **Formule** | toate formulele și regulile pe o pagină (se poate printa) |
 

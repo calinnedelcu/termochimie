@@ -114,20 +114,6 @@
     return s + '</svg>';
   };
 
-  /** ilustrație: ciocnire cu orientare favorabilă / nefavorabilă */
-  T.svgs.orient = function () {
-    var s = '<svg viewBox="0 0 560 190" role="img" aria-label="Orientarea moleculelor la ciocnire">';
-    function mol(x, y, c1, c2, rot) {
-      return '<g transform="translate(' + x + ' ' + y + ') rotate(' + rot + ')"><line x1="-14" y1="0" x2="14" y2="0" class="or-b"/><circle cx="-14" cy="0" r="11" class="or-a ' + c1 + '"/><circle cx="14" cy="0" r="11" class="or-a ' + c2 + '"/></g>';
-    }
-    s += '<text class="ed-t b" x="140" y="24" text-anchor="middle">orientare favorabilă ✓</text><text class="ed-t b" x="420" y="24" text-anchor="middle">orientare nefavorabilă ✗</text>';
-    s += mol(80, 90, 'x', 'y', 0) + mol(200, 90, 'z', 'w', 0) + '<line class="wa ink" x1="102" y1="140" x2="128" y2="140" style="stroke-width:3px"/><line class="wa ink" x1="178" y1="140" x2="152" y2="140" style="stroke-width:3px"/>';
-    s += '<text class="ed-t m" x="140" y="172" text-anchor="middle">se ciocnesc capetele „potrivite”</text>';
-    s += mol(360, 90, 'x', 'y', 90) + mol(480, 90, 'z', 'w', 0) + '<line class="wa ink" x1="382" y1="140" x2="408" y2="140" style="stroke-width:3px"/><line class="wa ink" x1="458" y1="140" x2="432" y2="140" style="stroke-width:3px"/>';
-    s += '<text class="ed-t m" x="420" y="172" text-anchor="middle">molecula e „de-a latul”</text>';
-    return s + '</svg>';
-  };
-
   /** termometru mic (0..1) — pentru ilustrații */
   T.svgs.thermo = function (level, color) {
     var l = T.clamp(level, 0, 1), top = 8, bot = 64, y = bot - (bot - top) * l;

@@ -10,7 +10,7 @@
   /* ---------- biblioteca de reacții ----------
      L, R: [[coeficient, formulă cu stare]]; Q = căldura (kJ) pe ecuație, valoare pozitivă; type: 'exo' | 'endo' */
   T.RXN = {
-    termita: { name: 'Reacția aluminotermică', type: 'exo', Q: 852, L: [[2, 'Al(s)'], [1, 'Fe2O3(s)']], R: [[2, 'Fe(s)'], [1, 'Al2O3(s)']] },
+    termita: { name: 'Reacția din exercițiul 4/14', type: 'exo', Q: 852, L: [[2, 'Al(s)'], [1, 'Fe2O3(s)']], R: [[2, 'Fe(s)'], [1, 'Al2O3(s)']] },
     carbon: { name: 'Arderea carbonului', type: 'exo', Q: 393.5, L: [[1, 'C(s)'], [1, 'O2(g)']], R: [[1, 'CO2(g)']] },
     metan: { name: 'Arderea metanului', type: 'exo', Q: 802.3, L: [[1, 'CH4(g)'], [2, 'O2(g)']], R: [[1, 'CO2(g)'], [2, 'H2O(g)']] },
     hidrogen: { name: 'Arderea hidrogenului', type: 'exo', Q: 571.6, L: [[2, 'H2(g)'], [1, 'O2(g)']], R: [[2, 'H2O(l)']] },
@@ -20,7 +20,7 @@
     magneziu: { name: 'Arderea magneziului', type: 'exo', Q: 1203.6, L: [[2, 'Mg(s)'], [1, 'O2(g)']], R: [[2, 'MgO(s)']] },
     sulf: { name: 'Arderea sulfului', type: 'exo', Q: 296.8, L: [[1, 'S(s)'], [1, 'O2(g)']], R: [[1, 'SO2(g)']] },
     metanol: { name: 'Arderea metanolului', type: 'exo', Q: 726.5, L: [[1, 'CH3OH(l)'], [1.5, 'O2(g)']], R: [[1, 'CO2(g)'], [2, 'H2O(l)']] },
-    etan: { name: 'Dehidrogenarea etanului', type: 'endo', Q: 137, L: [[1, 'C2H6(g)']], R: [[1, 'C2H4(g)'], [1, 'H2(g)']] },
+    etan: { name: 'Descompunerea etanului (Tema 5)', type: 'endo', Q: 137, L: [[1, 'C2H6(g)']], R: [[1, 'C2H4(g)'], [1, 'H2(g)']] },
     calcar: { name: 'Descompunerea carbonatului de calciu', type: 'endo', Q: 178.3, L: [[1, 'CaCO3(s)']], R: [[1, 'CaO(s)'], [1, 'CO2(g)']] },
     azot: { name: 'Formarea oxidului de azot', type: 'endo', Q: 180.6, L: [[1, 'N2(g)'], [1, 'O2(g)']], R: [[2, 'NO(g)']] },
     gazapa: { name: 'Cărbune + vapori de apă', type: 'endo', Q: 131.3, L: [[1, 'C(s)'], [1, 'H2O(g)']], R: [[1, 'CO(g)'], [1, 'H2(g)']] },
@@ -51,7 +51,8 @@
   /* ---------------------------------------------------------
      Laboratorul exo / endo
      --------------------------------------------------------- */
-  var LAB = ['neutr', 'metan', 'glucoza', 'klorat', 'calcar', 'etan'];
+  var LAB = ['neutr', 'klorat', 'metan', 'carbon', 'termita', 'glucoza', 'etan'];
+  var SYMQ = { neutr: 1, klorat: 1, metan: 1 };   // în caiet, Q este scris simbolic
 
   T.widget('exoEndoLab', function (el) {
     var body = T.shell(el, {
@@ -61,47 +62,46 @@
     var cur = 'neutr', id = T.uid('ee');
     var eqBox = T.h('div', { class: 'eqn' }), facts = T.h('div', { class: 'tbl-wrap' }), pic = T.h('div', { class: 'wd-svg' });
     var two = T.h('div', { class: 'wd-two' }, T.h('div', null, eqBox, facts), pic);
-    var seg = T.seg(LAB.map(function (k) { return { v: k, label: T.RXN[k].name.replace('(NaOH + H2SO4)', ''), cls: T.RXN[k].type }; }), cur, function (v) { cur = v; draw(); }, 'Reacția');
+    var seg = T.seg(LAB.map(function (k) { return { v: k, label: T.RXN[k].name.replace(' (NaOH + H2SO4)', ''), cls: T.RXN[k].type }; }), cur, function (v) { cur = v; draw(); }, 'Reacția');
 
     function draw() {
       var r = T.RXN[cur], exo = r.type === 'exo';
       eqBox.className = 'eqn ' + r.type;
-      eqBox.innerHTML = T.rich(T.eqStr(r));
-      var q = r.Q == null ? 'Q' : T.fmt(r.Q, 1) + ' kJ';
-      var rows = [
+      eqBox.innerHTML = T.rich(T.eqStr(r, SYMQ[cur] ? { Q: null } : {}));
+            var rows = [
         ['Tipul reacției', exo ? '<b class="tag-exo">exotermă</b>' : '<b class="tag-endo">endotermă</b>'],
         ['Căldura în ecuație', exo ? 'se <b>degajă</b> ($Q$ apare în dreapta, la produși)' : 'se <b>absoarbe</b> ($Q$ apare în stânga, la reactanți)'],
         ['$Q$ pentru sistem', exo ? '$Q < 0$ (sistemul cedează)' : '$Q > 0$ (sistemul primește)'],
-        ['$ΔH$', exo ? '$ΔH < 0$' + (r.Q != null ? ' (aici $ΔH = −' + T.fmt(r.Q, 1) + ' kJ$)' : '') : '$ΔH > 0$' + (r.Q != null ? ' (aici $ΔH = +' + T.fmt(r.Q, 1) + ' kJ$)' : '')],
+        ['$ΔH$', exo ? '$ΔH < 0$' : '$ΔH > 0$'],
         ['Entalpii', exo ? '$H_P < H_R$' : '$H_P > H_R$'],
-        ['Mediul', exo ? 'primește căldură ⟹ se încălzește' : 'cedează căldură ⟹ se răcește (sau trebuie încălzit)']
+        ['Mediul exterior', exo ? 'primește căldura degajată' : 'cedează căldura absorbită de reacție']
       ];
       facts.innerHTML = T.rich('<table class="tbl"><tbody>' + rows.map(function (x) { return '<tr><th style="width:38%">' + x[0] + '</th><td>' + x[1] + '</td></tr>'; }).join('') + '</tbody></table>');
       pic.innerHTML = T.svgs.energy(exo ? { HR: 62, HP: 24, HCA: 86, id: id } : { HR: 24, HP: 62, HCA: 90, id: id });
     }
     body.append(seg, two);
     draw();
-    body.append(T.h('p', { class: 'muted', html: 'Notă: în ecuația termochimică, $Q$ scris lângă săgeată este o <b>cantitate</b> de căldură (valoare pozitivă, în kJ). Semnul „−” sau „+” apare la $ΔH$ și la $Q$ față de sistem.' }));
+    body.append(T.h('p', { class: 'muted', html: 'În caiet, $Q$ apare și în ecuație (la produși la exoterme, la reactanți la endoterme), și cu semn: $Q < 0$ la exoterme, $Q > 0$ la endoterme.' }));
   });
 
   /* ---------------------------------------------------------
      Joc: exo sau endo?
      --------------------------------------------------------- */
   var SORT = [
-    ['topirea gheții', 'endo', 'Pentru a topi gheața trebuie să-i dai căldură: <b>absoarbe</b> căldură.'],
-    ['solidificarea apei', 'exo', 'Procesul invers topirii: <b>degajă</b> aceeași cantitate de căldură.'],
-    ['vaporizarea apei', 'endo', 'Fierberea cere încălzire continuă: se <b>absoarbe</b> căldură.'],
-    ['condensarea vaporilor de apă', 'exo', 'Inversul vaporizării ⟹ se <b>degajă</b> căldură (de aceea arsurile cu abur sunt severe).'],
-    ['sublimarea naftalinei', 'endo', 'Sublimarea (solid → gaz) <b>absoarbe</b> căldură.'],
-    ['desublimarea (formarea brumei)', 'exo', 'Desublimarea (gaz → solid) <b>degajă</b> căldură.'],
-    ['arderea metanului', 'exo', 'Arderile degajă căldură.'],
-    ['neutralizarea NaOH + H₂SO₄', 'exo', 'Soluțiile se încălzesc: $T_f > T_i$ ⟹ <b>exotermă</b>.'],
-    ['descompunerea CaCO₃ prin încălzire', 'endo', 'Absoarbe căldură ($Q$ la reactanți) ⟹ <b>endotermă</b>.'],
-    ['descompunerea clorat de potasiu (ca în caiet)', 'endo', 'În caiet este exemplul de reacție <b>endotermă</b>: $2KClO_3 + Q → 2KCl + 3O_2$.'],
-    ['dehidrogenarea etanului la etenă', 'endo', 'Absoarbe 137 kJ pentru fiecare mol ⟹ <b>endotermă</b>.'],
-    ['glucoză → acid piruvic (reacția din temă)', 'exo', 'În ecuație se degajă 483 kJ ⟹ <b>exotermă</b>.'],
-    ['ruperea legăturilor chimice', 'endo', 'Ruperea unei legături <b>absoarbe</b> energie.'],
-    ['formarea legăturilor chimice', 'exo', 'Formarea unei legături <b>degajă</b> energie.']
+    ['topirea', 'endo', 'Topirea face parte din procesele care necesită <b>absorbție de căldură</b> (endoterme).'],
+    ['solidificarea', 'exo', 'Solidificarea <b>degajă</b> căldură (exotermă); este procesul invers topirii.'],
+    ['vaporizarea', 'endo', 'Vaporizarea <b>necesită absorbție de căldură</b> (endotermă).'],
+    ['condensarea', 'exo', 'Condensarea <b>degajă</b> căldură (exotermă); este procesul invers vaporizării.'],
+    ['sublimarea', 'endo', 'Sublimarea <b>necesită absorbție de căldură</b> (endotermă).'],
+    ['desublimarea', 'exo', 'Desublimarea <b>degajă</b> căldură (exotermă); este procesul invers sublimării.'],
+    ['arderea metanului', 'exo', 'În ecuația din caiet, $Q$ apare în dreapta, la produși: $CH_4 + 2O_2 → CO_2 + 2H_2O + Q$ ⟹ <b>exotermă</b>.'],
+    ['neutralizarea NaOH + H₂SO₄', 'exo', 'La amestecarea soluțiilor $T_f > T_i$ ⟹ <b>exotermă</b> (exemplul din caiet).'],
+    ['descompunerea cloratului de potasiu (ca în caiet)', 'endo', 'În caiet este exemplul de reacție <b>endotermă</b>: $2KClO_3 + Q → 2KCl + 3O_2$.'],
+    ['descompunerea etanului în etenă și hidrogen (Tema 5)', 'endo', 'În ecuație se absorb 137 kJ pentru fiecare mol de etan ⟹ <b>endotermă</b>.'],
+    ['glucoză → acid piruvic (Tema 6)', 'exo', 'În ecuație se degajă 483 kJ ⟹ <b>exotermă</b>.'],
+    ['reacția din exercițiul 4/14', 'exo', 'În ecuație se degajă 852 kJ ⟹ <b>exotermă</b>.'],
+    ['ruperea legăturilor chimice', 'endo', 'Ruperea unei legături = <b>absorbție</b> de energie.'],
+    ['formarea legăturilor chimice', 'exo', 'Formarea unei legături = <b>degajare</b> de energie.']
   ];
   T.widget('sortExoEndo', function (el) {
     var body = T.shell(el, { title: 'Sortează procesele: exoterme sau endoterme?', help: 'Pentru fiecare proces alege tipul, apoi apasă „Verifică”.' });
@@ -129,7 +129,7 @@
   /* ---------------------------------------------------------
      Calcule pe ecuația termochimică
      --------------------------------------------------------- */
-  var CALC = ['termita', 'carbon', 'metan', 'hidrogen', 'glucoza', 'etan', 'calcar', 'amoniac'];
+  var CALC = ['termita', 'carbon', 'metan', 'glucoza', 'etan'];
 
   T.widget('thermoEq', function (el) {
     var body = T.shell(el, {
@@ -205,53 +205,15 @@
   });
 
   /* ---------------------------------------------------------
-     Energia legăturilor: bilanț
-     --------------------------------------------------------- */
-  var BONDS = [
-    { name: 'H₂ + Cl₂ → 2 HCl', bro: 679, frm: 862, note: 'rupi H–H (436) și Cl–Cl (243); formezi 2 × H–Cl (431)' },
-    { name: 'N₂ + 3 H₂ → 2 NH₃', bro: 2253, frm: 2346, note: 'rupi N≡N (945) și 3 × H–H (436); formezi 6 × N–H (391)' },
-    { name: '2 HI → H₂ + I₂', bro: 598, frm: 587, note: 'rupi 2 × H–I (299); formezi H–H (436) și I–I (151)' }
-  ];
-  T.widget('bondBalance', function (el) {
-    var body = T.shell(el, {
-      title: 'Bilanțul energiilor: ruperea absoarbe, formarea degajă',
-      help: 'O reacție este exotermă dacă la formarea legăturilor noi se degajă mai multă energie decât se absoarbe la ruperea celor vechi. Mută cursoarele sau alege un exemplu.'
-    });
-    var bro = 679, frm = 862, id = T.uid('bb');
-    var holder = T.h('div', { class: 'wd-svg' }), out = T.h('div', { class: 'wd-out' }), note = T.h('p', { class: 'muted' });
-    var s1, s2;
-    function draw() {
-      var d = bro - frm, mx = 2600, sc = 250 / mx;
-      var s = '<svg viewBox="0 0 560 220" role="img" aria-label="Bare pentru energia absorbită și degajată">' + T.svgs.defs(id);
-      s += '<text class="ed-t" x="20" y="34">Energie absorbită (ruperea legăturilor)</text><rect class="hb bq" x="20" y="44" width="' + Math.max(2, bro * sc * 2) + '" height="30" rx="5" style="fill:var(--endo)"/><text class="se-val" x="' + (28 + bro * sc * 2) + '" y="66">' + bro + ' kJ</text>';
-      s += '<text class="ed-t" x="20" y="116">Energie degajată (formarea legăturilor)</text><rect class="hb bl" x="20" y="126" width="' + Math.max(2, frm * sc * 2) + '" height="30" rx="5" style="fill:var(--exo)"/><text class="se-val" x="' + (28 + frm * sc * 2) + '" y="148">' + frm + ' kJ</text>';
-      s += '<text class="ed-t b" x="20" y="198">Bilanț: ' + bro + ' − ' + frm + ' = ' + (d > 0 ? '+' : d < 0 ? '−' : '') + Math.abs(d) + ' kJ</text>';
-      holder.innerHTML = s + '</svg>';
-      out.className = 'wd-out ' + (d < 0 ? 'exo' : d > 0 ? 'endo' : '');
-      out.innerHTML = T.rich(d < 0 ? '<b class="tag-exo">Exotermă:</b> se degajă mai multă energie ($' + frm + ' kJ$) decât se absoarbe ($' + bro + ' kJ$) ⟹ $ΔH ≈ ' + d + ' kJ < 0$.'
-        : d > 0 ? '<b class="tag-endo">Endotermă:</b> se absoarbe mai multă energie ($' + bro + ' kJ$) decât se degajă ($' + frm + ' kJ$) ⟹ $ΔH ≈ +' + d + ' kJ > 0$.'
-        : 'Cele două energii sunt egale ⟹ $ΔH ≈ 0$.');
-    }
-    var pre = T.h('div', { class: 'wd-row' }, BONDS.map(function (b) {
-      return T.btn(b.name, function () { bro = b.bro; frm = b.frm; s1.set(bro); s2.set(frm); note.textContent = 'Exemplu — ' + b.note + '. (valori medii, kJ/mol)'; draw(); }, 'small');
-    }));
-    s1 = T.slider({ label: 'Energia absorbată la rupere', min: 100, max: 2600, step: 1, value: bro, unit: 'kJ', onInput: function (v) { bro = v; draw(); } });
-    s2 = T.slider({ label: 'Energia degajată la formare', min: 100, max: 2600, step: 1, value: frm, unit: 'kJ', onInput: function (v) { frm = v; draw(); } });
-    body.append(pre, T.h('div', { class: 'wd-ctrl' }, s1, s2), holder, out, note);
-    note.textContent = 'Exemplu — ' + BONDS[0].note + '. (valori medii, kJ/mol)';
-    draw();
-  });
-
-  /* ---------------------------------------------------------
      Schimbări de stare + condiții standard
      --------------------------------------------------------- */
   var CH = {
-    topire: { n: 'Topire', t: 'endo', f: 'solid → lichid', ex: 'gheața se topește la 0 °C' },
-    solidificare: { n: 'Solidificare', t: 'exo', f: 'lichid → solid', ex: 'apa îngheață' },
-    vaporizare: { n: 'Vaporizare', t: 'endo', f: 'lichid → gaz', ex: 'apa fierbe' },
-    condensare: { n: 'Condensare', t: 'exo', f: 'gaz → lichid', ex: 'aburul se transformă în picături pe geam' },
-    sublimare: { n: 'Sublimare', t: 'endo', f: 'solid → gaz', ex: 'naftalina, iodul, gheața carbonică' },
-    desublimare: { n: 'Desublimare', t: 'exo', f: 'gaz → solid', ex: 'formarea brumei din vaporii de apă' }
+    topire: { n: 'Topire', t: 'endo', f: 'solid → lichid' },
+    solidificare: { n: 'Solidificare', t: 'exo', f: 'lichid → solid' },
+    vaporizare: { n: 'Vaporizare', t: 'endo', f: 'lichid → gaz' },
+    condensare: { n: 'Condensare', t: 'exo', f: 'gaz → lichid' },
+    sublimare: { n: 'Sublimare', t: 'endo', f: 'solid → gaz' },
+    desublimare: { n: 'Desublimare', t: 'exo', f: 'gaz → solid' }
   };
   T.widget('stateWheel', function (el) {
     var body = T.shell(el, {
@@ -275,19 +237,14 @@
       holder.innerHTML = s + '</svg>';
       var c = CH[cur];
       out.className = 'wd-out ' + c.t;
-      out.innerHTML = T.rich('<b class="tag-' + c.t + '">' + c.n + '</b> (' + c.f + '): ' + (c.t === 'endo' ? 'procesul <b>absoarbe</b> căldură ⟹ <b>endoterm</b>, $Q > 0$.' : 'procesul <b>degajă</b> căldură ⟹ <b>exoterm</b>, $Q < 0$.') + '<br>Exemplu: ' + c.ex + '. Procesul invers: <b>' + CH[inv(cur)].n.toLowerCase() + '</b> (aceeași căldură, ca valoare).');
+      out.innerHTML = T.rich('<b class="tag-' + c.t + '">' + c.n + '</b>: ' + (c.t === 'endo' ? 'procesul <b>absoarbe</b> căldură ⟹ <b>endoterm</b>, $Q > 0$.' : 'procesul <b>degajă</b> căldură ⟹ <b>exoterm</b>, $Q < 0$.') + (cur === 'topire' || cur === 'solidificare' ? '<br>Procese inverse (ca în caiet): <b>topire ↔ solidificare</b> — aceeași căldură, ca valoare.' : ''));
     }
     function inv(k) { return { topire: 'solidificare', solidificare: 'topire', vaporizare: 'condensare', condensare: 'vaporizare', sublimare: 'desublimare', desublimare: 'sublimare' }[k]; }
     holder.addEventListener('click', function (e) { var g2 = e.target.closest('[data-k]'); if (g2) { cur = g2.dataset.k; drawAll(); } });
     holder.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { var g2 = e.target.closest('[data-k]'); if (g2) { e.preventDefault(); cur = g2.dataset.k; drawAll(); } } });
-    // condiții standard + convertor
-    var cK = T.h('input', { class: 'inp sm', type: 'text', inputmode: 'decimal', value: '298', 'aria-label': 'Kelvin' });
-    var cC = T.h('input', { class: 'inp sm', type: 'text', inputmode: 'decimal', value: '25', 'aria-label': 'Grade Celsius' });
-    cK.addEventListener('input', function () { var v = T.parseNum(cK.value)[0]; if (v != null) cC.value = T.fmt(v - 273, 2); });
-    cC.addEventListener('input', function () { var v = T.parseNum(cC.value)[0]; if (v != null) cK.value = T.fmt(v + 273, 2); });
-    var std = T.h('div', { class: 'callout imp', html: '<div class="ct"><span class="ct-i">✓</span>Marcat în caiet · condiții standard</div><div class="cb">$T = 298 K = 25 °C$ &nbsp;·&nbsp; $p = 1 atm$<div class="wd-row" style="margin-top:8px"><label>$T$ în K:</label>' + '<span class="k"></span><label>= $t$ în °C:</label><span class="c"></span><span class="muted">$T(K) = t(°C) + 273$</span></div></div>' });
+    // condiții standard (marcate în caiet)
+    var std = T.h('div', { class: 'callout imp', html: '<div class="ct"><span class="ct-i">✓</span>Marcat în caiet · condiții standard</div><div class="cb">$T = 298 K = 25 °C$ &nbsp;·&nbsp; $p = 1 atm$</div>' });
     body.append(holder, out, std);
-    T.$('.k', std).replaceWith(cK); T.$('.c', std).replaceWith(cC);
     drawAll();
   });
 })(window);

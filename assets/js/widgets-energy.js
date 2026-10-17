@@ -1,6 +1,6 @@
 /* =========================================================
    widgets-energy.js — diagrama de entalpie (interactivă),
-   distribuția energiilor moleculelor, întrebări pe diagrame
+   întrebări pe diagrame
    ========================================================= */
 (function (g) {
   'use strict';
@@ -37,8 +37,8 @@
       out.innerHTML = T.rich(
         '$H_R = ' + S.HR + '$, &nbsp;$H_P = ' + S.HP + '$, &nbsp;$H_{CA}^* = ' + HCA + '$<br>' +
         '<b>$ΔH = H_P − H_R = ' + S.HP + ' − ' + S.HR + ' = ' + (d > 0 ? '+' : '') + T.fmt(d, 0).replace('-', '−') + '$</b> ⟹ ' +
-        (type === 'endo' ? '$ΔH > 0$ ⟹ <b class="tag-endo">reacție endotermă</b> (produșii au entalpie mai mare)' : type === 'exo' ? '$ΔH < 0$ ⟹ <b class="tag-exo">reacție exotermă</b> (produșii au entalpie mai mică)' : '$ΔH ≈ 0$ ⟹ efect termic neglijabil') + '<br>' +
-        '<b>$E_a = H_{CA}^* − H_R = ' + HCA + ' − ' + S.HR + ' = ' + S.EA + '$</b> — este <b>întotdeauna pozitivă</b>, indiferent dacă reacția e exotermă sau endotermă.');
+        (type === 'endo' ? '$ΔH > 0$ ⟹ <b class="tag-endo">reacție endotermă</b> (produșii au entalpie mai mare)' : type === 'exo' ? '$ΔH < 0$ ⟹ <b class="tag-exo">reacție exotermă</b> (produșii au entalpie mai mică)' : '$ΔH ≈ 0$ ($H_P ≈ H_R$)') + '<br>' +
+        '<b>$E_a = H_{CA}^* − H_R = ' + HCA + ' − ' + S.HR + ' = ' + S.EA + '$</b> (de la $H_R$ până la vârful $CA^*$).');
       status.hidden = true;
       var ek = S.ek * S.EA;
       slK.querySelector('.sl-l').innerHTML = T.rich('Energia ciocnirii: <b>' + T.fmt(ek, 1) + '</b> (' + Math.round(S.ek * 100) + '% din $E_a$)');
@@ -55,8 +55,8 @@
       function put(i) { var p = P[Math.max(0, Math.min(N, Math.round(i)))]; ball.setAttribute('cx', p.x); ball.setAttribute('cy', p.y - 10); }
       function finish(ok) {
         status.hidden = false; status.className = 'wd-out ' + (ok ? 'ok' : 'bad');
-        status.innerHTML = T.rich(ok ? '<b>Ciocnire eficientă:</b> energia ciocnirii ($' + T.fmt(Ek, 1) + '$) ≥ $E_a$ ($' + S.EA + '$). Moleculele au trecut peste „deal” (prin complexul activat) și s-au format <b>produși</b>.'
-          : '<b>Ciocnire ineficientă:</b> energia ciocnirii ($' + T.fmt(Ek, 1) + '$) &lt; $E_a$ ($' + S.EA + '$). Moleculele nu ajung la complexul activat și se întorc: <b>nu se formează produși</b>.');
+        status.innerHTML = T.rich(ok ? '<b>Ciocnire eficientă:</b> energia ciocnirii ($' + T.fmt(Ek, 1) + '$) ≥ $E_a$ ($' + S.EA + '$). Condiția energetică este <b>îndeplinită</b>.'
+          : '<b>Ciocnire ineficientă:</b> energia ciocnirii ($' + T.fmt(Ek, 1) + '$) &lt; $E_a$ ($' + S.EA + '$). Condiția energetică <b>nu este îndeplinită</b>.');
       }
       status.hidden = true;
       function step(ts) {
@@ -92,55 +92,6 @@
   });
 
   /* ---------------------------------------------------------
-     Distribuția energiilor moleculelor (condiția energetică)
-     --------------------------------------------------------- */
-  T.widget('collisionDist', function (el) {
-    var body = T.shell(el, {
-      title: 'Condiția energetică: câte molecule au destulă energie?',
-      help: 'La o temperatură dată, moleculele au energii diferite. Doar cele cu energie $≥ E_a$ pot da ciocniri eficiente. Mărește temperatura sau micșorează $E_a$ și urmărește suprafața colorată. (Model ilustrativ, nu valori reale.)'
-    });
-    var S = { T: 300, Ea: 60 }, REF = 300;
-    var holder = T.h('div', { class: 'wd-svg' }), out = T.h('div', { class: 'wd-out' });
-    var dens = function (E, th) { return Math.sqrt(E) * Math.exp(-E / th); };
-    function stats(th, Ea) {
-      var n = 3000, hi = Math.max(500, th * 25), h = hi / n, tot = 0, tail = 0;
-      for (var i = 0; i < n; i++) { var E = (i + 0.5) * h, f = dens(E, th); tot += f; if (E >= Ea) tail += f; }
-      return { tot: tot * h, frac: tail / tot };
-    }
-    function draw() {
-      var th = S.T / 15, thR = REF / 15, a = stats(th, S.Ea), r = stats(thR, S.Ea);
-      var X0 = 56, X1 = 536, Y0 = 244, Y1 = 22, xmax = 160;
-      var pdf = function (E, th2, tot) { return dens(E, th2) / tot; };
-      var ymax = 0, E;
-      for (E = 0; E <= xmax; E += 2) ymax = Math.max(ymax, pdf(E, th, a.tot), pdf(E, thR, r.tot));
-      ymax *= 1.08;
-      var X = function (e) { return X0 + (X1 - X0) * e / xmax; }, Y = function (p) { return Y0 - (Y0 - Y1) * p / ymax; };
-      function curve(th2, tot) { var d = ''; for (var e = 0; e <= xmax; e += 2) d += (e ? ' L' : 'M') + X(e).toFixed(1) + ' ' + Y(pdf(e, th2, tot)).toFixed(1); return d; }
-      var s = '<svg viewBox="0 0 580 300" role="img" aria-label="Distribuția energiilor moleculelor">' + T.svgs.defs('cd');
-      s += '<line class="ed-ax" x1="' + X0 + '" y1="' + Y0 + '" x2="' + X0 + '" y2="10" marker-end="url(#cd-ink)"/><line class="ed-ax" x1="' + X0 + '" y1="' + Y0 + '" x2="572" y2="' + Y0 + '" marker-end="url(#cd-ink)"/>';
-      s += '<text class="ed-t m" x="560" y="' + (Y0 + 32) + '" text-anchor="end">energia moleculelor</text><text class="ed-t m" x="' + (X0 + 8) + '" y="18">număr de molecule</text>';
-      // zona E >= Ea
-      var area = 'M' + X(S.Ea).toFixed(1) + ' ' + Y0;
-      for (E = S.Ea; E <= xmax; E += 2) area += ' L' + X(E).toFixed(1) + ' ' + Y(pdf(E, th, a.tot)).toFixed(1);
-      area += ' L' + X(xmax).toFixed(1) + ' ' + Y0 + ' Z';
-      s += '<path class="cd-area" d="' + area + '"/>';
-      if (S.T !== REF) s += '<path class="cd-ref" d="' + curve(thR, r.tot) + '" fill="none"/><text class="ed-t m" x="' + (X(24)) + '" y="' + (Y(pdf(24, thR, r.tot)) - 8) + '">' + REF + ' K</text>';
-      s += '<path class="cd-cur" d="' + curve(th, a.tot) + '" fill="none"/>';
-      s += '<line class="ed-ea" x1="' + X(S.Ea) + '" y1="' + Y0 + '" x2="' + X(S.Ea) + '" y2="' + (Y1 + 6) + '" style="stroke-dasharray:6 5"/><text class="ed-t ea" x="' + (X(S.Ea) + 8) + '" y="' + (Y1 + 18) + '">' + T.svgs.sub('E', 'a') + '</text>';
-      s += '<text class="ed-t b" x="' + X(Math.min(xmax - 20, S.Ea + 22)) + '" y="' + (Y0 - 18) + '" text-anchor="middle">E ≥ ' + T.svgs.sub('E', 'a') + '</text>';
-      holder.innerHTML = s + '</svg>';
-      var ratio = r.frac > 0 ? a.frac / r.frac : 0;
-      out.className = 'wd-out endo';
-      out.innerHTML = T.rich('La <b>' + S.T + ' K</b>, aproximativ <b class="big">' + T.fmt(a.frac * 100, 1) + '%</b> dintre molecule au energie $≥ E_a$ (pot da ciocniri eficiente).' +
-        (S.T !== REF ? '<br>Față de ' + REF + ' K, sunt de <b>' + T.fmt(ratio, 2) + ' ori</b> mai multe ' + (ratio > 1 ? '(temperatura mai mare ⟹ mai multe ciocniri eficiente)' : '(temperatura mai mică ⟹ mai puține ciocniri eficiente)') + '.' : ''));
-    }
-    var s1 = T.slider({ label: 'Temperatura', min: 200, max: 600, step: 10, value: S.T, unit: 'K', dec: 0, onInput: function (v) { S.T = v; draw(); } });
-    var s2 = T.slider({ label: 'Energia de activare $E_a$', min: 20, max: 120, step: 2, value: S.Ea, dec: 0, onInput: function (v) { S.Ea = v; draw(); } });
-    body.append(T.h('div', { class: 'wd-ctrl' }, s1, s2), holder, out);
-    draw();
-  });
-
-  /* ---------------------------------------------------------
      Întrebări pe diagrame (generate)
      --------------------------------------------------------- */
   function genLevels(R) {
@@ -153,7 +104,7 @@
   }
   function fmtV(x) { return String(Math.round(x)); }
 
-  /** o întrebare pe diagramă; kind ∈ 'class' | 'segment' | 'dH' | 'Ea' | 'EaInv' */
+  /** o întrebare pe diagramă; kind ∈ 'class' | 'segment' | 'dH' | 'Ea' */
   T.energyQuestion = function (R, kind) {
     var L = genLevels(R), dH = L.HP - L.HR, exo = dH < 0, k = L.k;
     if (kind === 'class') {
@@ -166,12 +117,12 @@
     }
     if (kind === 'segment') {
       var letters = R.shuffle(['A', 'B', 'C']);
-      var segs = { Ea: [L.HR, L.HCA], dH: [L.HR, L.HP], inv: [L.HP, L.HCA] };
-      var keys = ['Ea', 'dH', 'inv'], xs = { Ea: 56, dH: 484, inv: 424 };
+      var segs = { Ea: [L.HR, L.HCA], dH: [L.HR, L.HP], top: [0, L.HCA] };
+      var keys = ['Ea', 'dH', 'top'], xs = { Ea: 56, dH: 484, top: 424 };
       var marks = keys.map(function (kx, i) { return { a: segs[kx][0], b: segs[kx][1], x: xs[kx], label: letters[i] }; });
       var corr = letters[0];
       return {
-        t: 'mc', q: 'Care dintre segmentele marcate reprezintă <b>energia de activare</b> $E_a$ a reacției directe?',
+        t: 'mc', q: 'Care dintre segmentele marcate reprezintă <b>energia de activare</b> $E_a$ a reacției?',
         fig: T.svgs.energy({ HR: L.HR, HP: L.HP, HCA: L.HCA, neutral: true, caption: false, dh: false, ea: false, labels: false, ca: false, marks: marks, plateauNames: false }),
         opts: ['A', 'B', 'C'], noShuffle: true, a: ['A', 'B', 'C'].indexOf(corr),
         why: '$E_a = H_{CA}^* − H_R$: de la nivelul <b>reactanților</b> până în vârful „dealului” (complexul activat). Segmentul dintre $H_R$ și $H_P$ este $ΔH$.'
@@ -181,12 +132,12 @@
     var fig = T.svgs.energy({ HR: L.HR, HP: L.HP, HCA: L.HCA, neutral: true, caption: false, dh: false, ea: false, vals: vals, plateauNames: true });
     if (kind === 'dH') return { t: 'num', q: 'Pentru reacția din diagramă, calculează $ΔH$ (în kJ/mol).', fig: fig, a: dH * k, unit: 'kJ/mol', tol: 0.001, dec: 0, why: '$ΔH = H_P − H_R = ' + vals.HP + ' − ' + vals.HR + ' = ' + T.fmt(dH * k, 0) + '$ kJ/mol ⟹ ' + (exo ? 'exotermă ($ΔH < 0$).' : 'endotermă ($ΔH > 0$).') };
     if (kind === 'Ea') return { t: 'num', q: 'Calculează energia de activare $E_a$ (în kJ/mol).', fig: fig, a: (L.HCA - L.HR) * k, unit: 'kJ/mol', tol: 0.001, dec: 0, why: '$E_a = H_{CA}^* − H_R = ' + vals.HCA + ' − ' + vals.HR + ' = ' + ((L.HCA - L.HR) * k) + '$ kJ/mol.' };
-    return { t: 'num', q: 'Calculează energia de activare a reacției <b>inverse</b> ($P → R$), adică distanța de la produși la complexul activat (kJ/mol).', fig: fig, a: (L.HCA - L.HP) * k, unit: 'kJ/mol', tol: 0.001, dec: 0, why: '$E_{a,inversă} = H_{CA}^* − H_P = ' + vals.HCA + ' − ' + vals.HP + ' = ' + ((L.HCA - L.HP) * k) + '$ kJ/mol. (Observă: $E_{a,inversă} = E_a − ΔH$.)' };
+    return null;
   };
 
   T.widget('diagramQuiz', function (el) {
     var body = T.shell(el, { title: 'Citește diagrama (întrebări generate)', badge: 'Exersează', help: 'De fiecare dată altă diagramă. Apasă „Altă diagramă” după ce răspunzi.' });
-    var kinds = ['class', 'segment', 'dH', 'Ea', 'EaInv'], n = 0, holder = T.h('div');
+    var kinds = ['class', 'segment', 'dH', 'Ea'], n = 0, holder = T.h('div');
     function next() {
       var R = T.rng((Math.random() * 1e9) | 0), kind = kinds[n % kinds.length]; n++;
       var q = T.energyQuestion(R, kind), api = T.Q.create(q, { num: n });

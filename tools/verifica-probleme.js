@@ -55,7 +55,7 @@ T.problemOrder.forEach(id => {
   }
 });
 // 3) întrebări pe diagrame
-const R = T.rng(5); ['class', 'segment', 'dH', 'Ea', 'EaInv'].forEach(k => { for (let i = 0; i < 50; i++) { const q = T.energyQuestion(R, k); if (!q.q || !q.fig || (q.t === 'num' && !Number.isFinite(q.a)) || (q.t === 'mc' && !(q.a >= 0 && q.a < q.opts.length))) fail('energyQuestion ' + k); } });
+const R = T.rng(5); ['class', 'segment', 'dH', 'Ea'].forEach(k => { for (let i = 0; i < 50; i++) { const q = T.energyQuestion(R, k); if (!q.q || !q.fig || (q.t === 'num' && !Number.isFinite(q.a)) || (q.t === 'mc' && !(q.a >= 0 && q.a < q.opts.length))) fail('energyQuestion ' + k); } });
 // 4) quiz
 Object.keys(T.quizData).forEach(k => T.quizData[k].forEach((q, i) => { const w = 'quiz ' + k + '#' + (i + 1); checkStr(q.q, w); if (q.t === 'mc') { if (!(q.a >= 0 && q.a < q.opts.length)) fail(w + ' a'); } else if (q.t === 'multi') { q.a.forEach(x => { if (!(x >= 0 && x < q.opts.length)) fail(w + ' multi'); }); } else if (q.t === 'num') { if (!Number.isFinite(q.a)) fail(w + ' num'); } else if (q.t === 'match') { if (!q.pairs.length) fail(w + ' match'); } else fail(w + ' tip necunoscut'); (q.opts || []).forEach((o, j) => checkStr(o, w + ' opt' + j)); checkStr(q.why || '', w + ' why'); }));
 console.log('instanțe verificate:', checked, '· erori:', errors);

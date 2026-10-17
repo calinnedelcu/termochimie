@@ -40,9 +40,9 @@
         {
           id: 'a', ask: 'Masa de aluminiu', a: m, unit: 'g', dec: 2, steps: [
             'Pe ecuație: $2 mol Al = 2 · 27 = 54 g$ degajă $852 kJ$.',
-            'Convertesc căldura din enunț: $256,57 kcal = 256,57 · 10^3 cal$, deci $Q = 256,57 · 10^3 · 4,18 J = 1 072 482,6 J ≈ 1072,48 kJ$.',
-            'Proporție: &nbsp; $54 g Al ... 852 kJ$ &nbsp; și &nbsp; $x g Al ... 1072,48 kJ$.',
-            '$x = (54 · 1072,48)//(852) ≈ <b>' + N(m, 2) + ' g</b>$ de aluminiu (aprox. 68 g).']
+            'Convertesc căldura din enunț: $256,57 kcal = 256,57 · 10^3 cal$, deci $Q = 256,57 · 10^3 · 4,18 J = 1 072 462,6 J ≈ 1072,46 kJ$.',
+            'Proporție: &nbsp; $54 g Al ... 852 kJ$ &nbsp; și &nbsp; $x g Al ... 1072,46 kJ$.',
+            '$x = (54 · 1072,46)//(852) ≈ <b>' + N(m, 2) + ' g</b>$ de aluminiu (aprox. 68 g).']
         },
         { id: 'b', ask: 'Căldura degajată la reacția unui mol de Al', a: 426, unit: 'kJ', dec: 1, steps: ['Din ecuație: $2 mol Al ↔ 852 kJ$.', 'Pentru un mol: $852 / 2 = <b>426 kJ</b>$.'] }
       ]
@@ -164,6 +164,7 @@
     return {
       statement: '<p>Se dă ecuația termochimică:</p>' + eqBlock(r) + '<p><b>a)</b> De ce trebuie încălzit etanul pentru a se descompune?</p><p><b>b)</b> Ce căldură se absoarbe la descompunerea a <b>448 L</b> de etan, măsurați în condiții normale?</p>',
       data: ['$V_m = 22,4 L/mol$ (c.n.)'],
+      note: T.callout('note', 'În caiet, rezultatul scris este 2470 kJ, dar $20 · 137 = 2740$ kJ — aici am corectat calculul.', 'Corectură'),
       method: 'Transformă volumul în moli: $ν = V / 22,4$. Apoi ecuația îți dă căldura pentru 1 mol.',
       parts: [
         {
@@ -242,7 +243,7 @@
     id: 'etan', short: 'Gaze și volume (c.n.)', title: 'Căldura de reacție și volumele gazelor la condiții normale',
     blurb: 'Volum de gaz → moli → căldură (și invers). Recunoști o reacție endotermă din ecuație.',
     skill: 'ν = V/22,4 · reacții endoterme',
-    intro: T.callout('tip', '<b>Reține:</b> la condiții normale ($0 °C$, $1 atm$) un mol de gaz ocupă $22,4$ L. Transformi volumul în moli, apoi folosești căldura din ecuație pentru acei moli. Dacă $Q$ e în <b>stânga</b> ecuației, reacția este <b>endotermă</b> (absoarbe căldură).'),
+    intro: T.callout('tip', '<b>Reține:</b> la c.n. un mol de gaz ocupă $22,4$ L ($V_m = 22,4$ L/mol). Transformi volumul în moli, apoi folosești căldura din ecuație pentru acei moli. Dacă $Q$ e în <b>stânga</b> ecuației, reacția este <b>endotermă</b> (absoarbe căldură).'),
     original: etanOriginal, make: etanMake
   });
 
@@ -258,9 +259,10 @@
   function glucozaOriginal() {
     var r = T.RXN.glucoza;
     return {
-      statement: '<p>Oxidarea glucozei în organism poate fi descrisă prin ecuația termochimică:</p><div class="eqn exo">[[C6H12O6 + O2 -> 2CH3-CO-COOH + 2H2O + 483 kJ]]</div><p class="muted">glucoză &nbsp;→&nbsp; acid piruvic</p>' +
+      statement: '<p>Transformarea glucozei în acid piruvic poate fi descrisă prin ecuația termochimică:</p><div class="eqn exo">[[C6H12O6 + O2 -> 2CH3-CO-COOH + 2H2O + 483 kJ]]</div><p class="muted">glucoză &nbsp;→&nbsp; acid piruvic</p>' +
         '<p><b>a)</b> Reacția este exotermă sau endotermă?</p><p><b>b)</b> Ce căldură se degajă la oxidarea a <b>100 mmol</b> de glucoză?</p><p><b>c)</b> Ce masă de glucoză (în kg) trebuie oxidată pentru a se degaja <b>7245 kJ</b>?</p>',
       data: ['M(glucoză) = 180 g/mol', '1 mmol = 10⁻³ mol'],
+      note: T.callout('note', 'Enunțul este reconstituit din rezolvarea din caiet (cifrele și rezultatele sunt cele din caiet).'),
       method: 'Convertește milimolii în moli și scrie proporția cu căldura pe mol. La c) afli mai întâi moli, apoi masa $m = ν · M$.',
       parts: [
         { id: 'a', type: 'mc', ask: 'Tipul reacției:', opts: ['endotermă', 'exotermă', 'fără efect termic', 'nu se poate stabili'], correct: 1, steps: ['În ecuație căldura apare în dreapta (la produși): se <b>degajă</b> ⟹ reacție <b>exotermă</b>.'] },
@@ -328,7 +330,7 @@
      4. Apă + ardere: Q = m·c·ΔT cu pierderi de căldură (randament)
      ===================================================== */
   var FUELS = [
-    { f: 'C2H5OH(l)', n: 'etanolului', M: 46, Hc: 1367, co2: 2 },
+    { f: 'C2H5OH(l)', n: 'etanolului', M: 46, Hc: 1234.8, co2: 2 },
     { f: 'CH4(g)', n: 'metanului', M: 16, Hc: 890, co2: 1, gas: true },
     { f: 'CH3OH(l)', n: 'metanolului', M: 32, Hc: 726.5, co2: 1 },
     { f: 'C3H8(g)', n: 'propanului', M: 44, Hc: 2220, co2: 3, gas: true },
@@ -341,9 +343,10 @@
     return {
       statement: '<p>Se încălzesc <b>200 g</b> de apă de la <b>20 °C</b> la <b>80 °C</b>, folosind căldura degajată la arderea etanolului. <b>30%</b> din căldura degajată se pierde în mediu. Căldura de ardere a etanolului este <b>1234,8 kJ/mol</b>.</p><p><b>a)</b> Ce căldură este necesară încălzirii apei?</p><p><b>b)</b> Ce masă de etanol trebuie arsă?</p>',
       data: ['$c_{apă} = 4,184 J/(g·K)$', 'M([[C2H5OH]]) = 46 g/mol'],
-      method: 'a) $Q = m·c·ΔT$. b) Doar 70% din căldura degajată ajunge la apă: $0,70 · Q_{total} = Q_{apă}$. Apoi moli de etanol $ν = Q_{total}/ΔH_{ardere}$ și masa $m = ν · M$.',
+      note: T.callout('note', 'Enunțul este reconstituit din rezolvarea din caiet (în caiet apare doar împărțirea la 1234,8; ea a fost înțeleasă ca „căldura de ardere, în kJ/mol”).'),
+      method: 'a) $Q = m·c·ΔT$. b) Doar 70% din căldura degajată ajunge la apă: $0,70 · Q_{total} = Q_{apă}$. Apoi moli de etanol $ν$ din căldura de ardere (kJ/mol) și masa $m = ν · M$.',
       parts: [
-        { id: 'a', ask: 'Căldura necesară încălzirii apei', a: Q, unit: 'kJ', dec: 3, steps: ['$ΔT = 80 − 20 = 60 °C = 60 K$.', '$Q = m · c · ΔT = 200 · 4,184 · 60 = 50 208 J$.', '$Q = <b>50,208 kJ</b>$.'] },
+        { id: 'a', ask: 'Căldura necesară încălzirii apei', a: Q, unit: 'kJ', dec: 3, steps: ['$ΔT = 80 − 20 = 60 °C$.', '$Q = m · c · ΔT = 200 · 4,184 · 60 = 50 208 J$.', '$Q = <b>50,208 kJ</b>$.'] },
         { id: 'b', ask: 'Masa de etanol', a: m, unit: 'g', dec: 2, steps: ['30% se pierd ⟹ doar 70% încălzește apa: $0,70 · Q_{total} = 50,208 kJ$.', '$Q_{total} = (50,208)//(0,70) ≈ 71,73 kJ$.', '$ν = (71,73)//(1234,8) ≈ 0,0581 mol$ etanol.', '$m = ν · M = 0,0581 · 46 ≈ <b>2,67 g</b>$.'] }
       ]
     };
@@ -393,11 +396,11 @@
       // randament
       var Qdeg3 = nf * fu.Hc, Qutil3 = mw * c * dT / 1000, rend = Qutil3 / Qdeg3 * 100;
       return {
-        statement: '<p>Prin arderea a <b>' + N(mf, 2) + ' g</b> de ' + C(fu.f) + ' (căldura de ardere <b>' + N(fu.Hc, 1) + ' kJ/mol</b>) se încălzesc <b>' + mw + ' g</b> de apă de la <b>' + t1 + ' °C</b> la <b>' + t2 + ' °C</b>.</p><p><b>a)</b> Ce căldură a primit apa?</p><p><b>b)</b> Ce procent din căldura degajată de ardere a ajuns la apă (randamentul încălzirii)?</p>', data: dataBase,
-        method: 'Randamentul = căldura utilă / căldura degajată · 100.',
+        statement: '<p>Prin arderea a <b>' + N(mf, 2) + ' g</b> de ' + C(fu.f) + ' (căldura de ardere <b>' + N(fu.Hc, 1) + ' kJ/mol</b>) se încălzesc <b>' + mw + ' g</b> de apă de la <b>' + t1 + ' °C</b> la <b>' + t2 + ' °C</b>.</p><p><b>a)</b> Ce căldură a primit apa?</p><p><b>b)</b> Ce procent din căldura degajată de ardere a ajuns la apă?</p>', data: dataBase,
+        method: 'Procentul = căldura primită de apă / căldura degajată · 100.',
         parts: [
           { id: 'a', ask: 'Căldura primită de apă', a: Qutil3, unit: 'kJ', dec: 3, steps: ['$Q = m·c·ΔT = ' + mw + ' · ' + N(c, 3) + ' · ' + dT + ' = <b>' + N(Qutil3, 3) + ' kJ</b>$.'] },
-          { id: 'b', ask: 'Randamentul încălzirii', a: rend, unit: '%', dec: 1, steps: ['Degajată: $ν = (' + N(mf, 2) + ')//(' + fu.M + ') = ' + N(nf, 4) + ' mol$ ⟹ $Q = ' + N(nf, 4) + ' · ' + N(fu.Hc, 1) + ' = ' + N(Qdeg3, 2) + ' kJ$.', '$η = (Q_{utilă})//(Q_{degajată}) · 100 = (' + N(Qutil3, 3) + ')//(' + N(Qdeg3, 2) + ') · 100 = <b>' + N(rend, 1) + '%</b>$.'] }
+          { id: 'b', ask: 'Procentul din căldura degajată care a ajuns la apă', a: rend, unit: '%', dec: 1, steps: ['Degajată: $ν = (' + N(mf, 2) + ')//(' + fu.M + ') = ' + N(nf, 4) + ' mol$ ⟹ $Q = ' + N(nf, 4) + ' · ' + N(fu.Hc, 1) + ' = ' + N(Qdeg3, 2) + ' kJ$.', '$p = (Q_{apă})//(Q_{degajată}) · 100 = (' + N(Qutil3, 3) + ')//(' + N(Qdeg3, 2) + ') · 100 = <b>' + N(rend, 1) + '%</b>$.'] }
         ]
       };
     }
@@ -405,7 +408,7 @@
     var gasF = FUELS.filter(function (x) { return x.gas; }), fg = R.pick(gasF), Vw = R.pick([1, 1.5, 2, 2.5, 3]), mwg = Vw * 1000, tt1 = R.pick([15, 20, 25]), tt2 = R.pick([60, 70, 80]);
     var lossg = R.pick([20, 25, 30, 40]), etag = (100 - lossg) / 100, dTg = tt2 - tt1, Qwg = mwg * 4.18 * dTg / 1000, Qtg = Qwg / etag, ng2 = Qtg / fg.Hc, Vg = ng2 * 22.4, Vco2 = ng2 * fg.co2 * 22.4;
     return {
-      statement: '<p>Se încălzesc <b>' + N(Vw, 1) + ' L</b> de apă ($ρ = 1 g/mL$) de la <b>' + tt1 + ' °C</b> la <b>' + tt2 + ' °C</b> prin arderea ' + fg.n + ' (căldura de ardere <b>' + N(fg.Hc, 1) + ' kJ/mol</b>). <b>' + lossg + '%</b> din căldură se pierde.</p><p><b>a)</b> Ce căldură utilă primește apa?</p><p><b>b)</b> Ce volum de ' + C(fg.f) + ' (c.n.) trebuie ars?</p><p><b>c)</b> Ce volum de ' + C('CO2(g)') + ' (c.n.) se degajă la ardere? <span class="muted">(1 mol de ' + C(fg.f) + ' dă ' + fg.co2 + ' mol de ' + C('CO2') + ')</span></p>',
+      statement: '<p>Se încălzesc <b>' + N(mwg, 0) + ' g</b> de apă de la <b>' + tt1 + ' °C</b> la <b>' + tt2 + ' °C</b> prin arderea ' + fg.n + ' (căldura de ardere <b>' + N(fg.Hc, 1) + ' kJ/mol</b>). <b>' + lossg + '%</b> din căldură se pierde.</p><p><b>a)</b> Ce căldură utilă primește apa?</p><p><b>b)</b> Ce volum de ' + C(fg.f) + ' (c.n.) trebuie ars?</p><p><b>c)</b> Ce volum de ' + C('CO2(g)') + ' (c.n.) se degajă la ardere? <span class="muted">(1 mol de ' + C(fg.f) + ' dă ' + fg.co2 + ' mol de ' + C('CO2') + ')</span></p>',
       data: ['$c_{apă} = 4,18 J/(g·K)$', '$V_m = 22,4 L/mol$ (c.n.)'], method: 'a) $Q = m·c·ΔT$. b) Căldura totală = utilă / randament, apoi $ν = Q/ΔH$ și $V = ν·22,4$. c) Din raportul molar al arderii.',
       parts: [
         { id: 'a', ask: 'Căldura utilă', a: Qwg, unit: 'kJ', dec: 1, steps: ['$m = ' + N(mwg, 0) + ' g$; $ΔT = ' + dTg + ' K$.', '$Q = ' + N(mwg, 0) + ' · 4,18 · ' + dTg + ' = ' + N(Qwg * 1000, 0) + ' J = <b>' + N(Qwg, 1) + ' kJ</b>$.'] },
@@ -416,10 +419,10 @@
   }
 
   reg({
-    id: 'apa-etanol', short: 'Apă + ardere (randament)', title: 'Încălzirea apei prin ardere, cu pierderi de căldură',
-    blurb: 'Q = m·c·ΔT, randamentul încălzirii și masa de combustibil necesară.',
+    id: 'apa-etanol', short: 'Apă + ardere (pierderi)', title: 'Încălzirea apei prin ardere, cu pierderi de căldură',
+    blurb: 'Q = m·c·ΔT, pierderile de căldură (procente) și masa de combustibil necesară.',
     skill: '$Q = m·c·ΔT$ · procente · moli de combustibil',
-    intro: T.callout('tip', '<b>Cum gândești:</b> (1) căldura pe care o primește apa: $Q = m·c·ΔT$; (2) dacă se pierd $p%$, la apă ajunge $(100 − p)%$ din căldura degajată ⟹ $Q_{total} = Q_{apă} / η$; (3) din $Q_{total}$ afli molii de combustibil: $ν = Q_{total}/ΔH_{ardere}$.'),
+    intro: T.callout('tip', '<b>Cum gândești:</b> (1) căldura pe care o primește apa: $Q = m·c·ΔT$; (2) dacă se pierd $p%$ din căldură, la apă ajunge $(100 − p)%$ din căldura degajată: $(100 − p)/100 · Q_{total} = Q_{apă}$; (3) din $Q_{total}$ afli moli de combustibil, apoi masa.'),
     original: apaOriginal, make: apaMake
   });
 
@@ -440,6 +443,7 @@
     return {
       statement: '<p>La o reacție se degajă <b>78,68 kJ</b>. Ce procent din această căldură ar fi necesar pentru a <b>încălzi și topi 10 g de sodiu</b>, aflat inițial la <b>20 °C</b>?</p>',
       data: ['$c_{Na} = 1,23 J/(g·K)$', '$λ_{topire} = 2,6 kJ/mol$ (pe mol)', 'temperatura de topire: 98 °C', 'M(Na) = 23 g/mol'],
+      note: T.callout('note', 'Tema 8. Enunțul este reconstituit din rezolvarea din caiet (încălzire de la 20 °C la 98 °C, apoi $ν·λ$ cu $λ = 2,6$ kJ/mol).'),
       method: 'Două etape: (1) încălzirea sodiului solid de la 20 °C la 98 °C: $Q_1 = m·c·ΔT$; (2) topirea la 98 °C: $Q_2 = ν·λ$. Apoi procentul: $x = Q_{necesar}/Q_{degajat} · 100$.',
       parts: [
         { id: 'a', ask: 'Căldura necesară încălzirii și topirii sodiului', a: Qp / 1000, unit: 'kJ', dec: 2, steps: ['Încălzire: $ΔT = 98 − 20 = 78 K$; $Q_1 = m·c·ΔT = 10 · 1,23 · 78 = 959,4 J$.', 'Topire: $ν = (10)//(23) = 0,4348 mol$; $Q_2 = ν·λ = 0,4348 · 2600 = 1130,43 J$ (λ = 2,6 kJ = 2600 J/mol).', '$Q = Q_1 + Q_2 = 959,4 + 1130,43 = 2089,83 J ≈ <b>2,09 kJ</b>$.'] },
