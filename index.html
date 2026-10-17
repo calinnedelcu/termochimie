@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Termochimie interactivă — reacții exoterme și endoterme</title>
+<meta name="description" content="Material de studiu interactiv pentru termochimie: lecții cu grafice, probleme cu variații, cartonașe și teste.">
+<meta name="theme-color" content="#1c2640">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231c2640'/%3E%3Cpath d='M32 10c2 10 16 14 16 30a16 16 0 0 1-32 0c0-8 5-12 8-17 2 4 3 6 5 7 2-6 2-12 3-20z' fill='%23ff8a5c'/%3E%3C/svg%3E">
+<script>
+  // aplică tema salvată înainte de desenare (fără clipire)
+  try { var t = localStorage.getItem('termochimie.theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/widgets.css">
+</head>
+<body>
+<a class="skip" href="#main">Sari la conținut</a>
+
+<header class="topbar">
+  <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Deschide meniul" aria-expanded="false" aria-controls="side">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <a class="brand" href="#/" aria-label="Acasă">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" width="30" height="30"><rect width="32" height="32" rx="8" fill="currentColor"/><path d="M16 5c1 5 8 7 8 15a8 8 0 0 1-16 0c0-4 2.5-6 4-8.5 1 2 1.5 3 2.500 3.500 1-3 1-6 1.500-10z" fill="#ff8a5c"/></svg>
+    </span>
+    <span class="brand-t"><b>Termochimie</b><small>reacții exoterme și endoterme</small></span>
+  </a>
+  <div class="top-actions">
+    <a class="top-link" href="#/formule">Formule</a>
+    <a class="top-link" href="#/test">Test</a>
+    <div class="top-progress" id="topProgress" title="Lecții parcurse"><span class="tp-bar"><i></i></span><span class="tp-n">0/12</span></div>
+    <button class="icon-btn" id="themeBtn" type="button" aria-label="Schimbă tema (luminos / întunecat)">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.800A9 9 0 1 1 11.200 3a7 7 0 0 0 9.800 9.800z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="side" id="side" aria-label="Navigare"></nav>
+  <div class="scrim" id="scrim"></div>
+  <main id="main" tabindex="-1">
+    <noscript><div class="page"><p>Acest material interactiv are nevoie de JavaScript. Activează-l în browser și reîncarcă pagina.</p></div></noscript>
+  </main>
+</div>
+
+<script src="assets/js/core.js"></script>
+<script src="assets/js/ui.js"></script>
+<script src="assets/js/svgs.js"></script>
+<script src="assets/js/widgets-basic.js"></script>
+<script src="assets/js/widgets-calor.js"></script>
+<script src="assets/js/widgets-react.js"></script>
+<script src="assets/js/widgets-energy.js"></script>
+<script src="assets/js/widgets-hess.js"></script>
+<script src="assets/js/data-quiz.js"></script>
+<script src="assets/js/data-cards.js"></script>
+<script src="assets/js/problems.js"></script>
+<script src="assets/js/problems2.js"></script>
+<script src="assets/js/problems-ui.js"></script>
+<script src="assets/js/chapters-1.js"></script>
+<script src="assets/js/chapters-2.js"></script>
+<script src="assets/js/chapters-3.js"></script>
+<script src="assets/js/pages.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>

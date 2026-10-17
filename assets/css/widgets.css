@@ -1,0 +1,156 @@
+/* =========================================================
+   widgets.css — părți interactive și desene SVG
+   ========================================================= */
+.wd { margin: 26px 0; background: var(--paper); border: 2px solid var(--line-2); border-radius: 18px; box-shadow: var(--shadow); overflow: hidden; }
+.wd-head { display: flex; align-items: center; gap: 10px; padding: 11px 16px; background: var(--paper-2); border-bottom: 1.5px solid var(--line); }
+.wd-head .wd-title { flex: 1; font-size: 1rem; }
+.wd-badge { display: inline-block; font-size: .68rem; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; background: var(--hl); color: #3a2f00; padding: .16rem .55rem; border-radius: 6px; }
+:root[data-theme="dark"] .wd-badge { color: #fff2b0; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .wd-badge { color: #fff2b0; } }
+.wd-help { margin: 0; padding: 10px 16px 0; font-size: .92rem; color: var(--ink-2); }
+.wd-body { padding: 14px 16px 16px; }
+.wd-err { color: var(--bad); padding: 12px 16px; margin: 0; }
+.wd-ctrl { display: grid; gap: 2px; margin: 10px 0 4px; padding: 10px 14px; background: var(--info-soft); border: 1px solid var(--info-line); border-radius: 12px; }
+.wd-row { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin: 8px 0; }
+.wd-row > label { font-size: .9rem; color: var(--ink-2); font-weight: 600; }
+.wd-out { margin: 12px 0 2px; padding: 11px 14px; border-radius: 12px; background: var(--paper-2); border: 1.5px solid var(--line-2); font-size: 1rem; }
+.wd-out.exo { background: var(--exo-soft); border-color: var(--exo-line); }
+.wd-out.endo { background: var(--endo-soft); border-color: var(--endo-line); }
+.wd-out.ok { background: var(--ok-soft); border-color: var(--ok-line); }
+.wd-out.bad { background: var(--bad-soft); border-color: var(--bad-line); }
+.wd-out b.big { font-size: 1.25rem; }
+.wd-svg { background: var(--paper-2); border: 1.5px solid var(--line); border-radius: 14px; padding: 6px; }
+.wd-svg svg { display: block; width: 100%; height: auto; max-height: 430px; }
+.wd-two { display: grid; grid-template-columns: 1.25fr 1fr; gap: 16px; align-items: start; }
+@media (max-width: 800px) { .wd-two { grid-template-columns: 1fr; } }
+
+/* ---------- diagrama de entalpie ---------- */
+svg text { font-family: var(--font); }
+.ed text, .ed-t { font-family: var(--font); font-size: 15px; fill: var(--ink); }
+.ed .b, .ed-t.b { font-weight: 750; }
+.ed .m, .ed-t.m { fill: var(--ink-3); font-size: 13.500px; }
+.ed .sb, .ed .sp { font-size: 10.500px; }
+.ed-ax { stroke: var(--ink-2); stroke-width: 2.200; fill: none; }
+.ed-guide { stroke: var(--ink-3); stroke-width: 1.300; stroke-dasharray: 5 5; opacity: .85; }
+.ed-tick { stroke: var(--ink-2); stroke-width: 1.800; }
+.ed-curve { stroke-width: 3.600; stroke-linecap: round; stroke-linejoin: round; }
+.ed-curve.ink { stroke: var(--ink); }
+.ed-curve.exo { stroke: var(--exo); }
+.ed-curve.endo { stroke: var(--endo); }
+.ed-peak { fill: var(--paper); stroke-width: 3; }
+.ed-peak.ink { stroke: var(--ink); }
+.ed-peak.exo { stroke: var(--exo); }
+.ed-peak.endo { stroke: var(--endo); }
+.ed-ea { stroke: #b07d00; stroke-width: 2.600; }
+.ed-t.ea { fill: #b07d00; font-weight: 800; font-size: 16px; }
+:root[data-theme="dark"] .ed-ea { stroke: #f0c24a; }
+:root[data-theme="dark"] .ed-t.ea { fill: #f0c24a; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ed-ea { stroke: #f0c24a; } :root:not([data-theme="light"]) .ed-t.ea { fill: #f0c24a; } }
+.ed-dh { stroke-width: 2.600; }
+.ed-dh.exo { stroke: var(--exo); } .ed-dh.endo { stroke: var(--endo); } .ed-dh.ink { stroke: var(--ink); }
+.ed-t.dh { font-weight: 800; font-size: 16px; }
+.ed-t.exo { fill: var(--exo); } .ed-t.endo { fill: var(--endo); }
+.ed-t.cap { font-weight: 750; font-size: 15px; }
+.ed-t.cap.ink { fill: var(--ink-2); }
+.ed-mark { stroke: var(--ink); stroke-width: 2.200; }
+.ed-mark-c { fill: var(--paper); stroke: var(--ink); stroke-width: 2; }
+.mk-ink { fill: var(--ink-2); } .mk-exo { fill: var(--exo); } .mk-endo { fill: var(--endo); } .mk-ea { fill: #b07d00; } .mk-ok { fill: var(--ok); }
+:root[data-theme="dark"] .mk-ea { fill: #f0c24a; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .mk-ea { fill: #f0c24a; } }
+.thermo .th-g { fill: var(--line); stroke: var(--ink-3); stroke-width: 1.500; }
+
+/* ---------- scene (sistem / mediu / cilindru) ---------- */
+.se-env { fill: var(--paper-2); stroke: var(--line-2); stroke-width: 2; }
+.se-lbl { font-size: 12px; font-weight: 800; letter-spacing: .09em; fill: var(--ink-3); }
+.se-lbl.sys { fill: var(--ink); font-size: 13px; }
+.se-sm { font-size: 12.500px; fill: var(--ink-3); }
+.se-table { fill: var(--line-2); }
+.se-sys { fill: none; stroke: var(--ink); stroke-width: 2.200; stroke-dasharray: 7 6; }
+.se-beaker { stroke: var(--ink-2); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.se-liq.exo { fill: color-mix(in srgb, var(--exo) 32%, var(--paper)); }
+.se-liq.endo { fill: color-mix(in srgb, var(--endo) 32%, var(--paper)); }
+.se-liqt { font-size: 12px; fill: var(--ink); font-weight: 650; }
+.se-q { font-size: 17px; font-weight: 800; }
+.se-q.exo { fill: var(--exo); } .se-q.endo { fill: var(--endo); } .se-q.ink { fill: var(--ink); }
+.wa { fill: none; stroke-linecap: round; }
+.wa.exo { stroke: var(--exo); } .wa.endo { stroke: var(--endo); } .wa.ink { stroke: var(--ink-2); } .wa.ea { stroke: #b07d00; }
+.se-val { font-size: 14px; font-weight: 750; fill: var(--ink); }
+.cyl { fill: none; stroke: var(--ink-2); stroke-width: 3; }
+.gas { fill: color-mix(in srgb, var(--endo) 16%, var(--paper)); }
+.gas.hot { fill: color-mix(in srgb, var(--exo) 30%, var(--paper)); }
+.gas.cold { fill: color-mix(in srgb, var(--endo) 34%, var(--paper)); }
+.piston { fill: var(--ink-2); }
+.piston-rod { stroke: var(--ink-2); stroke-width: 4; stroke-linecap: round; }
+.pin { fill: var(--ink); }
+.water { fill: color-mix(in srgb, var(--endo) 42%, var(--paper)); }
+.ice { fill: color-mix(in srgb, #9fd3ff 60%, var(--paper)); stroke: color-mix(in srgb, #5aa7e0 80%, var(--paper)); stroke-width: 2; }
+.hb.bq { fill: var(--ink-3); } .hb.bl { fill: #d9a400; } .hb.bu { fill: var(--accent); }
+.cls-list { display: grid; gap: 8px; }
+.cls-row { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; align-items: center; padding: 8px 12px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--paper); }
+.cls-row.ok { border-color: var(--ok); background: var(--ok-soft); }
+.cls-row.bad { border-color: var(--bad); background: var(--bad-soft); }
+.cls-t { font-weight: 600; }
+.cls-why { grid-column: 1 / -1; font-size: .9rem; color: var(--ink-2); }
+@media (max-width: 560px) { .cls-row { grid-template-columns: 1fr; } }
+
+.hc-seg { stroke: var(--ink); stroke-width: 3.400; stroke-linecap: round; }
+.hc-seg.plateau { stroke: #d9a400; stroke-width: 4.400; }
+.hc-dot { fill: var(--paper); stroke: var(--exo); stroke-width: 3.500; }
+
+/* ---------- energie / ciocniri / orientare ---------- */
+.ed-ball { fill: var(--accent); stroke: var(--paper); stroke-width: 2.500; }
+.cd-area { fill: color-mix(in srgb, var(--exo) 32%, transparent); stroke: none; }
+.cd-cur { stroke: var(--ink); stroke-width: 3.200; stroke-linecap: round; stroke-linejoin: round; }
+.cd-ref { stroke: var(--ink-3); stroke-width: 2; stroke-dasharray: 5 5; }
+.or-b { stroke: var(--ink-2); stroke-width: 4; stroke-linecap: round; }
+.or-a.x { fill: var(--endo); } .or-a.y { fill: var(--exo); } .or-a.z { fill: var(--ok); } .or-a.w { fill: #d9a400; }
+
+/* ---------- schimbări de stare ---------- */
+.sw-n { fill: var(--paper); stroke: var(--ink-2); stroke-width: 2.500; }
+.sw-nt { font-size: 15px; font-weight: 800; fill: var(--ink); letter-spacing: .04em; }
+.sw-a { cursor: pointer; outline: none; }
+.sw-a path { stroke-width: 3.400; stroke-linecap: round; }
+.sw-a.exo path { stroke: var(--exo); }
+.sw-a.endo path { stroke: var(--endo); }
+.sw-a path.hit { stroke: transparent; stroke-width: 30; fill: none; }
+.sw-a text { font-size: 14px; font-weight: 700; }
+.sw-a.exo text { fill: var(--exo); } .sw-a.endo text { fill: var(--endo); }
+.sw-a.on path:not(.hit) { stroke-width: 6; }
+.sw-a.on text { text-decoration: underline; font-size: 15px; }
+.sw-a:focus-visible path:not(.hit) { filter: drop-shadow(0 0 3px currentColor); }
+
+/* ---------- Hess / formare ---------- */
+.hc-list { display: grid; gap: 10px; margin: 10px 0; }
+.hc-row { display: grid; grid-template-columns: 34px 1.1fr auto 1.2fr; gap: 8px 14px; align-items: center; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--paper); }
+.hc-row.off { opacity: .72; }
+.hc-row.rev { border-color: var(--exo-line); background: var(--exo-soft); }
+.hc-lab { font-weight: 800; color: var(--ink-3); }
+.hc-eq { font-size: .98rem; }
+.hc-dh { color: var(--ink-2); font-size: .9rem; white-space: nowrap; }
+.hc-ctl { display: flex; align-items: center; gap: 6px; }
+.hc-m { min-width: 2.6em; text-align: center; font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+.hc-res { font-size: .95rem; }
+@media (max-width: 860px) { .hc-row { grid-template-columns: 30px 1fr; } .hc-ctl { grid-column: 2; } .hc-res { grid-column: 1 / -1; } }
+.hy-bar { stroke: var(--ink); stroke-width: 4; stroke-linecap: round; }
+.hy-dir { stroke: var(--ink-2); stroke-width: 2.500; stroke-dasharray: 6 5; fill: none; }
+.ed-t.ink { fill: var(--ink); }
+.sb-g { cursor: pointer; outline: none; }
+.sb-hit { fill: transparent; }
+.sb-g:hover .sb-hit, .sb-g.on .sb-hit { fill: var(--info-soft); }
+.sb-bar.exo { fill: var(--exo); } .sb-bar.endo { fill: var(--endo); }
+.sb-g.on .sb-bar { stroke: var(--ink); stroke-width: 2.500; }
+.sb-g tspan.m { fill: var(--ink-3); font-size: 12px; }
+.sb-g:focus-visible .sb-hit { stroke: var(--endo); stroke-width: 2; }
+
+/* ---------- telefon: text mai mare în desenele SVG ---------- */
+@media (max-width: 640px) {
+  .ed text, .ed-t { font-size: 21px; }
+  .ed .m, .ed-t.m { font-size: 19px; }
+  .ed .sb, .ed .sp, svg .sb, svg .sp { font-size: 15px; }
+  .ed-t.ea, .ed-t.dh, .ed-t.cap { font-size: 22px; }
+  .se-lbl { font-size: 15px; } .se-sm { font-size: 15px; } .se-val { font-size: 17px; } .se-q { font-size: 21px; } .se-liqt { font-size: 14px; }
+  .sw-a text { font-size: 18px; } .sw-nt { font-size: 19px; }
+  .wd-svg svg { max-height: none; }
+}
+
+/* @@MORE@@ */
