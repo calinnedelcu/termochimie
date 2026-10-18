@@ -132,6 +132,7 @@
             '<li>Pe ecuație: $ν$ mol ($= ν·M$ grame sau $ν·22,4$ L pentru un gaz la c.n.) ⟷ căldura din ecuație.</li>' +
             '<li>Pe date: cantitatea pe care o ai sau o cauți ⟷ $x$.</li>' +
             '<li>Rezolvă proporția.</li></ol>' +
+            W('moleScale') +
             W('thermoEq') +
             K('ex', '<b>Ce căldură se degajă la arderea a 36 g de carbon?</b> ($M_C = 12$ g/mol)<br>$ν = (36)//(12) = 3$ mol ⟹ $Q = 3 · 393,5 = 1180,5$ kJ.') +
             K('warn', '<b>Verifică:</b> unitățile ($kJ$ / $J$ / $kcal$ și $g$ / $kg$) și că ai folosit coeficienții din ecuație. La gaze, în caiet: la c.n. $V_m = 22,4$ L/mol.');
@@ -153,6 +154,7 @@
         id: 'leg', h: 'Energia legăturilor chimice',
         html: function () {
           return K('key', '<b>Ruperea</b> unei legături = <b>absorbție</b> de energie.<br><b>Formarea</b> unei legături = <b>degajare</b> de energie.', 'Reține') +
+            W('bondsScene') +
             MQ('Ce se întâmplă cu energia când se formează o legătură chimică?', ['Se absoarbe energie', 'Se degajă energie', 'Nu se schimbă energie', 'Depinde de temperatură'], 1, 'Formarea unei legături = degajare de energie; ruperea = absorbție.');
         }
       },

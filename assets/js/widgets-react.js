@@ -49,41 +49,6 @@
   };
 
   /* ---------------------------------------------------------
-     Laboratorul exo / endo
-     --------------------------------------------------------- */
-  var LAB = ['neutr', 'klorat', 'metan', 'carbon', 'termita', 'glucoza', 'etan'];
-  var SYMQ = { neutr: 1, klorat: 1, metan: 1 };   // în caiet, Q este scris simbolic
-
-  T.widget('exoEndoLab', function (el) {
-    var body = T.shell(el, {
-      title: 'Exotermă sau endotermă? Alege o reacție',
-      help: 'Vezi unde se scrie $Q$ în ecuația termochimică, ce semn au $Q$ și $ΔH$ și cum arată diagrama de entalpie.'
-    });
-    var cur = 'neutr', id = T.uid('ee');
-    var eqBox = T.h('div', { class: 'eqn' }), facts = T.h('div', { class: 'tbl-wrap' }), pic = T.h('div', { class: 'wd-svg' });
-    var two = T.h('div', { class: 'wd-two' }, T.h('div', null, eqBox, facts), pic);
-    var seg = T.seg(LAB.map(function (k) { return { v: k, label: T.RXN[k].name.replace(' (NaOH + H2SO4)', ''), cls: T.RXN[k].type }; }), cur, function (v) { cur = v; draw(); }, 'Reacția');
-
-    function draw() {
-      var r = T.RXN[cur], exo = r.type === 'exo';
-      eqBox.className = 'eqn ' + r.type;
-      eqBox.innerHTML = T.rich(T.eqStr(r, SYMQ[cur] ? { Q: null } : {}));
-            var rows = [
-        ['Tipul reacției', exo ? '<b class="tag-exo">exotermă</b>' : '<b class="tag-endo">endotermă</b>'],
-        ['Căldura în ecuație', exo ? 'se <b>degajă</b> ($Q$ apare în dreapta, la produși)' : 'se <b>absoarbe</b> ($Q$ apare în stânga, la reactanți)'],
-        ['$Q$ pentru sistem', exo ? '$Q < 0$ (sistemul cedează)' : '$Q > 0$ (sistemul primește)'],
-        ['$ΔH$', exo ? '$ΔH < 0$' : '$ΔH > 0$'],
-        ['Entalpii', exo ? '$H_P < H_R$' : '$H_P > H_R$'],
-        ['Mediul exterior', exo ? 'primește căldura degajată' : 'cedează căldura absorbită de reacție']
-      ];
-      facts.innerHTML = T.rich('<table class="tbl"><tbody>' + rows.map(function (x) { return '<tr><th style="width:38%">' + x[0] + '</th><td>' + x[1] + '</td></tr>'; }).join('') + '</tbody></table>');
-      pic.innerHTML = T.svgs.energy(exo ? { HR: 62, HP: 24, HCA: 86, id: id } : { HR: 24, HP: 62, HCA: 90, id: id });
-    }
-    body.append(seg, two);
-    draw();
-  });
-
-  /* ---------------------------------------------------------
      Joc: exo sau endo?
      --------------------------------------------------------- */
   var SORT = [
@@ -228,7 +193,15 @@
     function drawAll() {
       var s = '<svg viewBox="0 0 560 320" role="img" aria-label="Schimbările de stare de agregare">' + T.svgs.defs(id);
       [['SOLID', 90], ['LICHID', 280], ['GAZ', 470]].forEach(function (p) {
-        s += '<circle class="sw-n" cx="' + p[1] + '" cy="160" r="46"/><text class="sw-nt" x="' + p[1] + '" y="165" text-anchor="middle">' + p[0] + '</text>';
+        var cx = p[1], pts, bonds = '', i, j, cls = p[0] === 'SOLID' ? 'v-jig cold' : p[0] === 'GAZ' ? 'v-jig hot' : 'v-jig';
+        if (p[0] === 'SOLID') {
+          pts = []; for (j = 0; j < 3; j++) for (i = 0; i < 3; i++) pts.push([-14 + i * 14, -22 + j * 14]);
+          for (j = 0; j < 3; j++) { bonds += '<line x1="' + (cx - 14) + '" y1="' + (138 + j * 14) + '" x2="' + (cx + 14) + '" y2="' + (138 + j * 14) + '" stroke="var(--ink-3)" stroke-width="2" opacity=".5"/>'; bonds += '<line x1="' + (cx - 14 + j * 14) + '" y1="138" x2="' + (cx - 14 + j * 14) + '" y2="166" stroke="var(--ink-3)" stroke-width="2" opacity=".5"/>'; }
+        } else if (p[0] === 'LICHID') pts = [[-20, -26], [-2, -30], [16, -24], [-26, -10], [-8, -14], [10, -8], [24, -14], [-16, 4], [4, 6]];
+        else pts = [[-24, -28], [10, -32], [-4, -8], [22, -14], [-28, 2]];
+        s += '<circle class="sw-n" cx="' + cx + '" cy="160" r="46"/>' + bonds;
+        pts.forEach(function (q, k) { s += '<circle class="' + cls + '" cx="' + (cx + q[0]) + '" cy="' + (160 + q[1]) + '" r="4.6" style="fill:var(--endo);animation-delay:-' + (k * .11) + 's"/>'; });
+        s += '<text class="sw-nt" x="' + cx + '" y="186" text-anchor="middle">' + p[0] + '</text>';
       });
       s += A('topire', 'M140 138 L230 138', 185, 126) + A('solidificare', 'M230 184 L140 184', 185, 208);
       s += A('vaporizare', 'M330 138 L420 138', 375, 126) + A('condensare', 'M420 184 L330 184', 375, 208);

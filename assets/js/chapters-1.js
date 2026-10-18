@@ -42,6 +42,7 @@
           return '<p><b>Starea termodinamică</b> a unui sistem este determinată de proprietățile sale la un moment dat: <b>temperatura</b>, <b>presiunea</b>, <b>volumul</b> etc. Aceste mărimi se numesc <b>parametri de stare</b>.</p>' +
             K('imp', 'Modificarea stării unui sistem ca urmare a <b>interacțiunii cu mediul exterior</b> reprezintă un <b>proces termodinamic</b>.', 'Marcat în caiet') +
             '<p>Exemplu: încălzești apa din pahar de la 20 °C la 80 °C pe o plită. Starea inițială (20 °C) și cea finală (80 °C) diferă prin temperatură, iar trecerea de la una la alta, datorită plitei (mediul exterior), este un proces termodinamic.</p>' +
+            W('stateProc') +
             MQ('Care dintre următoarele este un parametru de stare?', ['temperatura sistemului', 'numele substanței', 'durata experimentului', 'culoarea paharului'], 0,
               'Parametrii de stare sunt <b>temperatura, presiunea, volumul</b> etc. — proprietățile sistemului la un moment dat.');
         }
@@ -85,7 +86,7 @@
             '<div class="callout tip"><div class="ct">1 · creșterea temperaturii</div><div class="cb">↑ t°</div></div>' +
             '<div class="callout tip"><div class="ct">2 · lucru mecanic</div><div class="cb">efectul unui lucru mecanic</div></div>' +
             '<div class="callout tip"><div class="ct">3 · schimbarea stării</div><div class="cb">schimbarea stării de agregare</div></div></div>' +
-            '<p>În simularea de la secțiunea anterioară (Q = căldura schimbată) poți alege și cele trei efecte ale căldurii primite.</p>';
+            W('heatEffects');
         }
       },
       {
@@ -110,6 +111,10 @@
     short: '$C$, $c$, $c_m$ și $λ$ — definiții, formule, unități',
     lead: 'Patru mărimi leagă căldura de temperatură și de schimbările de stare: capacitatea calorică, căldura specifică, căldura specifică molară și căldura latentă specifică.',
     sections: [
+      {
+        id: 'harta', h: 'Cele patru mărimi, pe scurt',
+        html: function () { return W('marimiCards'); }
+      },
       {
         id: 'cap', h: 'Capacitatea calorică, C',
         html: function () {
@@ -174,7 +179,8 @@
       {
         id: 'echilibru', h: 'Principiul echilibrului termic',
         html: function () {
-          return K('key', 'Dacă mai multe corpuri cu temperaturi diferite sunt puse în contact <b>într-un sistem izolat</b>, după un timp ele ajung la <b>aceeași temperatură</b>.', 'Enunț');
+          return K('key', 'Dacă mai multe corpuri cu temperaturi diferite sunt puse în contact <b>într-un sistem izolat</b>, după un timp ele ajung la <b>aceeași temperatură</b>.', 'Enunț') +
+            W('equilibrium');
         }
       },
       {
@@ -189,6 +195,7 @@
         id: 'inverse', h: 'Procese inverse',
         html: function () {
           return K('imp', 'Cantitatea de căldură <b>absorbită</b> într-o transformare este egală, <b>ca valoare</b>, cu cea <b>degajată</b> în transformarea inversă. Exemplu: <b>topire ↔ solidificare</b>.', 'Marcat în caiet') +
+            W('inverseProc') +
             MQ('Topirea unei cantități de gheață absoarbe 3300 J. Ce căldură se degajă la solidificarea aceleiași cantități (în aceleași condiții)?', ['3300 J (se degajă)', '3300 J (se absoarbe)', 'Nicio căldură', 'Nu se poate afla'], 0,
               'Procese inverse (topire ↔ solidificare) ⟹ aceeași valoare: solidificarea <b>degajă</b> 3300 J.');
         }

@@ -156,7 +156,28 @@
         res);
       list.append(row); rows.push({ mEl: mEl, res: res, row: row });
     });
-    var sum = T.h('div', { class: 'wd-out' }), hint = T.h('div', { class: 'wd-out', hidden: true });
+    var sum = T.h('div', { class: 'wd-out' }), hint = T.h('div', { class: 'wd-out', hidden: true }), board = T.h('div', { class: 'bd' });
+    function boardHtml() {
+      var tot = {}, keys;
+      cfg.eqs.forEach(function (e, i) {
+        var m = mult[i]; if (!m) return; var tr = transformed(e, m);
+        tr.L.forEach(function (q) { (tot[q[1]] = tot[q[1]] || { L: 0, R: 0 }).L += q[0]; });
+        tr.R.forEach(function (q) { (tot[q[1]] = tot[q[1]] || { L: 0, R: 0 }).R += q[0]; });
+      });
+      keys = Object.keys(tot).sort(function (a, b) { var ia = order.indexOf(a), ib = order.indexOf(b); return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib); });
+      if (!keys.length) return '';
+      var mx = Math.max.apply(null, keys.map(function (k) { return Math.max(tot[k].L, tot[k].R); }).concat([1]));
+      var h = '<div class="bd-h"><span></span><span class="l">în stânga (reactanți)</span><span class="r">în dreapta (produși)</span><span></span></div>';
+      keys.forEach(function (k) {
+        var L = tot[k].L, R = tot[k].R, c = Math.min(L, R), lo = L - c, ro = R - c, wl = function (x) { return (x / mx * 100).toFixed(1) + '%'; };
+        var want = tnet[k] || 0, have = R - L, good = Math.abs(want - have) < 1e-9;
+        var st = Math.abs(L - R) < 1e-9 ? '<span class="bd-s cancel">se simplifică</span>' : lo > 0 ? '<span class="bd-s keep">rămâne ' + T.fmt(lo, 1) + ' la reactanți</span>' : '<span class="bd-s keep">rămâne ' + T.fmt(ro, 1) + ' la produși</span>';
+        h += '<div class="bd-row' + (good ? ' ok' : ' no') + '"><span class="bd-f">' + T.rich('[[' + k + ']]') + '</span>' +
+          '<span class="bd-l">' + (lo > 0 ? '<i class="keep" style="width:' + wl(lo) + '"></i>' : '') + (c > 0 ? '<i class="cx" style="width:' + wl(c) + '"></i>' : '') + '</span>' +
+          '<span class="bd-r">' + (c > 0 ? '<i class="cx" style="width:' + wl(c) + '"></i>' : '') + (ro > 0 ? '<i class="keep" style="width:' + wl(ro) + '"></i>' : '') + '</span>' + st + '</div>';
+      });
+      return '<div class="bd-t">Bilanțul substanțelor (ce se simplifică și ce rămâne)</div>' + h;
+    }
     function step(i, d) {
       var k = MULT.indexOf(mult[i]); k = T.clamp(k + d, 0, MULT.length - 1); mult[i] = MULT[k]; update();
     }
@@ -177,6 +198,7 @@
         totalH += m * e.dH;
         r.res.innerHTML = T.rich((m < 0 ? '<span class="chip exo">inversată</span> ' : '') + (Math.abs(m) !== 1 ? '<span class="chip">× ' + mlab(Math.abs(m)) + '</span> ' : '') + T.hessEqStr(tr) + ' &nbsp;<b>$ΔH = ' + T.fmt(m * e.dH, 2) + ' kJ$</b>');
       });
+      board.innerHTML = boardHtml();
       var net = T.netOf(cfg.eqs, mult), ok = Object.keys(net).length && T.sameNet(net, tnet);
       var used = mult.some(function (m) { return m !== 0; });
       sum.className = 'wd-out ' + (ok ? 'ok' : used ? '' : '');
@@ -206,7 +228,7 @@
       mult = cfg.eqs.map(function (e) { return e.m; }); update(); hint.hidden = false; hint.className = 'wd-out';
       hint.innerHTML = T.rich('<b>Raționament:</b><br>' + cfg.eqs.map(function (e, i) { return why(i); }).join('<br>'));
     }, 'ghost');
-    body.append(targetBox, list, sum, T.h('div', { class: 'wd-row' }, bHint, bSol), hint);
+    body.append(targetBox, list, sum, board, T.h('div', { class: 'wd-row' }, bHint, bSol), hint);
     update();
   });
 
@@ -258,6 +280,39 @@
      Căldura de reacție din căldurile de formare
      --------------------------------------------------------- */
   var METAN = { id: 'metan', name: 'Arderea metanului (problema 8 din caiet)', L: [[1, 'CH4(g)'], [2, 'O2(g)']], R: [[1, 'CO2(g)'], [2, 'H2O(g)']] };
+  function levelChart(r, vals) {
+    var cols = ['var(--endo)', 'var(--ok)', '#8b5cf6', '#d9a400', '#14a39a', '#f08c2a'];
+    function side(arr, off) { return arr.map(function (q, i) { return { f: q[1], nu: q[0], v: q[0] * (vals[q[1]] || 0), c: cols[(i + off) % cols.length] }; }); }
+    var SL = side(r.L, 0), SR = side(r.R, r.L.length);
+    function sums(S) { var pos = 0, neg = 0, net = 0; S.forEach(function (x) { if (x.v > 0) pos += x.v; else neg += -x.v; net += x.v; }); return { pos: pos, neg: neg, net: net }; }
+    var a = sums(SL), b = sums(SR), posMax = Math.max(a.pos, b.pos), negMax = Math.max(a.neg, b.neg), tot = Math.max(posMax + negMax, 1), k = 190 / tot;
+    var z = 50 + posMax * k, W = 520, H = z + negMax * k + 56, V = T.viz, p = V.uid('lv');
+    var s = V.defs(p) + V.panel(p, W, H, 'var(--paper-2)');
+    s += '<line x1="30" y1="' + V.f(z) + '" x2="490" y2="' + V.f(z) + '" stroke="var(--ink-2)" stroke-width="2.4" stroke-dasharray="7 5"/><text class="t-s t-b" x="34" y="' + V.f(z - 28) + '">elemente în stare standard: ΔH<tspan class="sb" dy="3">f</tspan><tspan dy="-3"> = 0</tspan></text>';
+    function stack(S, xc, anchor) {
+      var up = z, down = z, t = '';
+      S.forEach(function (x) {
+        var h = Math.abs(x.v) * k;
+        if (Math.abs(x.v) < 1e-9) { t += '<path d="M' + (xc - 6) + ' ' + V.f(z) + ' l6 -7 l6 7 l-6 7z" fill="var(--ink-2)"/>'; t += '<text class="t-s t-m" x="' + (anchor === 'end' ? xc - 12 : xc + 82) + '" y="' + V.f(z - 10) + '" text-anchor="' + anchor + '">' + T.uni(x.f.replace(/\((s|l|g|aq)\)$/, '')) + ' (element)</text>'; return; }
+        h = Math.max(h, 3);
+        var y = x.v > 0 ? up - h : down;
+        t += '<rect x="' + xc + '" y="' + V.f(y) + '" width="70" height="' + V.f(h) + '" rx="3" style="fill:' + V.mix(x.c, 70, 'transparent') + '" stroke="' + x.c + '" stroke-width="1.6"/>';
+        t += '<text class="t-s" x="' + (anchor === 'end' ? xc - 8 : xc + 78) + '" y="' + V.f(y + h / 2 + 4) + '" text-anchor="' + anchor + '">' + T.uni(x.f.replace(/\((s|l|g|aq)\)$/, '')) + ' · ' + (x.nu !== 1 ? T.fmt(x.nu, 1) + '×' : '') + T.fmt(vals[x.f] || 0, 1) + '</text>';
+        if (x.v > 0) up -= h; else down += h;
+      });
+      return t;
+    }
+    s += stack(SL, 130, 'end') + stack(SR, 320, 'start');
+    var yR = z - a.net * k, yP = z - b.net * k, d = b.net - a.net, col = d < 0 ? 'var(--exo)' : 'var(--endo)';
+    s += '<line x1="124" y1="' + V.f(yR) + '" x2="206" y2="' + V.f(yR) + '" stroke="var(--ink)" stroke-width="3.2" stroke-linecap="round"/><line x1="314" y1="' + V.f(yP) + '" x2="396" y2="' + V.f(yP) + '" stroke="var(--ink)" stroke-width="3.2" stroke-linecap="round"/>';
+    s += '<line x1="206" y1="' + V.f(yR) + '" x2="262" y2="' + V.f(yR) + '" stroke="var(--ink-3)" stroke-dasharray="4 4"/><line x1="262" y1="' + V.f(yP) + '" x2="314" y2="' + V.f(yP) + '" stroke="var(--ink-3)" stroke-dasharray="4 4"/>';
+    if (Math.abs(yP - yR) > 8) s += '<line x1="262" y1="' + V.f(yR) + '" x2="262" y2="' + V.f(yP) + '" stroke="' + col + '" stroke-width="4"/><path d="M262 ' + V.f(yP) + ' l-8 ' + (yP > yR ? -13 : 13) + ' h16z" fill="' + col + '"/>';
+    s += '<text class="t-b" x="268" y="' + V.f((yR + yP) / 2 + 5) + '" style="fill:' + col + '">ΔH<tspan class="sb" dy="3">r</tspan><tspan dy="-3"> = ' + T.fmt(d, 1) + '</tspan></text>';
+    s += '<text class="t-b" x="130" y="' + V.f(H - 30) + '" text-anchor="middle">reactanți</text><text class="t-s t-m" x="130" y="' + V.f(H - 12) + '" text-anchor="middle">ΣΔH<tspan class="sb" dy="3">f</tspan><tspan dy="-3"> = ' + T.fmt(a.net, 1) + '</tspan></text>';
+    s += '<text class="t-b" x="355" y="' + V.f(H - 30) + '" text-anchor="middle">produși</text><text class="t-s t-m" x="355" y="' + V.f(H - 12) + '" text-anchor="middle">ΣΔH<tspan class="sb" dy="3">f</tspan><tspan dy="-3"> = ' + T.fmt(b.net, 1) + '</tspan></text>';
+    return V.frame([W, H], s, 'Nivelurile căldurilor de formare ale reactanților și produșilor; diferența lor este căldura de reacție');
+  }
+
   T.widget('formationCalc', function (el, o) {
     var FORM = [(o && o.L && o.R) ? { id: 'cfg', name: o.name || 'Reacția din problemă', L: o.L, R: o.R } : METAN];
     var body = T.shell(el, {
@@ -266,7 +321,7 @@
     });
     var cur = FORM[0].id, vals = {}, nmol = 5;
     function mainOf(r) { var l = r.L.filter(function (x) { return x[1] !== 'O2(g)'; }); return (l.length ? l : r.L)[0]; }
-    var host = T.h('div'), out = T.h('div', { class: 'wd-out' });
+    var host = T.h('div'), out = T.h('div', { class: 'wd-out' }), vis = T.h('div');
     function reset() { var r = FORM.find(function (x) { return x.id === cur; }); vals = {}; r.L.concat(r.R).forEach(function (p) { vals[p[1]] = T.HF[p[1]]; }); }
     function build() {
       var r = FORM.find(function (x) { return x.id === cur; });
@@ -291,11 +346,12 @@
       var P = r.R.reduce(function (s, p) { return s + p[0] * vals[p[1]]; }, 0), Rr = r.L.reduce(function (s, p) { return s + p[0] * vals[p[1]]; }, 0);
       var dH = P - Rr;
       var ps = r.R.map(function (p) { return T.fmt(p[0], 1) + '·(' + T.fmt(vals[p[1]], 1) + ')'; }).join(' + '), rs = r.L.map(function (p) { return T.fmt(p[0], 1) + '·(' + T.fmt(vals[p[1]], 1) + ')'; }).join(' + ');
+      vis.innerHTML = levelChart(r, vals);
       out.className = 'wd-out ' + (dH < 0 ? 'exo' : 'endo');
       out.innerHTML = T.rich('$ΔH_r = [' + ps + '] − [' + rs + '] = ' + T.fmt(P, 1) + ' − (' + T.fmt(Rr, 1) + ') = <b>' + T.fmt(dH, 1) + ' kJ</b>$ ⟹ ' + (dH < 0 ? '<b class="tag-exo">exotermă</b> ($ΔH < 0$)' : '<b class="tag-endo">endotermă</b> ($ΔH > 0$)') +
         '<br>Pentru ' + T.fmt(nmol, 2) + ' mol de [[' + mainOf(r)[1] + ']] (coeficient ' + T.fmt(mainOf(r)[0], 1) + ' în ecuație): $|Q| = (' + T.fmt(nmol, 2) + ' · ' + T.fmt(Math.abs(dH), 1) + ')//(' + T.fmt(mainOf(r)[0], 1) + ') = ' + T.fmt(nmol / mainOf(r)[0] * Math.abs(dH), 1) + ' kJ$ ' + (dH < 0 ? 'degajați' : 'absorbiți') + '.');
     }
-    body.append(host, out);
+    body.append(host, out, vis);
     reset(); build();
   });
 

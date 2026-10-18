@@ -13,7 +13,7 @@
 .wd-ctrl { display: grid; gap: 2px; margin: 10px 0 4px; padding: 10px 14px; background: var(--info-soft); border: 1px solid var(--info-line); border-radius: 12px; }
 .wd-row { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin: 8px 0; }
 .wd-row > label { font-size: .9rem; color: var(--ink-2); font-weight: 600; }
-.wd-out { margin: 12px 0 2px; padding: 11px 14px; border-radius: 12px; background: var(--paper-2); border: 1.5px solid var(--line-2); font-size: 1rem; }
+.wd-out { margin: 12px 0 2px; padding: 11px 14px; border-radius: 12px; background: var(--paper-2); border: 1.5px solid var(--line-2); font-size: 1rem; overflow-x: auto; }
 .wd-out.exo { background: var(--exo-soft); border-color: var(--exo-line); }
 .wd-out.endo { background: var(--endo-soft); border-color: var(--endo-line); }
 .wd-out.ok { background: var(--ok-soft); border-color: var(--ok-line); }

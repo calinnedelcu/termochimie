@@ -115,7 +115,7 @@ figure.fig figcaption { padding: 6px 8px 2px; font-size: .88rem; color: var(--in
 .nav-foot .mid { margin: 0 auto; }
 
 /* ---------- pagina de start ---------- */
-.hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 28px; align-items: center; margin: 6px 0 12px; }
+.hero { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; margin: 6px 0 12px; }
 .hero h1 { margin: .15em 0 .2em; }
 .hero p.lead { margin-bottom: 1.2em; }
 .hero-art { background: var(--paper); border: 1.5px solid var(--line-2); border-radius: 18px; padding: 10px; box-shadow: var(--shadow); }

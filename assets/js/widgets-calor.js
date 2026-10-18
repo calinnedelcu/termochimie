@@ -147,11 +147,8 @@
         var a = { x: X(sg.q0), y: Y(sg.k === 'heat' ? sg.T0 : sg.T) }, b = { x: X(sg.q1), y: Y(sg.k === 'heat' ? sg.T1 : sg.T) };
         s += '<line class="hc-seg ' + (sg.k === 'melt' ? 'plateau' : '') + '" x1="' + a.x + '" y1="' + a.y + '" x2="' + b.x + '" y2="' + b.y + '"/>';
         var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
-        if (sg.k === 'melt') s += '<text class="ed-t m" x="' + mx + '" y="' + (my - 10) + '" text-anchor="middle">' + sg.st + '</text>';
-        else {
-          var right = mx + 14 + 60 < X1 + 30;
-          s += '<text class="ed-t m" x="' + (right ? mx + 14 : mx - 14) + '" y="' + (my + 5) + '" text-anchor="' + (right ? 'start' : 'end') + '">' + sg.st + '</text>';
-        }
+        if (sg.k === 'melt') s += T.viz.pill(mx, my - 26, 'topire · t° constantă', { tone: 'warn', w: 176, lower: true, h: 26 });
+        else s += T.viz.pill(mx + 52, my + 30, 'se încălzește (solid)', { tone: 'ink', w: 176, lower: true, h: 26 });
       });
       // markerul curent
       var cur = locate(C, Q);

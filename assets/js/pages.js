@@ -41,7 +41,7 @@
       '<p class="lead">Lecții cu grafice pe care le poți mișca, probleme rezolvate pas cu pas și <b>variații cu numere noi</b>, pornind de la caietul tău.</p>' +
       '<div class="btn-row"><a class="btn primary" href="#/lectia/' + first.id + '">' + (st.read ? 'Continuă: ' : 'Începe: ') + first.title + '</a>' +
       '<a class="btn" href="#/probleme">Probleme și variații</a></div></div>' +
-      '<div class="hero-art">' + heroArt() + '</div></section>';
+      '<div class="hero-art">' + (T.heroArt ? T.heroArt() : heroArt()) + '</div></section>';
 
     h += '<div class="steps3">' +
       '<div class="s"><b>Învață</b>12 lecții scurte, după caiet, cu simulări și grafice interactive. La final, întrebări pe capitol.</div>' +
@@ -58,7 +58,7 @@
     T.chapters.forEach(function (c, i) {
       var done = T.store.get('read.' + c.id, false), best = T.store.get('quiz.' + c.id + '.best', null);
       h += '<a class="lcard ' + (done ? 'done ' : '') + (c.tone === 'exo' ? 'exo-c' : c.tone === 'endo' ? 'endo-c' : '') + '" href="#/lectia/' + c.id + '">' +
-        '<span class="ln">Lecția ' + (i + 1) + '</span><b>' + c.title + '</b><span class="sub">' + c.short + '</span>' +
+        '<span class="lart">' + (T.banner ? T.banner(c.id) : '') + '</span><span class="ln">Lecția ' + (i + 1) + '</span><b>' + c.title + '</b><span class="sub">' + c.short + '</span>' +
         '<span class="st">' + (done ? '✓ parcursă' : (best != null ? 'quiz ' + best + '%' : '')) + '</span></a>';
     });
     h += '</div>';
@@ -91,13 +91,14 @@
     if (idx < 0) return { title: 'Lecție inexistentă', html: '<div class="page"><h1>Lecție inexistentă</h1><p><a href="#/">Înapoi acasă</a></p></div>' };
     var ch = T.chapters[idx], prev = T.chapters[idx - 1], next = T.chapters[idx + 1];
     var read = T.store.get('read.' + ch.id, false);
-    var h = '<div class="page lesson"><header><div class="kicker">Lecția ' + (idx + 1) + ' din ' + T.chapters.length + '</div><h1>' + ch.title + '</h1><p class="lead">' + ch.lead + '</p>';
+    var h = '<div class="page lesson"><header><div class="lesson-head"><div class="lh-t"><div class="kicker">Lecția ' + (idx + 1) + ' din ' + T.chapters.length + '</div><h1>' + ch.title + '</h1><p class="lead">' + ch.lead + '</p></div><div class="lh-art">' + (T.banner ? T.banner(ch.id) : '') + '</div></div>';
     h += '<div class="lesson-toc">';
     ch.sections.forEach(function (s, i) { h += '<a href="#/lectia/' + ch.id + '" data-jump="' + ch.id + '-' + s.id + '">' + (i + 1) + '. ' + s.h + '</a>'; });
     h += '<a href="#/lectia/' + ch.id + '" data-jump="' + ch.id + '-quiz">Verifică-te</a></div></header>';
     ch.sections.forEach(function (s, i) {
       h += '<section id="' + ch.id + '-' + s.id + '"><h2><span class="sn">' + (idx + 1) + '.' + (i + 1) + '</span>' + s.h + '</h2>' + (typeof s.html === 'function' ? s.html() : s.html) + '</section>';
     });
+    if (T.recaps && T.recaps[ch.id]) h += '<section class="recap" id="' + ch.id + '-recap"><h2>Reține din lecție</h2><ul>' + T.recaps[ch.id].map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul></section>';
     h += '<section id="' + ch.id + '-quiz"><h2>Verifică-te</h2><p>Întrebări pe această lecție. Citește explicația la fiecare, chiar dacă ai nimerit răspunsul.</p>' + T.QZ(ch.id) + '</section>';
     h += '<div class="nav-foot">' + (prev ? '<a class="btn" href="#/lectia/' + prev.id + '">← ' + prev.title + '</a>' : '<a class="btn" href="#/">← Acasă</a>') +
       '<button class="btn ' + (read ? '' : 'primary') + ' mid" type="button" id="markRead">' + (read ? '✓ Lecție parcursă (apasă ca s-o debifezi)' : 'Am parcurs lecția ✓') + '</button>' +

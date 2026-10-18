@@ -17,7 +17,7 @@ python3 -m http.server 8000
 
 | Secțiune | Ce găsești |
 | --- | --- |
-| **Lecții (12)** | explicații scurte, simulări și grafice interactive, mini-verificări și un quiz la fiecare lecție |
+| **Lecții (12)** | explicații scurte, ilustrații animate și simulări interactive, mini-verificări, „Reține din lecție” și un quiz la fiecare lecție |
 | **Probleme (11 tipuri)** | tipurile 1–7: problemele din caiet rezolvate pas cu pas + variații la 3 niveluri (ușor / mediu / dificil); tipurile 8–11: exerciții pe noțiunile din caiet (model rezolvat + variații), cu numere noi la fiecare apăsare |
 | **Cartonașe** | definiții și reguli din caiet, cu repetiție (cele nestăpânite revin mai des) |
 | **Test** | întrebări + probleme generate aleatoriu, cronometru opțional, scor și rezolvări |
@@ -29,12 +29,16 @@ Progresul (lecții parcurse, scoruri, cartonașe) se salvează în browser (`loc
 
 ```
 index.html
-assets/css/        base.css (teme, layout) · components.css · widgets.css
+assets/css/        base.css (teme, layout) · components.css · widgets.css · viz.css (ilustrații și animații)
 assets/js/
   core.js          utilitare: numere, notații ($math$ și [[chimie]]), stocare, masă molară
   ui.js            controale, motorul de întrebări, quiz-uri
   svgs.js          diagrama de entalpie (SVG) și alte desene
+  viz.js           „trusa” de ilustrații: pahar, termometru, flacără, gheață, atomi, cilindru cu piston, săgeți de căldură
   widgets-*.js     părțile interactive (calorimetrie, reacții, energie, Hess)
+  widgets-viz-*.js scenele ilustrate și animate, pe lecții (1–2, 3–4, 5–8, 9–10, 7 + problemele)
+  banners.js       câte o ilustrație pentru fiecare lecție și imaginea de pe pagina de start
+  recaps.js        „Reține din lecție” (doar ce scrie în caiet)
   chapters-*.js    textul lecțiilor
   data-quiz.js     întrebările de la finalul lecțiilor
   data-cards.js    cartonașele

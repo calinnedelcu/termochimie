@@ -35,6 +35,7 @@
     return {
       statement: '<p>Se dă ecuația termochimică:</p>' + eqBlock(r) + '<p><b>a)</b> Ce masă de aluminiu trebuie să reacționeze pentru a se degaja <b>256,57 kcal</b>? <span class="muted">(1 cal ≈ 4,18 J)</span></p><p><b>b)</b> Ce căldură se degajă când reacționează <b>un mol</b> de aluminiu?</p>',
       data: mchips(['Al(s)']),
+      tool: { name: 'moleScale', opts: { rxn: 'termita' } },
       method: 'Sub ecuație scrii „pe ecuație”: 2 mol Al = 2·27 g ↔ 852 kJ. Transformi cele 256,57 kcal în kJ (× 4,18 și apoi ÷ 1000, trecând prin cal → J → kJ) și faci proporția.',
       parts: [
         {
@@ -164,6 +165,7 @@
     return {
       statement: '<p>Se dă ecuația termochimică:</p>' + eqBlock(r) + '<p><b>a)</b> De ce trebuie încălzit etanul pentru a se descompune?</p><p><b>b)</b> Ce căldură se absoarbe la descompunerea a <b>448 L</b> de etan, măsurați în condiții normale?</p>',
       data: ['$V_m = 22,4 L/mol$ (c.n.)'],
+      tool: { name: 'moleScale', opts: { rxn: 'etan' } },
       note: T.callout('note', 'În caiet, rezultatul scris este 2470 kJ, dar $20 · 137 = 2740$ kJ — aici am corectat calculul.', 'Corectură'),
       method: 'Transformă volumul în moli: $ν = V / 22,4$. Apoi ecuația îți dă căldura pentru 1 mol.',
       parts: [
@@ -262,6 +264,7 @@
       statement: '<p>Transformarea glucozei în acid piruvic poate fi descrisă prin ecuația termochimică:</p><div class="eqn exo">[[C6H12O6 + O2 -> 2CH3-CO-COOH + 2H2O + 483 kJ]]</div><p class="muted">glucoză &nbsp;→&nbsp; acid piruvic</p>' +
         '<p><b>a)</b> Reacția este exotermă sau endotermă?</p><p><b>b)</b> Ce căldură se degajă la oxidarea a <b>100 mmol</b> de glucoză?</p><p><b>c)</b> Ce masă de glucoză (în kg) trebuie oxidată pentru a se degaja <b>7245 kJ</b>?</p>',
       data: ['M(glucoză) = 180 g/mol', '1 mmol = 10⁻³ mol'],
+      tool: { name: 'moleScale', opts: { rxn: 'glucoza' } },
       note: T.callout('note', 'Enunțul este reconstituit din rezolvarea din caiet (cifrele și rezultatele sunt cele din caiet).'),
       method: 'Convertește milimolii în moli și scrie proporția cu căldura pe mol. La c) afli mai întâi moli, apoi masa $m = ν · M$.',
       parts: [
@@ -444,6 +447,7 @@
       statement: '<p>La o reacție se degajă <b>78,68 kJ</b>. Ce procent din această căldură ar fi necesar pentru a <b>încălzi și topi 10 g de sodiu</b>, aflat inițial la <b>20 °C</b>?</p>',
       data: ['$c_{Na} = 1,23 J/(g·K)$', '$λ_{topire} = 2,6 kJ/mol$ (pe mol)', 'temperatura de topire: 98 °C', 'M(Na) = 23 g/mol'],
       note: T.callout('note', 'Tema 8. Enunțul este reconstituit din rezolvarea din caiet (încălzire de la 20 °C la 98 °C, apoi $ν·λ$ cu $λ = 2,6$ kJ/mol).'),
+      tool: { name: 'heatingCurve' },
       method: 'Două etape: (1) încălzirea sodiului solid de la 20 °C la 98 °C: $Q_1 = m·c·ΔT$; (2) topirea la 98 °C: $Q_2 = ν·λ$. Apoi procentul: $x = Q_{necesar}/Q_{degajat} · 100$.',
       parts: [
         { id: 'a', ask: 'Căldura necesară încălzirii și topirii sodiului', a: Qp / 1000, unit: 'kJ', dec: 2, steps: ['Încălzire: $ΔT = 98 − 20 = 78 K$; $Q_1 = m·c·ΔT = 10 · 1,23 · 78 = 959,4 J$.', 'Topire: $ν = (10)//(23) = 0,4348 mol$; $Q_2 = ν·λ = 0,4348 · 2600 = 1130,43 J$ (λ = 2,6 kJ = 2600 J/mol).', '$Q = Q_1 + Q_2 = 959,4 + 1130,43 = 2089,83 J ≈ <b>2,09 kJ</b>$.'] },

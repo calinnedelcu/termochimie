@@ -87,6 +87,7 @@
             '<p>Reacțiile chimice se produc în urma <b>ciocnirilor eficiente</b> ale moleculelor. O ciocnire este <b>eficientă</b> dacă duce la <b>ruperea de legături</b>, iar pentru aceasta trebuie îndeplinite <b>două condiții</b>:</p>' +
             '<div class="callout key"><div class="ct">1 · condiția energetică</div><div class="cb">Moleculele dau ciocniri eficiente dacă ciocnirea lor are o valoare cel puțin egală cu un minim numit <b>„energie de prag”</b> sau <b>„energie de activare”</b> ($E_a$).</div></div>' +
             K('note', 'Caietul anunță „două condiții”, dar o scrie doar pe prima. Dacă ai notat-o și pe a doua la oră, completeaz-o în caiet — aici nu am pus-o, ca să nu adaug nimic care nu e în caiet.') +
+            W('reactionPath') +
             MQ('Două molecule se ciocnesc cu o energie mai mică decât $E_a$. Condiția energetică este îndeplinită?', ['Da', 'Nu: energia trebuie să fie cel puțin egală cu $E_a$', 'Depinde de $ΔH$', 'Nu se poate stabili'], 1,
               'Ciocnirea este eficientă (energetic) dacă energia ei este cel puțin egală cu energia de prag (de activare), $E_a$.');
         }
