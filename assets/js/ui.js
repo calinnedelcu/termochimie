@@ -320,7 +320,7 @@
     var best = T.store.get('quiz.' + id + '.best', null);
     var score = T.h('span', { class: 'quiz-score', 'aria-live': 'polite' });
     var head = T.h('div', { class: 'quiz-head' },
-      T.h('div', null, T.h('span', { class: 'wd-badge', text: 'Verifică-te' }), T.h('b', { class: 'quiz-title', text: ' Întrebări grele' })),
+      T.h('div', null, T.h('span', { class: 'wd-badge', text: 'Verifică-te' }), T.h('b', { class: 'quiz-title', text: ' Întrebări' })),
       score);
     var body = T.h('div', { class: 'quiz-body' });
     var foot = T.h('div', { class: 'quiz-foot', hidden: true });

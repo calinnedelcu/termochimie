@@ -129,7 +129,7 @@
       var kJ = tot >= 5000, qs = kJ ? 1000 : 1, qu = kJ ? 'kJ' : 'J';
       var s = '<svg viewBox="0 0 580 300" role="img" aria-label="Curba de încălzire">' + T.svgs.defs('hc');
       s += '<line class="ed-ax" x1="' + X0 + '" y1="' + Y0 + '" x2="' + X0 + '" y2="12" marker-end="url(#hc-ink)"/><line class="ed-ax" x1="' + X0 + '" y1="' + Y0 + '" x2="568" y2="' + Y0 + '" marker-end="url(#hc-ink)"/>';
-      s += '<text class="ed-t b" x="' + (X0 - 8) + '" y="18" text-anchor="end">t (°C)</text><text class="ed-t m" x="560" y="' + (Y0 + 30) + '" text-anchor="end">Q primită (' + qu + ')</text>';
+      s += '<text class="ed-t b" x="' + (X0 - 8) + '" y="18" text-anchor="end">t (°C)</text><text class="ed-t m" x="560" y="' + (Y0 + 44) + '" text-anchor="end">Q primită (' + qu + ')</text>';
       var stepT = (Tmax - Tmin) <= 60 ? 10 : (Tmax - Tmin) <= 130 ? 20 : 25;
       var special = C.segs.filter(function (sg) { return sg.k === 'melt'; }).map(function (sg) { return sg.T; });
       for (var tt = Math.ceil(Tmin / stepT) * stepT; tt <= Tmax; tt += stepT) {
@@ -137,9 +137,11 @@
         s += '<line class="ed-guide" x1="' + X0 + '" y1="' + Y(tt) + '" x2="' + X1 + '" y2="' + Y(tt) + '" opacity=".35"/>' + (clash ? '' : '<text class="ed-t m" x="' + (X0 - 8) + '" y="' + (Y(tt) + 4) + '" text-anchor="end">' + tt + '</text>');
       }
       special.forEach(function (sp) { s += '<text class="ed-t b" x="' + (X0 - 8) + '" y="' + (Y(sp) + 4) + '" text-anchor="end">' + sp + '</text>'; });
-      for (var k = 0; k <= 4; k++) {
-        var qv = tot * k / 4;
-        s += '<line class="ed-tick" x1="' + X(qv) + '" y1="' + Y0 + '" x2="' + X(qv) + '" y2="' + (Y0 + 5) + '"/><text class="ed-t m" x="' + X(qv) + '" y="' + (Y0 + 20) + '" text-anchor="middle">' + T.fmt(qv / qs, qs > 1 ? 2 : 0) + '</text>';
+      var rawStep = tot / qs / 5, mag = Math.pow(10, Math.floor(Math.log10(rawStep))), nmv = rawStep / mag;
+      var qStep = (nmv <= 1 ? 1 : nmv <= 2 ? 2 : nmv <= 5 ? 5 : 10) * mag;
+      for (var qd = 0; qd <= tot / qs + 1e-9; qd += qStep) {
+        var qv = qd * qs;
+        s += '<line class="ed-tick" x1="' + X(qv) + '" y1="' + Y0 + '" x2="' + X(qv) + '" y2="' + (Y0 + 5) + '"/><text class="ed-t m" x="' + X(qv) + '" y="' + (Y0 + 20) + '" text-anchor="middle">' + T.fmt(qd, qs > 1 ? 1 : 0) + '</text>';
       }
       C.segs.forEach(function (sg) {
         var a = { x: X(sg.q0), y: Y(sg.k === 'heat' ? sg.T0 : sg.T) }, b = { x: X(sg.q1), y: Y(sg.k === 'heat' ? sg.T1 : sg.T) };

@@ -35,11 +35,11 @@
     el.append(partsEl);
 
     // ---- rezolvare pas cu pas ----
-    var steps = [], sol = T.h('div', { class: 'prob-solution', hidden: true });
+    var steps = [], heads = [], sol = T.h('div', { class: 'prob-solution', hidden: true });
     var multi = inst.parts.filter(function (p) { return p.steps && p.steps.length; }).length > 1;
     inst.parts.forEach(function (p) {
       if (!p.steps || !p.steps.length) return;
-      if (multi) sol.append(T.h('h4', { text: 'Rezolvare ' + p.id + ')' }));
+      if (multi) { var hd = T.h('h4', { text: 'Rezolvare ' + p.id + ')', hidden: true }); heads.push({ el: hd, at: steps.length }); sol.append(hd); }
       p.steps.forEach(function (s, i) {
         var st = T.h('div', { class: 'step' + (i === p.steps.length - 1 ? ' final' : ''), hidden: true },
           T.h('span', { class: 'sn', text: i + 1 }), T.h('div', { class: 'sb-t', html: s }));
@@ -50,6 +50,7 @@
     function reveal(n) {
       shown = Math.min(steps.length, n);
       steps.forEach(function (s, i) { s.hidden = i >= shown; });
+      heads.forEach(function (h) { h.el.hidden = shown <= h.at; });
       sol.hidden = shown === 0;
       btnNext.hidden = shown >= steps.length;
       btnAll.hidden = shown >= steps.length;

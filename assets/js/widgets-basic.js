@@ -100,8 +100,8 @@
     function inner() {
       var lvl = T.clamp(0.5 + Q / 230, 0.06, 0.97);
       if (effect === 'temp') {
-        var col = lvl >= 0.5 ? 'var(--exo)' : 'var(--endo)', top = 80, bot = 160, y = bot - (bot - top) * lvl;
-        return '<rect x="212" y="72" width="16" height="92" rx="8" class="th-g"/><rect x="216" y="' + y + '" width="8" height="' + (bot - y + 8) + '" rx="4" fill="' + col + '"/><circle cx="220" cy="172" r="13" fill="' + col + '"/>';
+        var col = lvl >= 0.5 ? 'var(--exo)' : 'var(--endo)', top = 96, bot = 160, y = bot - (bot - top) * lvl;
+        return '<rect x="212" y="86" width="16" height="80" rx="8" class="th-g"/><rect x="216" y="' + y + '" width="8" height="' + (bot - y + 8) + '" rx="4" fill="' + col + '"/><circle cx="220" cy="172" r="13" fill="' + col + '"/>';
       }
       if (effect === 'work') {
         var yp = T.clamp(128 - Q * 0.5, 90, 168);
@@ -186,16 +186,16 @@
       var dU = Q - L;
       var piston = T.clamp(120 - L * 0.9, 56, 190);
       var hot = T.clamp(0.5 + dU / 240, 0, 1);
-      var s = '<svg viewBox="0 0 470 270" role="img" aria-label="Cilindru cu piston și bare pentru Q, L și ΔU">' + T.svgs.defs(id);
-      s += cyl(60, 40, 232, piston, hot > .55 ? 'hot' : hot < .45 ? 'cold' : '');
-      s += '<text class="se-sm" x="102" y="256" text-anchor="middle">gazul din cilindru</text>';
-      if (Q > 3) s += arrow(102, 262, 102, 238, 'exo', id, 3 + Q / 25);
-      else if (Q < -3) s += arrow(102, 238, 102, 262, 'endo', id, 3 + Math.abs(Q) / 25);
-      if (L > 3) s += arrow(160, piston - 6, 160, piston - 38, 'ea', id, 3 + L / 20) + '<text class="se-sm" x="168" y="' + (piston - 22) + '">L</text>';
-      var x0 = 335, sc = 0.66, rows = [['Q — căldura primită', Q, 'bq', 70], ['L — lucrul mecanic efectuat', L, 'bl', 135], ['ΔU — variația energiei interne', dU, 'bu', 200]];
+      var s = '<svg viewBox="0 0 450 290" role="img" aria-label="Cilindru cu piston și bare pentru Q, L și ΔU">' + T.svgs.defs(id);
+      s += cyl(24, 40, 232, piston, hot > .55 ? 'hot' : hot < .45 ? 'cold' : '');
+      if (Q > 3) s += arrow(66, 264, 66, 240, 'exo', id, 3 + Q / 25);
+      else if (Q < -3) s += arrow(66, 240, 66, 264, 'endo', id, 3 + Math.abs(Q) / 25);
+      s += '<text class="se-sm" x="66" y="284" text-anchor="middle">gazul din cilindru</text>';
+      if (L > 3) s += arrow(128, piston - 6, 128, piston - 38, 'ea', id, 3 + L / 20) + '<text class="se-sm" x="138" y="' + (piston - 22) + '">L</text>';
+      var x0 = 232, sc = 0.7, rows = [['Q (căldura primită)', Q, 'bq', 70], ['L (lucrul mecanic efectuat)', L, 'bl', 135], ['ΔU (variația energiei interne)', dU, 'bu', 200]];
       s += '<line class="ed-ax" x1="' + x0 + '" y1="50" x2="' + x0 + '" y2="236"/>';
       rows.forEach(function (r) {
-        s += '<text class="se-sm" x="' + (x0 - 112) + '" y="' + (r[3] - 8) + '">' + r[0] + '</text>' + hbar(x0, r[3], 0, r[1], sc, r[2]);
+        s += '<text class="se-sm" x="' + (x0 + 8) + '" y="' + (r[3] - 8) + '">' + r[0] + '</text>' + hbar(x0, r[3], 0, r[1], sc, r[2]);
         s += '<text class="se-val" x="' + (r[1] >= 0 ? x0 + r[1] * sc + 6 : x0 + r[1] * sc - 6) + '" y="' + (r[3] + 19) + '" text-anchor="' + (r[1] >= 0 ? 'start' : 'end') + '">' + (r[1] > 0 ? '+' : r[1] < 0 ? '−' : '') + Math.abs(r[1]) + '</text>';
       });
       holder.innerHTML = s + '</svg>';

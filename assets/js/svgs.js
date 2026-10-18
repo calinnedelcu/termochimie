@@ -85,7 +85,7 @@
     // E_a
     if (o.ea) {
       s += '<line class="ed-ea" x1="' + xea + '" y1="' + yR + '" x2="' + xea + '" y2="' + yC + '" marker-start="url(#' + id + '-ea)" marker-end="url(#' + id + '-ea)"/>';
-      if (o.labels) s += '<text class="ed-t ea" x="' + (xea + 9) + '" y="' + ((yR + yC) / 2 + 5) + '">' + S('E', 'a') + '</text>';
+      if (o.labels) s += '<text class="ed-t ea" x="' + (xea - 9) + '" y="' + ((yR + yC) / 2 + 5) + '" text-anchor="end">' + S('E', 'a') + '</text>';
     }
     // ΔH
     if (o.dh && Math.abs(yP - yR) >= 9) {

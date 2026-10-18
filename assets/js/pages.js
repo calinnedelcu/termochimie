@@ -200,7 +200,7 @@
   function testPage() {
     var qCount = [5, 10, 15, 20];
     var h = '<div class="page"><div class="kicker">Autoevaluare</div><h1>Test</h1>' +
-      '<p class="lead">De fiecare dată altceva: întrebări grele din lecții și probleme cu numere noi. Răspunzi la toate, apoi predai și vezi rezolvările.</p>' +
+      '<p class="lead">De fiecare dată altceva: întrebări din lecții și probleme cu numere noi. Răspunzi la toate, apoi predai și vezi rezolvările.</p>' +
       '<form class="test-setup" id="testForm"><fieldset><legend>Capitole pentru întrebările teoretice</legend><div class="check-grid">' +
       T.chapters.map(function (c, i) { return '<label><input type="checkbox" name="ch" value="' + c.id + '" checked> ' + (i + 1) + '. ' + c.title + '</label>'; }).join('') +
       '</div><div class="btn-row"><button type="button" class="btn small ghost" data-sel="all">Toate</button><button type="button" class="btn small ghost" data-sel="none">Niciunul</button></div></fieldset>' +

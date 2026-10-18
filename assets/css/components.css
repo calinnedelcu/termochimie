@@ -268,6 +268,8 @@ figure.fig figcaption { padding: 6px 8px 2px; font-size: .88rem; color: var(--in
 
 /* ---------- cartonașe ---------- */
 .deck-bar { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin: 12px 0 16px; }
+.deck-bar > label { max-width: 100%; }
+.deck-bar select.inp { max-width: 100%; min-width: 0; text-overflow: ellipsis; }
 .flash { perspective: 1200px; margin: 10px auto; max-width: 640px; }
 .flash-in { position: relative; min-height: 270px; transition: transform .45s; transform-style: preserve-3d; cursor: pointer; }
 .flash.flip .flash-in { transform: rotateY(180deg); }

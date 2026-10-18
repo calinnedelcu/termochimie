@@ -81,7 +81,6 @@
     }
     body.append(seg, two);
     draw();
-    body.append(T.h('p', { class: 'muted', html: 'Notă: în ecuația termochimică, $Q$ scris lângă săgeată este o <b>cantitate</b> de căldură (valoare pozitivă, în kJ). Semnul „−” sau „+” apare la $ΔH$ și la $Q$ față de sistem.' }));
   });
 
   /* ---------------------------------------------------------
@@ -247,7 +246,7 @@
     var cC = T.h('input', { class: 'inp sm', type: 'text', inputmode: 'decimal', value: '25', 'aria-label': 'Grade Celsius' });
     cK.addEventListener('input', function () { var v = T.parseNum(cK.value)[0]; if (v != null) cC.value = T.fmt(v - 273, 2); });
     cC.addEventListener('input', function () { var v = T.parseNum(cC.value)[0]; if (v != null) cK.value = T.fmt(v + 273, 2); });
-    var std = T.h('div', { class: 'callout imp', html: '<div class="ct"><span class="ct-i">✓</span>Marcat în caiet · condiții standard</div><div class="cb">$T = 298 K = 25 °C$ &nbsp;·&nbsp; $p = 1 atm$<div class="wd-row" style="margin-top:8px"><label>$T$ în K:</label>' + '<span class="k"></span><label>= $t$ în °C:</label><span class="c"></span><span class="muted">$T(K) = t(°C) + 273$</span></div></div>' });
+    var std = T.h('div', { class: 'callout tip', html: '<div class="ct"><span class="ct-i">⇄</span>Convertor K ↔ °C</div><div class="cb"><div class="wd-row"><label>$T$ în K:</label>' + '<span class="k"></span><label>= $t$ în °C:</label><span class="c"></span><span class="muted">$T(K) = t(°C) + 273$ (ex.: $298 K = 25 °C$)</span></div></div>' });
     body.append(holder, out, std);
     T.$('.k', std).replaceWith(cK); T.$('.c', std).replaceWith(cC);
     drawAll();
