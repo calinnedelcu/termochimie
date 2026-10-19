@@ -167,6 +167,7 @@
     return s
       .replace(/_\{([^{}]*)\}/g, '<sub>$1</sub>')
       .replace(/\^\{([^{}]*)\}/g, '<sup>$1</sup>')
+      .replace(/_(\d+)/g, '<sub>$1</sub>')   // indice numeric: doar cifrele (H_2SO_4 → H₂SO₄, nu „2SO”)
       .replace(/_([A-Za-z0-9ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρστυφχψω′*]+)/g, '<sub>$1</sub>')
       .replace(/\^([A-Za-z0-9*+°−-]+)/g, '<sup>$1</sup>')
       .replace(/<->/g, '⇄')

@@ -119,9 +119,14 @@
             '<div class="eqn">[[C(s) + O2(g) -> CO2(g)]] &nbsp; $ΔH_f^{298}$ &nbsp;(J/mol)</div>' +
             '<div class="eqn">[[H2(g) + S(s) + 2O2(g) -> H2SO4]] &nbsp; $ΔH_f$</div>' +
             K('note', 'În caiet, la a doua ecuație $O_2$ este scris fără coeficient; pentru $H_2SO_4$ (4 atomi de oxigen) ecuația echilibrată are $2O_2$.', 'Corectură') +
-            '<p>Pentru prima reacție, din lecția 7 știm că se degajă 393,5 kJ la 1 mol de $CO_2$ (reacție exotermă, $ΔH < 0$).</p>' +
-            K('note', 'Pe pagina din caiet, în margine, apare scris „1 atm, 25 °C” — condițiile standard (lecția 8).') +
-            K('note', 'Alături de aceste exemple, în caiet apare și [[CaCO3 -> CaO + CO2]] cu $ΔH$ (nu $ΔH_f$): ea nu pornește din elemente.') +
+            K('why',
+              '<ul>' +
+              '<li><b>De ce nu apare „+ Q”?</b> $ΔH_f$ este aceeași căldură, scrisă ca variație de entalpie ($Q_P = ΔH$, lecția 9), pentru <b>1 mol</b> de compus format (de aceea „J/mol”). La prima ecuație se degajă 393,5 kJ (lecția 7), reacția e exotermă ⟹ $ΔH < 0$:' +
+              '<div class="eqn" style="margin:8px 0">[[C(s) + O2(g) -> CO2(g) +&nbsp;393,5&nbsp;kJ]]</div>' +
+              '<div class="eqn" style="margin:8px 0">[[C(s) + O2(g) -> CO2(g)]] &nbsp; $ΔH_f = −393,5$ kJ/mol</div></li>' +
+              '<li><b>De ce „298” doar la prima?</b> 298 este temperatura din condițiile standard: $T = 298 K = 25 °C$ (în margine, în caiet: „1 atm, 25 °C”; lecția 8). Caietul scrie indicele doar la prima ecuație și nu spune de ce; la ambele definiția cere „stare standard”.</li>' +
+              '<li><b>Când se scrie $ΔH_f$?</b> Doar când ecuația <b>formează 1 mol de compus din elementele lui</b> (în dreapta un singur compus, cu coeficientul 1): de aceea la $H_2SO_4$ apare $2O_2$. Reacția [[CaCO3 -> CaO + CO2]] din caiet pornește dintr-un compus, deci are $ΔH$, nu $ΔH_f$.</li>' +
+              '</ul>', 'De ce așa?') +
             K('key', '<b>$ΔH_f$ al elementelor = 0</b> (exemplu din caiet: [[O2]]).');
         }
       },
