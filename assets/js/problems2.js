@@ -93,7 +93,7 @@
     id: 'hess', short: 'Legea lui Hess', title: 'Legea lui Hess: calculul lui ΔH din alte ecuații',
     blurb: 'Exercițiul „important” din caiet și variații: inversezi, înmulțești, aduni ecuațiile — și aduni valorile ΔH.',
     skill: 'inversare · înmulțire · adunare',
-    intro: T.callout('key', '<b>Reguli:</b> inversezi ecuația ⟹ $ΔH$ își schimbă semnul; o înmulțești cu $k$ ⟹ $ΔH$ se înmulțește cu $k$; adunând ecuațiile, adunăm și valorile $ΔH$.  Sub problemă ai un <b>combinator</b> cu care poți testa multiplicatorii.'),
+    intro: T.callout('key', '<b>Reguli:</b> inversezi ecuația ⟹ $ΔH$ își schimbă semnul; o înmulțești cu $k$ ⟹ $ΔH$ se înmulțește cu $k$; adunând ecuațiile, adunăm și valorile $ΔH$. <i>De ce:</i> procesul invers absoarbe exact ce degaja cel direct; $ΔH$ este pentru cantitățile din ecuație; $ΔH$ nu depinde de drum (lecția 12).  Sub problemă ai un <b>combinator</b> cu care poți testa multiplicatorii.'),
     original: hessOriginal, make: hessMake
   });
 
@@ -203,7 +203,7 @@
     id: 'entalpii-formare', short: 'ΔH din căldurile de formare', title: 'Căldura de reacție din căldurile de formare',
     blurb: 'ΔH = Σ(produși) − Σ(reactanți); căldura pentru n moli; ΔH_f necunoscut; stabilitate.',
     skill: '$ΔH_r = ΣνΔH_f(P) − ΣνΔH_f(R)$',
-    intro: T.callout('warn', '<b>Atenție:</b> (1) înmulțește fiecare $ΔH_f$ cu <b>coeficientul</b> din ecuație; (2) <b>produși − reactanți</b> (nu invers); (3) elementele au $ΔH_f = 0$; (4) pentru $n$ mol dintr-o substanță, raportezi la coeficientul ei din ecuație (proporție).'),
+    intro: T.callout('warn', '<b>Atenție:</b> (1) înmulțește fiecare $ΔH_f$ cu <b>coeficientul</b> din ecuație; (2) <b>produși − reactanți</b> (nu invers: reactanții se „desfac” în elemente, iar produșii se formează din elemente, lecția 11); (3) elementele au $ΔH_f = 0$; (4) pentru $n$ mol dintr-o substanță, raportezi la coeficientul ei din ecuație (proporție).'),
     original: formOriginal, make: formMake
   });
 

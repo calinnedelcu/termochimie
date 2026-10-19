@@ -160,7 +160,7 @@
     {
       t: 'mc', q: 'Care afirmație despre energia internă $U$ este corectă?',
       opts: ['Nu poate fi măsurată experimental', 'Se măsoară direct, cu ajutorul unui termometru foarte precis', 'Este întotdeauna egală cu căldura primită de sistem', 'Este întotdeauna egală cu lucrul mecanic efectuat de sistem'],
-      a: 0, why: 'În caiet: „U” nu poate fi măsurată experimental (de aceea nici entalpia nu poate fi măsurată direct).'
+      a: 0, why: 'Se pot măsura doar schimburile de energie (căldura, lucrul mecanic), adică variațiile $ΔU$, nu energia totală a sistemului; de aceea nici entalpia nu poate fi măsurată direct (în caiet: „U” nu poate fi măsurată experimental).'
     }
   ];
 
@@ -258,7 +258,7 @@
   /* ---------- 9. Principiul I la reacții chimice, entalpia ---------- */
   Q.entalpie = [
     { t: 'mc', q: 'La <b>volum constant</b>, căldura schimbată într-o reacție este egală cu…', opts: ['$ΔU$', '$ΔH$', '$pΔV$', '$ΔH − ΔU$'], a: 0, why: 'Dacă $V = ct.$, atunci $pΔV = 0$ și $Q_V = ΔU$.' },
-    { t: 'mc', q: 'Entalpia $H$ este definită prin relația…', opts: ['$H = U + pV$', '$H = U − pV$', '$H = Q + L$', '$H = (U)//(pV)$'], a: 0, why: 'Entalpia este suma dintre energia internă și lucrul mecanic pentru ocuparea volumului propriu: $H = U + pV$.' },
+    { t: 'mc', q: 'Entalpia $H$ este definită prin relația…', opts: ['$H = U + pV$', '$H = U − pV$', '$H = Q + L$', '$H = (U)//(pV)$'], a: 0, why: 'Entalpia este suma dintre energia internă și lucrul mecanic pentru ocuparea volumului propriu: $H = U + pV$. Termenul $pV$ este lucrul mecanic pe care sistemul îl face ca să-și facă loc împotriva presiunii mediului.' },
     { t: 'mc', q: 'La <b>presiune constantă</b>, căldura de reacție este egală cu…', opts: ['variația de entalpie $ΔH$', 'variația energiei interne $ΔU$', 'lucrul mecanic $pΔV$', 'zero'], a: 0, why: '$Q_P = ΔU + pΔV = Δ(U + pV) = ΔH$.' },
     { t: 'num', q: 'O reacție are, la presiune constantă, $ΔU = −890$ kJ și $pΔV = +2,5$ kJ. Cât este $ΔH$?', a: -887.5, unit: 'kJ', tol: 0.002, dec: 1, why: '$ΔH = ΔU + pΔV = −890 + 2,5 = −887,5$ kJ.' },
     {
@@ -292,7 +292,7 @@
   Q.formare = [
     { t: 'mc', q: 'Căldura de formare $ΔH_f$ se referă la…', opts: ['formarea unui mol de substanță din elemente aflate în stare standard', 'arderea completă a unui mol de substanță în oxigen, în condiții standard', 'descompunerea unui mol de substanță compusă în elementele ei componente', 'formarea oricărei cantități de substanță din orice reactanți'], a: 0, why: 'Definiție: căldura schimbată pentru <b>un mol</b> de substanță formată <b>din elemente</b> în stare standard.' },
     { t: 'mc', q: 'Care dintre substanțe are $ΔH_f = 0$ în starea standard?', opts: ['[[O2(g)]]', '[[CO2(g)]]', '[[H2O(l)]]', '[[CH4(g)]]'], a: 0, why: 'Elementele au $ΔH_f = 0$ (în caiet: $ΔH_f$ elem. = 0, ex. $O_2$).' },
-    { t: 'mc', q: 'Substanța A are $ΔH_f = −100$ kJ/mol, iar B are $ΔH_f = −300$ kJ/mol. Care este mai stabilă?', opts: ['Substanța B', 'Substanța A', 'Sunt la fel de stabile', 'Nu se poate spune'], a: 0, why: 'Cu cât $ΔH_f$ este mai mică (mai negativă), cu atât substanța e mai stabilă: −300 < −100.' },
+    { t: 'mc', q: 'Substanța A are $ΔH_f = −100$ kJ/mol, iar B are $ΔH_f = −300$ kJ/mol. Care este mai stabilă?', opts: ['Substanța B', 'Substanța A', 'Sunt la fel de stabile', 'Nu se poate spune'], a: 0, why: 'Cu cât $ΔH_f$ este mai mică (mai negativă), cu atât substanța e mai stabilă: −300 < −100. La formarea lui B s-a degajat mai multă energie, deci și descompunerea lui cere mai multă energie.' },
     { t: 'num', q: 'Se dau: $ΔH_f(CH_4) = −74,8$; $ΔH_f(CO_2) = −393,5$; $ΔH_f(H_2O, g) = −241,8$ kJ/mol. Calculează $ΔH$ pentru $CH_4 + 2O_2 → CO_2 + 2H_2O(g)$.', a: -802.3, unit: 'kJ', tol: 0.003, dec: 1, why: '$ΔH = [−393,5 + 2·(−241,8)] − [−74,8 + 2·0] = −877,1 + 74,8 = −802,3$ kJ.' },
     { t: 'num', q: 'Arderea metanului (apă gazoasă) degajă 802,3 kJ/mol. Câtă căldură (în kJ) se degajă la arderea a 5 mol de metan?', a: 4011.5, unit: 'kJ', tol: 0.003, dec: 1, why: '$|Q| = 5 · 802,3 = 4011,5$ kJ.' },
     { t: 'num', q: 'Se dau $ΔH_f(Al_2O_3) = −1676$ și $ΔH_f(Fe_2O_3) = −824$ kJ/mol. Calculează $ΔH$ pentru $2Al + Fe_2O_3 → Al_2O_3 + 2Fe$.', a: -852, unit: 'kJ', tol: 0.003, dec: 0, why: '$ΔH = ΔH_f(Al_2O_3) − ΔH_f(Fe_2O_3) = −1676 − (−824) = −852$ kJ (elementele au $ΔH_f = 0$).' },

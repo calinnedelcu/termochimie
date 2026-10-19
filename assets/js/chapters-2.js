@@ -23,7 +23,7 @@
             '<tr><td>$ΔU$</td><td><b>variația energiei interne</b></td></tr>' +
             '<tr><td>$L$</td><td><b>lucrul mecanic efectuat</b></td></tr></tbody></table></div>' +
             K('key', 'Căldura primită de sistem = variația energiei interne + lucrul mecanic efectuat.', 'Reține') +
-            K('tip', 'Imaginează-ți un gaz într-un cilindru cu piston. Îi dai căldură: o parte rămâne în gaz (ΔU), iar o parte este folosită ca gazul să împingă pistonul (L).') +
+            K('tip', 'Imaginează-ți un gaz într-un cilindru cu piston. Îi dai căldură: o parte rămâne în gaz (ΔU), iar o parte este folosită ca gazul să împingă pistonul (L). Este chiar conservarea energiei: căldura primită nu dispare, ci se împarte.') +
             K('tip', '<b>Energia internă</b> $U$ este energia tuturor particulelor din sistem: energia lor de mișcare (cinetică) plus cea datorată forțelor dintre ele și legăturilor chimice (potențială).', 'Ce este energia internă?');
         }
       },
@@ -55,7 +55,7 @@
           return K('exo', 'Reacții la care are loc o <b>degajare de căldură</b>.', 'Definiție') +
             '<div class="eqn exo">[[reactanți -> produși + Q]] &nbsp;,&nbsp; $Q < 0$ (față de sistem)</div>' +
             K('why', 'În ecuație, „+ Q” este <b>cantitatea de căldură degajată</b> (un număr pozitiv, scris la produși). $Q < 0$ este <b>semnul față de sistem</b>: sistemul cedează căldură (lecția 2). Sunt două moduri de a vorbi despre aceeași căldură; mai multe la „Capcana semnului”, în 6.3.', 'De ce „+ Q” în ecuație, dar Q negativ?') +
-            K('ex', '<b>Neutralizarea</b> (exemplul din caiet):<div class="eqn">[[2NaOH(aq) + H2SO4(aq) -> Na2SO4(aq) + 2H2O(l) + Q]]</div>La amestecarea soluțiilor: <b>$T_f > T_i$</b>.') +
+            K('ex', '<b>Neutralizarea</b> (exemplul din caiet):<div class="eqn">[[2NaOH(aq) + H2SO4(aq) -> Na2SO4(aq) + 2H2O(l) + Q]]</div>La amestecarea soluțiilor: <b>$T_f > T_i$</b> (căldura degajată încălzește soluția).') +
             '<p>Alte reacții exoterme din caiet, în exerciții: arderea metanului, reacția din exercițiul 4/14 (+ 852 kJ), transformarea glucozei în acid piruvic (+ 483 kJ).</p>';
         }
       },
@@ -64,7 +64,7 @@
         html: function () {
           return K('endo', 'Reacții la care are loc o <b>absorbție de căldură din mediul exterior</b>.', 'Definiție') +
             '<div class="eqn endo">[[reactanți + Q -> produși]] &nbsp;,&nbsp; $Q > 0$ (față de sistem)</div>' +
-            K('ex', '<b>Descompunerea cloratului de potasiu</b> (exemplul din caiet):<div class="eqn">[[2KClO3(s) + Q -> 2KCl(s) + 3O2(g)]]</div>$Q$ apare la reactanți: reacția <b>absoarbe</b> căldură.') +
+            K('ex', '<b>Descompunerea cloratului de potasiu</b> (exemplul din caiet):<div class="eqn">[[2KClO3(s) + Q -> 2KCl(s) + 3O2(g)]]</div>$Q$ apare la reactanți: reacția <b>absoarbe</b> căldură. Căldura absorbită se „consumă” ca un reactant, de aceea se scrie în stânga săgeții.') +
             '<p>Altă reacție endotermă din caiet, în exerciții: descompunerea etanului în etenă și hidrogen ($+ 137$ kJ la 1 mol de etan).</p>';
         }
       },
@@ -124,6 +124,7 @@
         id: 'cum', h: 'Cum citești o ecuație (exemplul din caiet: exercițiul 4/14)',
         html: function () {
           return '<div class="eqn exo">[[2Al(s) + Fe2O3(s) -> 2Fe(s) + Al2O3(s) + 852 kJ]]</div>' +
+            K('tip', '<b>Masa molară</b> $M$ (g/mol) este masa unui mol: suma maselor atomice din formulă (ex.: $M$([[Al]]) = 27 g/mol; $M$([[CO2]]) = 12 + 2·16 = 44 g/mol). Din masă afli moli: $ν = (m)//(M)$; din moli afli masa: $m = ν·M$. Semnul „⟷” se citește „corespunde”.', 'Masa molară, moli și „⟷”') +
             '<p>În caiet: <b>2 mol Al</b> ($2 · 27 = 54$ g Al) ⟷ $852 · 10^3$ J. Deci pentru <b>1 mol Al</b> se degajă $852 / 2 = 426$ kJ.</p>' +
             K('warn', 'Căldura din ecuație (852 kJ) este pentru <b>2 mol de Al</b>, nu pentru unul! Citește întotdeauna coeficienții.');
         }

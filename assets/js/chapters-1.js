@@ -20,6 +20,7 @@
           return '<p>Reacțiile chimice sunt însoțite, de obicei, de o <b>modificare a temperaturii sistemului</b>. Aceste modificări se numesc <b>efecte termice</b>.</p>' +
             K('key', '<b>Termochimia</b> este ramura chimiei care studiază <b>efectele termice ale reacțiilor chimice</b>, pe baza principiilor termodinamicii.', 'Definiție') +
             '<p><b>Efectul termic</b> al unei reacții constă în <b>degajarea</b> sau <b>absorbția</b> de căldură.</p>' +
+            K('tip', 'Cele două descrieri merg împreună: o reacție care <b>degajă</b> căldură <b>ridică</b> temperatura sistemului (paharul devine cald), iar una care <b>absoarbe</b> căldură o <b>scade</b> (paharul devine rece). Principiile termodinamicii apar mai departe: principiul I, în lecțiile 5 și 9.') +
             MQ('Într-un pahar are loc o reacție și paharul devine cald la atingere. Ce înseamnă asta?',
               ['Reacția absoarbe căldură din mediu', 'Reacția degajă căldură în mediu', 'Reacția nu are efect termic', 'Reacția nu poate avea loc'], 1,
               'Paharul se încălzește pentru că reacția <b>degajă</b> căldură, iar căldura trece în mediu (inclusiv în mâna ta).');
@@ -87,6 +88,7 @@
             '<div class="callout tip"><div class="ct">1 · creșterea temperaturii</div><div class="cb">↑ t°</div></div>' +
             '<div class="callout tip"><div class="ct">2 · lucru mecanic</div><div class="cb">efectul unui lucru mecanic</div></div>' +
             '<div class="callout tip"><div class="ct">3 · schimbarea stării</div><div class="cb">schimbarea stării de agregare</div></div></div>' +
+            '<p>Le întâlnești pe rând: creșterea temperaturii în lecția 3 ($Q = m·c·ΔT$), lucrul mecanic în lecția 5 ($Q = ΔU + L$), schimbarea stării în lecțiile 3 și 8.</p>' +
             W('heatEffects');
         }
       },
@@ -183,6 +185,7 @@
         id: 'echilibru', h: 'Principiul echilibrului termic',
         html: function () {
           return K('key', 'Dacă mai multe corpuri cu temperaturi diferite sunt puse în contact <b>într-un sistem izolat</b>, după un timp ele ajung la <b>aceeași temperatură</b>.', 'Enunț') +
+            K('tip', 'Un <b>sistem izolat</b> nu schimbă energie cu mediul exterior. Căldura trece de la corpul mai cald la cel mai rece până când temperaturile se egalează.') +
             W('equilibrium');
         }
       },
@@ -192,7 +195,7 @@
           return K('key', '$Q_{cedată} = Q_{primită}$ &nbsp;&nbsp;sau&nbsp;&nbsp; $Q_1 + Q_2 = 0$', 'Enunț') +
             '<p>Cele două scrieri spun același lucru: în prima, căldurile sunt luate <b>în modul</b> (valori pozitive); în a doua, <b>cu semn</b> — cel care cedează are $Q < 0$, cel care primește are $Q > 0$, iar suma lor e zero.</p>' +
             '<p>Pentru fiecare corp, $Q = m·c·ΔT$ (cu $ΔT = T_f − T_i$); condiția $Q_1 + Q_2 = 0$ le leagă între ele.</p>' +
-            K('why', 'Un <b>sistem izolat</b> nu schimbă energie cu exteriorul, deci nimic nu se pierde: căldura trece de la corpul mai cald la cel mai rece până când temperaturile se egalează (echilibrul termic), iar toată căldura cedată de unul este primită de celălalt.', 'De ce sunt egale căldurile?');
+            K('why', 'Sistemul fiind izolat (vezi 4.1), nimic nu se pierde în exterior: toată căldura cedată de un corp este primită de celălalt.', 'De ce sunt egale căldurile?');
         }
       },
       {

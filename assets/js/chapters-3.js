@@ -20,7 +20,8 @@
           return '<p>Poate fi exprimat simplu printr-o relație care corelează <b>3 mărimi termodinamice</b>:</p>' +
             '<div class="formula">$Q = ΔU + L$ &nbsp;&nbsp;⟹&nbsp;&nbsp; $Q = ΔU + pΔV$</div>' +
             K('tip', 'Lucrul mecanic al reacției se scrie $L = pΔV$. Rezultă două cazuri, după ce rămâne constant: <b>volumul</b> ($V = ct.$) sau <b>presiunea</b> ($p = ct.$).') +
-            K('why', 'Gazul împinge un piston de arie $A$ cu forța $F = p·A$ pe o distanță $d$, deci $L = F·d = p·A·d$. Dar $A·d$ este chiar variația de volum, $ΔV$, așa că $L = pΔV$ (la presiune constantă).', 'De ce L = pΔV?');
+            K('why', 'Gazul împinge un piston de arie $A$ cu forța $F = p·A$ pe o distanță $d$, deci $L = F·d = p·A·d$. Dar $A·d$ este chiar variația de volum, $ΔV$, așa că $L = pΔV$ (la presiune constantă).', 'De ce L = pΔV?') +
+            K('why', 'O reacție are loc fie într-un vas rigid, închis (volumul nu se poate schimba: $V = ct.$), fie într-un vas deschis, la presiunea aerului (presiunea rămâne aceeași: $p = ct.$). De aceea apar aceste două cazuri.', 'De ce două cazuri?');
         }
       },
       {
@@ -79,6 +80,7 @@
             '<tr><td>$E_a$</td><td>energia de activare: de la $H_R$ până la vârf, $E_a = H_{CA}^* − H_R$</td></tr>' +
             '<tr><td>$ΔH$</td><td>$ΔH = H_P − H_R$</td></tr></tbody></table></div>' +
             '<div class="grid-2"><div class="callout endo"><div class="ct">endotermă</div><div class="cb">$H_P > H_R$ ⟹ $ΔH > 0$</div></div><div class="callout exo"><div class="ct">exotermă</div><div class="cb">$H_P < H_R$ ⟹ $ΔH < 0$</div></div></div>' +
+            K('why', 'Entalpia $H$ măsoară „conținutul de energie” al sistemului la presiune constantă ($ΔH = Q_P$, lecția 9). Dacă produșii au entalpia mai mică decât reactanții, sistemul cedează diferența mediului, ca <b>căldură</b>: reacție exotermă. Dacă au entalpia mai mare, sistemul trebuie să primească diferența din mediu: reacție endotermă.', 'De ce e exotermă o reacție când produșii sunt mai jos?') +
             K('tip', '<b>Complexul activat (CA*)</b> este starea trecătoare, de energie maximă, prin care trece sistemul între reactanți și produși: legăturile vechi sunt slăbite, iar cele noi abia încep să se formeze. Este foarte instabil și se descompune imediat în produșii reacției. De aceea reacția are nevoie de energie de activare chiar și când este exotermă: întâi se slăbesc legăturile vechi (lecția 8), abia apoi se formează cele noi.', 'Ce este complexul activat?') +
             W('energyDiagram');
         }
@@ -152,7 +154,7 @@
             '<div class="formula">$ΔH_r = Σ ν_P·ΔH_f(produși) − Σ ν_R·ΔH_f(reactanți)$</div>' +
             '<p>Suma pentru <b>produși</b> ($C$, $D$) minus suma pentru <b>reactanți</b> ($A$, $B$), fiecare termen înmulțit cu <b>coeficientul</b> ($ν_P$, $ν_R$) substanței.</p>' +
             K('why', 'Ca să ajungi de la reactanți la produși poți merge prin elemente: întâi „desfaci” reactanții în elementele lor (inversul formării, deci cu semn schimbat: $−ΔH_f$), apoi formezi produșii din elemente ($+ΔH_f$). Căldura nu depinde de drum (legea lui Hess, lecția 12), de aceea se adună $ΔH_f$ ale produșilor și se scad cele ale reactanților. Elementele au $ΔH_f = 0$, deci nu schimbă nimic în sume.', 'De ce produși minus reactanți?') +
-            K('ex', '<b>Problema 8 (ultima pagină din caiet) — arderea a 5 mol de metan:</b> [[CH4(g) + 2O2(g) -> CO2(g) + 2H2O(g)]]<div class="formula">$ΔH = [ΔH_f(CO_2) + 2·ΔH_f(H_2O)] − ΔH_f(CH_4)$</div>($ΔH_f(O_2) = 0$, element.) Apoi $|Q| = 5 · ΔH$.<br>Exemplu numeric (valorile $ΔH_f$ se dau în enunț): $ΔH_f(CO_2) = −393,5$; $ΔH_f(H_2O, g) = −241,8$; $ΔH_f(CH_4) = −74,8$ kJ/mol ⟹ $ΔH = [−393,5 + 2·(−241,8)] − (−74,8) = −802,3$ kJ; pentru 5 mol: $|Q| = 4011,5$ kJ.') +
+            K('ex', '<b>Problema 8 (ultima pagină din caiet) — arderea a 5 mol de metan:</b> [[CH4(g) + 2O2(g) -> CO2(g) + 2H2O(g)]]<div class="formula">$ΔH = [ΔH_f(CO_2) + 2·ΔH_f(H_2O)] − ΔH_f(CH_4)$</div>($ΔH_f(O_2) = 0$, element.) Apoi $|Q| = 5 · |ΔH|$ (în caiet scrie $|Q| = 5·ΔH$; $|Q|$ este modulul căldurii: $ΔH$ e negativ, dar căldura degajată se dă ca număr pozitiv).<br>Exemplu numeric (valorile $ΔH_f$ se dau în enunț): $ΔH_f(CO_2) = −393,5$; $ΔH_f(H_2O, g) = −241,8$; $ΔH_f(CH_4) = −74,8$ kJ/mol ⟹ $ΔH = [−393,5 + 2·(−241,8)] − (−74,8) = −802,3$ kJ; pentru 5 mol: $|Q| = 4011,5$ kJ.') +
             W('formationCalc') +
             K('warn', 'Atenție: (1) înmulțește fiecare $ΔH_f$ cu <b>coeficientul</b> din ecuație; (2) <b>produși − reactanți</b> (nu invers); (3) elementele au $ΔH_f = 0$.');
         }
@@ -188,7 +190,7 @@
             '<tr><td><b>Înmulțire cu $k$</b></td><td>toți coeficienții se înmulțesc cu $k$</td><td>se înmulțește cu $k$</td></tr>' +
             '<tr><td><b>Adunare</b></td><td>se adună ecuațiile; ce apare de ambele părți se simplifică</td><td>se <b>adună</b></td></tr></tbody></table></div>' +
             K('why', '<ul><li><b>Inversare:</b> procesul invers absoarbe exact căldura pe care o degaja cel direct (lecția 4), deci $ΔH$ își schimbă semnul.</li><li><b>Înmulțire cu $k$:</b> $ΔH$ se referă la cantitățile din ecuație (lecția 7), deci de $k$ ori mai multă substanță înseamnă de $k$ ori mai multă căldură.</li><li><b>Adunare:</b> legea lui Hess — $ΔH$ al drumului întreg este suma $ΔH$-urilor etapelor.</li></ul>', 'De ce se întâmplă așa cu ΔH?') +
-            '<h3>Pașii (dedusi din exercițiul din caiet)</h3><ol>' +
+            '<h3>Pașii (deduși din exercițiul din caiet)</h3><ol>' +
             '<li>Pentru fiecare substanță din reacția cerută, alege o ecuație dată în care apare.</li>' +
             '<li>Dacă e în <b>partea opusă</b> față de reacția cerută, <b>inversezi</b> ecuația.</li>' +
             '<li>Potrivești <b>coeficientul</b> înmulțind ecuația.</li>' +
