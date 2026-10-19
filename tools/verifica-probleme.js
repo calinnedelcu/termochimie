@@ -1,9 +1,10 @@
 // Verifică automat generatoarele de probleme, întrebările din quiz și diagramele.
 // Rulare:  node tools/verifica-probleme.js
-// Verifică: structură, numere finite, fără NaN/undefined/minus ASCII, valorile din caiet și coerența exercițiilor Hess.
+// Verifică: structură, numere finite, fără NaN/undefined/minus ASCII, valorile din caiet, coerența exercițiilor Hess
+// și, la nivelul 4 („Foarte greu”), verificarea independentă `inst.check()` a fiecărei instanțe (substituire înapoi în sisteme, sume de căldură etc.).
 global.window = global; global.document = { createElement: () => ({}) };
 const base = require('path').join(__dirname, '..', 'assets', 'js') + '/';
-['core','ui','svgs','widgets-basic','widgets-calor','widgets-react','widgets-energy','widgets-hess','data-quiz','data-cards','problems','problems2'].forEach(f => require(base + f + '.js'));
+['core','ui','svgs','widgets-basic','widgets-calor','widgets-react','widgets-energy','widgets-hess','data-quiz','data-cards','problems','problems2','problems-hard-1','problems-hard-2','problems-hard-3'].forEach(f => require(base + f + '.js'));
 const T = global.T;
 let errors = 0, checked = 0;
 const bad = /NaN|undefined|Infinity|\[object|null/;
@@ -27,11 +28,14 @@ function checkInst(inst, id, tag) {
     if (!p.steps || !p.steps.length) fail(w + ': fără pași');
     (p.steps || []).forEach((s, i) => checkStr(s, w + ' pas' + (i + 1)));
   });
+  // o masă dată în enunț ("<b>150 g</b> de [[X]]") cere masa molară a lui X printre datele problemei
+  (inst.statement.match(/<b>[^<]*\bk?g<\/b> de \[\[[^\]]+\]\]/g) || []).forEach(m => { const x = m.match(/\[\[([^\]]+)\]\]/)[1]; if (!(inst.data || []).some(d => d.indexOf('M([[' + x + ']])') === 0)) fail(id + ' ' + tag + ': în enunț e dată masa lui ' + x + ', dar M(' + x + ') lipsește din date'); });
+  if (typeof inst.check === 'function') { let ok = false; try { ok = inst.check(); } catch (e) { fail(id + ' ' + tag + ': check() a aruncat ' + e.message); } if (!ok) fail(id + ' ' + tag + ': check() a eșuat (răspunsurile nu sunt coerente cu enunțul)'); }
   if (inst.tool && inst.tool.name === 'hessCombiner') {
     const o = inst.tool.opts, net = T.netOf(o.eqs, o.eqs.map(e => e.m)), tn = T.targetNet(o.target);
     if (!T.sameNet(net, tn)) fail(id + ' ' + tag + ': Hess — suma ecuațiilor ≠ ținta');
     const sum = o.eqs.reduce((s, e) => s + e.m * e.dH, 0);
-    if (Math.abs(sum - inst.parts[0].a) > 1e-6) fail(id + ' ' + tag + ': Hess — ΔH din răspuns ≠ Σ m·ΔH');
+    if (!inst.check && Math.abs(sum - inst.parts[0].a) > 1e-6) fail(id + ' ' + tag + ': Hess — ΔH din răspuns ≠ Σ m·ΔH');   // instanțele cu check() își verifică singure coerența
     o.eqs.forEach((e, i) => { if (!e.key) fail(id + ': ecuație fără cheie'); });
   }
 }
@@ -49,7 +53,7 @@ near(O['entalpii-formare'].parts[0].a, -802.3, 1e-9, 'formare a'); near(O['ental
 
 // 2) variații
 T.problemOrder.forEach(id => {
-  for (let level = 1; level <= 3; level++) for (let seed = 1; seed <= 400; seed++) {
+  for (let level = 1; level <= (T.problems[id].maxLevel || 3); level++) for (let seed = 1; seed <= 400; seed++) {
     let inst; try { inst = T.problems[id].make(seed * 7919 + level, level); } catch (e) { fail(id + ' L' + level + ' seed ' + seed + ': excepție ' + e.stack.split('\n').slice(0, 2).join(' | ')); break; }
     checkInst(inst, id, 'L' + level + '#' + seed);
   }
@@ -64,7 +68,7 @@ console.log('instanțe verificate:', checked, '· erori:', errors);
 (function () {
   const seen = new Set();
   const hy = /(^|[\s=(>])-\d/;
-  T.problemOrder.forEach(id => { for (let level = 0; level <= 3; level++) for (let seed = 1; seed <= 150; seed++) {
+  T.problemOrder.forEach(id => { for (let level = 0; level <= (T.problems[id].maxLevel || 3); level++) for (let seed = 1; seed <= 150; seed++) {
     const inst = level === 0 ? T.problems[id].original() : T.problems[id].make(seed * 31 + level, level);
     const all = [inst.statement].concat((inst.data || []), inst.parts.reduce((a, p) => a.concat([p.ask], p.steps || [], p.opts || []), []));
     all.forEach(x => { const t = String(x).replace(/<[^>]+>/g, ''); const m = t.match(hy); if (m) { const sn = id + ' L' + level + ': …' + t.slice(Math.max(0, m.index - 30), m.index + 30).replace(/\s+/g, ' '); if (!seen.has(sn.slice(0, 40))) { seen.add(sn.slice(0, 40)); console.log('✗ minus ASCII', sn); errors++; } } });

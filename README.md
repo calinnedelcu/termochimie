@@ -18,7 +18,7 @@ python3 -m http.server 8000
 | Secțiune | Ce găsești |
 | --- | --- |
 | **Lecții (12)** | explicații scurte, ilustrații animate și simulări interactive, mini-verificări, „Reține din lecție” și un quiz la fiecare lecție |
-| **Probleme (11 tipuri)** | tipurile 1–7: problemele din caiet rezolvate pas cu pas + variații la 3 niveluri (ușor / mediu / dificil); tipurile 8–11: exerciții pe noțiunile din caiet (model rezolvat + variații), cu numere noi la fiecare apăsare |
+| **Probleme (11 tipuri)** | tipurile 1–7: problemele din caiet rezolvate pas cu pas + variații la 4 niveluri (ușor / mediu / dificil / foarte greu: amestecuri, reacții cuplate, mărimi cerute „invers”, lanțuri Hess → ΔH_f); tipurile 8–11: exerciții pe noțiunile din caiet (model rezolvat + variații), cu numere noi la fiecare apăsare |
 | **Cartonașe** | definiții și reguli din caiet, cu repetiție (cele nestăpânite revin mai des) |
 | **Test** | întrebări + probleme generate aleatoriu, cronometru opțional, scor și rezolvări |
 | **Formule** | toate formulele și regulile pe o pagină (se poate printa) |
@@ -42,7 +42,7 @@ assets/js/
   chapters-*.js    textul lecțiilor
   data-quiz.js     întrebările de la finalul lecțiilor
   data-cards.js    cartonașele
-  problems*.js     generatoarele de probleme (originalul din caiet + variații)
+  problems*.js     generatoarele de probleme (originalul din caiet + variații); problems-hard-1..3.js = nivelul 4, „Foarte greu”
   pages.js, app.js pagini, rutare, temă
 ```
 

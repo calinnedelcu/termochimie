@@ -28,7 +28,7 @@
   /* =====================================================
      1. Ecuația termochimică (termita) — regula de trei, cal ↔ J
      ===================================================== */
-  var EXO = ['termita', 'carbon', 'metan', 'hidrogen', 'magneziu', 'sulf', 'metanol'];
+  var EXO = ['termita', 'carbon', 'metan', 'hidrogen', 'magneziu', 'sulf', 'metanol', 'monoxid', 'etena-h', 'hcl'];
 
   function termitaOriginal() {
     var r = T.RXN.termita, kcal = 256.57, Qkj = kcalToKJ(kcal), m = 54 * Qkj / 852;
@@ -116,7 +116,7 @@
           });
         }
       });
-      return { statement: stmt(txt), data: mchips(data.filter(function (x, i, a) { return a.indexOf(x) === i && !T.isGas(x); })), method: 'Pune în față ce spune ecuația (moli → grame sau litri) și căldura ei; apoi proporția.', parts: parts };
+      return { statement: stmt(txt), data: mchips(data.filter(function (x, i, a) { return a.indexOf(x) === i; })), method: 'Pune în față ce spune ecuația (moli → grame sau litri) și căldura ei; apoi proporția.', parts: parts };
     }
 
     // nivel 3: determini Q din experiment, apoi o folosești
@@ -157,7 +157,7 @@
   /* =====================================================
      2. Gaze la condiții normale și căldura de reacție (etan)
      ===================================================== */
-  var ENDO_GAS = ['etan', 'azot', 'gazapa'];     // au cel puțin un gaz (altul decât vaporii de apă)
+  var ENDO_GAS = ['etan', 'azot', 'gazapa', 'reformare', 'boudouard', 'amoniac-desc', 'apa-desc'];     // au cel puțin un gaz (altul decât vaporii de apă)
   var VM = 22.4;
 
   function etanOriginal() {
@@ -198,7 +198,7 @@
       };
     }
     if (level === 2) {
-      var which = R.pick(['etan', 'calcar', 'azot']), r2 = T.RXN[which];
+      var which = R.pick(['etan', 'calcar', 'azot', 'reformare', 'boudouard', 'amoniac-desc', 'apa-desc']), r2 = T.RXN[which];
       var kk2 = R.pick([1, 2, 2.5, 3, 4, 5]), Q2 = kk2 * r2.Q;
       var gr = (side(r2).concat(prod(r2))).filter(function (x) { return T.isGas(x.f); });
       var g1 = R.pick(gr), V2 = kk2 * g1.nu * VM;
@@ -252,7 +252,7 @@
   /* =====================================================
      3. Moli, milimoli, kilograme (glucoza)
      ===================================================== */
-  var ANY = ['carbon', 'metan', 'hidrogen', 'sulf', 'metanol', 'termita', 'magneziu', 'etan', 'calcar', 'azot', 'gazapa', 'amoniac'];
+  var ANY = ['carbon', 'metan', 'hidrogen', 'sulf', 'metanol', 'termita', 'magneziu', 'etan', 'calcar', 'azot', 'gazapa', 'amoniac', 'monoxid', 'etena-h', 'hcl', 'so3', 'reformare', 'boudouard', 'amoniac-desc', 'apa-desc', 'no2'];
   function typeOpts(r) {
     var ex = r.type === 'exo';
     return { opts: ['endotermă', 'exotermă', 'fără efect termic', 'nu se poate stabili'], correct: ex ? 1 : 0 };
@@ -338,8 +338,12 @@
     { f: 'CH3OH(l)', n: 'metanolului', M: 32, Hc: 726.5, co2: 1 },
     { f: 'C3H8(g)', n: 'propanului', M: 44, Hc: 2220, co2: 3, gas: true },
     { f: 'C4H10(g)', n: 'butanului', M: 58, Hc: 2877, co2: 4, gas: true },
-    { f: 'C(s)', n: 'carbonului', M: 12, Hc: 393.5, co2: 1 }
+    { f: 'C(s)', n: 'carbonului', M: 12, Hc: 393.5, co2: 1 },
+    { f: 'C2H2(g)', n: 'acetilenei', M: 26, Hc: 1299.6, co2: 2, gas: true },
+    { f: 'C2H6(g)', n: 'etanului', M: 30, Hc: 1560, co2: 2, gas: true },
+    { f: 'CO(g)', n: 'monoxidului de carbon', M: 28, Hc: 283, co2: 1, gas: true }
   ];
+  T.FUELS = FUELS;
 
   function apaOriginal() {
     var Q = 200 * 4.184 * 60 / 1000, Qt = Q / 0.7, n = Qt / 1234.8, m = n * 46;
@@ -438,8 +442,11 @@
     { f: 'Li', n: 'litiu', M: 7, c: 3.58, tm: 181, lam: 3.0, cl: 4.2 },
     { f: 'Sn', n: 'staniu', M: 119, c: 0.23, tm: 232, lam: 7.03, cl: 0.24 },
     { f: 'Pb', n: 'plumb', M: 207, c: 0.13, tm: 327, lam: 4.77, cl: 0.14 },
-    { f: 'Zn', n: 'zinc', M: 65, c: 0.39, tm: 420, lam: 7.32, cl: 0.48 }
+    { f: 'Zn', n: 'zinc', M: 65, c: 0.39, tm: 420, lam: 7.32, cl: 0.48 },
+    { f: 'Al', n: 'aluminiu', M: 27, c: 0.9, tm: 660, lam: 10.7, cl: 1.18 },
+    { f: 'Cu', n: 'cupru', M: 64, c: 0.385, tm: 1085, lam: 13.3, cl: 0.49 }
   ];
+  T.METALS = METALS;
 
   function sodiuOriginal() {
     var m = 10, c = 1.23, dT = 98 - 20, lam = 2.6, M = 23, Qh = m * c * dT, Qm = m / M * lam * 1000, Qp = Qh + Qm, x = Qp / 1000 / 78.68 * 100;

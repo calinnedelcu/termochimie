@@ -24,7 +24,17 @@
     calcar: { name: 'Descompunerea carbonatului de calciu', type: 'endo', Q: 178.3, L: [[1, 'CaCO3(s)']], R: [[1, 'CaO(s)'], [1, 'CO2(g)']] },
     azot: { name: 'Formarea oxidului de azot', type: 'endo', Q: 180.6, L: [[1, 'N2(g)'], [1, 'O2(g)']], R: [[2, 'NO(g)']] },
     gazapa: { name: 'Cărbune + vapori de apă', type: 'endo', Q: 131.3, L: [[1, 'C(s)'], [1, 'H2O(g)']], R: [[1, 'CO(g)'], [1, 'H2(g)']] },
-    klorat: { name: 'Descompunerea clorat de potasiu', type: 'endo', Q: null, L: [[2, 'KClO3(s)']], R: [[2, 'KCl(s)'], [3, 'O2(g)']] }
+    klorat: { name: 'Descompunerea clorat de potasiu', type: 'endo', Q: null, L: [[2, 'KClO3(s)']], R: [[2, 'KCl(s)'], [3, 'O2(g)']] },
+    /* reacții folosite în variațiile problemelor (valori calculate din entalpiile de formare) */
+    reformare: { name: 'Reformarea metanului cu vapori de apă', type: 'endo', Q: 206.1, L: [[1, 'CH4(g)'], [1, 'H2O(g)']], R: [[1, 'CO(g)'], [3, 'H2(g)']] },
+    boudouard: { name: 'Dioxid de carbon + cărbune', type: 'endo', Q: 172.5, L: [[1, 'C(s)'], [1, 'CO2(g)']], R: [[2, 'CO(g)']] },
+    'amoniac-desc': { name: 'Descompunerea amoniacului', type: 'endo', Q: 92.2, L: [[2, 'NH3(g)']], R: [[1, 'N2(g)'], [3, 'H2(g)']] },
+    'apa-desc': { name: 'Descompunerea apei', type: 'endo', Q: 571.6, L: [[2, 'H2O(l)']], R: [[2, 'H2(g)'], [1, 'O2(g)']] },
+    no2: { name: 'Formarea dioxidului de azot', type: 'endo', Q: 66.4, L: [[1, 'N2(g)'], [2, 'O2(g)']], R: [[2, 'NO2(g)']] },
+    hcl: { name: 'Sinteza acidului clorhidric', type: 'exo', Q: 184.6, L: [[1, 'H2(g)'], [1, 'Cl2(g)']], R: [[2, 'HCl(g)']] },
+    monoxid: { name: 'Arderea monoxidului de carbon', type: 'exo', Q: 566, L: [[2, 'CO(g)'], [1, 'O2(g)']], R: [[2, 'CO2(g)']] },
+    'etena-h': { name: 'Hidrogenarea etenei', type: 'exo', Q: 137, L: [[1, 'C2H4(g)'], [1, 'H2(g)']], R: [[1, 'C2H6(g)']] },
+    so3: { name: 'Oxidarea dioxidului de sulf', type: 'exo', Q: 197.8, L: [[2, 'SO2(g)'], [1, 'O2(g)']], R: [[2, 'SO3(g)']] }
   };
 
   function coefS(c) {

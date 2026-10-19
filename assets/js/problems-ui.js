@@ -104,13 +104,15 @@
     { v: 0, label: 'Din caiet' },
     { v: 1, label: 'Variație ușoară' },
     { v: 2, label: 'Variație medie' },
-    { v: 3, label: 'Dificil' }
+    { v: 3, label: 'Dificil' },
+    { v: 4, label: 'Foarte greu' }
   ];
 
   function mountOne(host, id) {
     var P = T.problems[id];
     if (!P) { host.append(T.h('p', { class: 'wd-err', text: 'Problemă lipsă: ' + id })); return; }
-    var level = 0, hist = { 1: [], 2: [], 3: [] }, pos = { 1: -1, 2: -1, 3: -1 };
+    var level = 0, hist = { 1: [], 2: [], 3: [], 4: [] }, pos = { 1: -1, 2: -1, 3: -1, 4: -1 };
+    var levels = LEVELS.filter(function (L) { return L.v < 4 || P.maxLevel >= 4; });
     var seedLbl = T.h('span', { class: 'prob-seed' });
     var lv = T.h('div', { class: 'lv', role: 'group', 'aria-label': 'Nivel' });
     var btnPrev = T.h('button', { type: 'button', class: 'btn small ghost', text: '‹ Anterioara', onclick: function () { go(-1); } });
@@ -119,14 +121,14 @@
     var bar = T.h('div', { class: 'prob-bar' }, lv, T.h('span', { class: 'spacer' }), seedLbl, btnPrev, btnNext);
     host.append(bar, view);
 
-    var lvBtns = LEVELS.map(function (L) {
+    var lvBtns = levels.map(function (L) {
       var b = T.h('button', { type: 'button', 'aria-pressed': String(L.v === level), text: L.v === 0 ? (P.originalLabel || L.label) : L.label, onclick: function () { setLevel(L.v); } });
       lv.append(b); return b;
     });
 
     function setLevel(v) {
       level = v;
-      lvBtns.forEach(function (b, i) { b.setAttribute('aria-pressed', String(LEVELS[i].v === v)); });
+      lvBtns.forEach(function (b, i) { b.setAttribute('aria-pressed', String(levels[i].v === v)); });
       if (v > 0 && pos[v] < 0) { hist[v].push(newSeed()); pos[v] = 0; }
       render();
     }
@@ -155,7 +157,8 @@
           if (res.correct) T.store.update('prob.' + id + '.ok', function (v) { return (v || 0) + 1; }, 0);
         }
       });
-      view.replaceChildren(pv.el);
+      if (level === 4) view.replaceChildren(T.h('p', { class: 'muted hard-note', text: 'Foarte greu: mai multe etape legate între ele (amestecuri cu două necunoscute, reacții cuplate, mărimi cerute „invers”). Folosește doar ce știi din caiet; calculează cu atenție la unități.' }), pv.el);
+      else view.replaceChildren(pv.el);
       T.mountWidgets(view);
     }
     render();

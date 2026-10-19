@@ -120,7 +120,7 @@
   /* ---------- probleme ---------- */
   function problemsHub() {
     var h = '<div class="page"><div class="kicker">Exersare</div><h1>Probleme și variații</h1>' +
-      '<p class="lead">Tipurile 1–7 pornesc de la <b>problemele din caiet</b>, rezolvate pas cu pas, și continuă cu <b>variații cu numere noi</b> la trei niveluri: ca în caiet, variație și dificil. Tipurile 8–11 sunt exerciții pe noțiunile din caiet, cu un model rezolvat și variații.</p>' +
+      '<p class="lead">Tipurile 1–7 pornesc de la <b>problemele din caiet</b>, rezolvate pas cu pas, și continuă cu <b>variații cu numere noi</b> la patru niveluri: ușor, mediu, dificil și <b>foarte greu</b> (probleme lungi, cu mai multe etape legate între ele). Tipurile 8–11 sunt exerciții pe noțiunile din caiet, cu un model rezolvat și variații.</p>' +
       T.callout('tip', 'Metoda sigură: scrie datele, scrie ecuația, alege <b>proporția</b> sau formula potrivită, abia apoi calculează. Verifică mereu <b>unitățile</b> (J ↔ kJ, cal ↔ kcal, g ↔ kg) și <b>semnul</b>.') +
       '<div class="plist">';
     T.problemOrder.forEach(function (id, i) {
@@ -209,6 +209,7 @@
       '<fieldset><legend>Probleme</legend><div class="check-grid">' +
       T.problemOrder.map(function (id) { return '<label><input type="checkbox" name="pr" value="' + id + '" checked> ' + T.problems[id].short + '</label>'; }).join('') +
       '</div><p style="margin:8px 0 0"><label>Câte probleme: <select class="inp" name="np"><option value="0">niciuna</option><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option><option value="5">5</option></select></label></p></fieldset>' +
+      '<fieldset><legend>Dificultatea problemelor</legend><select class="inp" name="dif"><option value="mix" selected>Mixtă (ușoare, medii, dificile)</option><option value="3">Dificile</option><option value="4">Foarte grele (la tipurile 1–7)</option></select></fieldset>' +
       '<fieldset><legend>Timp</legend><select class="inp" name="time"><option value="0">fără limită</option><option value="15">15 minute</option><option value="30">30 de minute</option><option value="45">45 de minute</option></select></fieldset>' +
       '<button class="btn primary" type="submit">Începe testul</button></form>' +
       '<div id="testRun"></div><div id="testHist"></div></div>';
@@ -242,10 +243,10 @@
           probs = rnd.shuffle(probs);
           if (!qs.length && !probs.length) { run.innerHTML = '<div class="callout warn"><div class="cb">Alege cel puțin o întrebare sau o problemă.</div></div>'; return; }
           form.hidden = true; hist.innerHTML = '';
-          startTest(qs, probs, mins, rnd);
+          startTest(qs, probs, mins, rnd, fd.get('dif'));
         });
 
-        function startTest(qs, probs, mins, rnd) {
+        function startTest(qs, probs, mins, rnd, difMode) {
           run.innerHTML = '';
           var bar = T.h('div', { class: 'test-bar' }, T.h('b', { text: 'Test în desfășurare' }), T.h('span', { class: 'sp' }), T.h('span', { class: 't', text: mins ? mins + ':00' : '∞' }));
           var submit = T.h('button', { type: 'button', class: 'btn primary', text: 'Predă testul' });
@@ -261,7 +262,7 @@
           });
           probs.forEach(function (pid) {
             n++;
-            var P = T.problems[pid], level = rnd.pick([1, 2, 2, 3]);
+            var P = T.problems[pid], level = difMode === '4' ? (P.maxLevel >= 4 ? 4 : 3) : difMode === '3' ? 3 : rnd.pick([1, 2, 2, 3]);
             var inst = P.make((rnd.next() * 1e9) | 0, level);
             var view = T.renderProblem(inst, { mode: 'deferred', label: n + '.' });
             var box = T.h('div', { class: 'test-item' }, T.h('div', { class: 'tag', text: 'Problemă · ' + P.short }), view.el);
