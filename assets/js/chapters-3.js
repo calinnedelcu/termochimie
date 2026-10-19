@@ -121,13 +121,14 @@
             K('note', 'În caiet, la a doua ecuație $O_2$ este scris fără coeficient; pentru $H_2SO_4$ (4 atomi de oxigen) ecuația echilibrată are $2O_2$.', 'Corectură') +
             K('why',
               '<ul>' +
-              '<li><b>De ce nu apare „+ Q”?</b> $ΔH_f$ este aceeași căldură, scrisă ca variație de entalpie ($Q_P = ΔH$, lecția 9), pentru <b>1 mol</b> de compus format (de aceea „J/mol”). La prima ecuație se degajă 393,5 kJ (lecția 7), reacția e exotermă ⟹ $ΔH < 0$:' +
+              '<li><b>De ce nu apare „+ Q”?</b> $ΔH_f$ este chiar căldura reacției, scrisă ca variație de entalpie ($Q_P = ΔH$, lecția 9) în loc de termenul „+ Q”, iar semnul se inversează. La prima ecuație se degajă 393,5 kJ (lecția 7); reacția e exotermă, deci $ΔH < 0$:' +
               '<div class="eqn" style="margin:8px 0">[[C(s) + O2(g) -> CO2(g) +&nbsp;393,5&nbsp;kJ]]</div>' +
-              '<div class="eqn" style="margin:8px 0">[[C(s) + O2(g) -> CO2(g)]] &nbsp; $ΔH_f = −393,5$ kJ/mol</div></li>' +
-              '<li><b>De ce „298” doar la prima?</b> 298 este temperatura din condițiile standard: $T = 298 K = 25 °C$ (în margine, în caiet: „1 atm, 25 °C”; lecția 8). Caietul scrie indicele doar la prima ecuație și nu spune de ce; la ambele definiția cere „stare standard”.</li>' +
-              '<li><b>Când se scrie $ΔH_f$?</b> Doar când ecuația <b>formează 1 mol de compus din elementele lui</b> (în dreapta un singur compus, cu coeficientul 1): de aceea la $H_2SO_4$ apare $2O_2$. Reacția [[CaCO3 -> CaO + CO2]] din caiet pornește dintr-un compus, deci are $ΔH$, nu $ΔH_f$.</li>' +
+              '<div class="eqn" style="margin:8px 0">[[C(s) + O2(g) -> CO2(g)]] &nbsp; $ΔH_f = −393,5$ kJ/mol</div>' +
+              'Se scrie $ΔH_f$ și nu „+ Q” pentru că e valoarea unei <b>substanțe</b>, raportată la <b>1 mol</b> de compus format (de aceea „J/mol”): o iei din tabel sau din enunț și o folosești la calculul lui $ΔH_r$ (mai jos, la 11.3).</li>' +
+              '<li><b>Ce înseamnă „298” și de ce nu e scris peste tot?</b> Căldura unei reacții depinde (puțin) de temperatura la care are loc, deci o valoare are sens doar împreună cu temperatura ei. Prin convenție, tabelele dau valorile la $T = 298 K = 25 °C$ (și $p = 1 atm$: condițiile standard din marginea caietului, lecția 8); indicele 298 din $ΔH_f^{298}$ arată exact temperatura asta.<br><b>Fără indice, $ΔH_f$ este aceeași mărime:</b> dacă nu se precizează altă temperatură, se subînțelege 298 K. Caietul are forma completă la definiție și forma scurtă la a doua ecuație și în formula lui $ΔH_r$. (În manuale vei vedea și „°” = stare standard: $ΔH°_{f,298}$.)</li>' +
+              '<li><b>Când se scrie $ΔH_f$?</b> Doar la o reacție de <b>formare</b>: în dreapta <b>un singur compus, cu coeficientul 1</b> (1 mol), iar în stânga <b>doar elementele lui în starea standard</b>, adică forma lor stabilă la 25 °C și 1 atm: [[C(s)]], [[H2(g)]], [[O2(g)]], [[S(s)]]. De aceea la $H_2SO_4$ apare $2O_2$: ca să iasă exact 1 mol. Reacția [[CaCO3 -> CaO + CO2]] din caiet pornește dintr-un compus, deci are $ΔH$, nu $ΔH_f$.</li>' +
               '</ul>', 'De ce așa?') +
-            K('key', '<b>$ΔH_f$ al elementelor = 0</b> (exemplu din caiet: [[O2]]).');
+            K('key', '<b>$ΔH_f$ al elementelor = 0</b> (exemplu din caiet: [[O2]]). De ce: un element în starea standard nu se „formează” din altceva, deci nu schimbă nicio căldură; prin convenție, valoarea lui este 0.');
         }
       },
       {
