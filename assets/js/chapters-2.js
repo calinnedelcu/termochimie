@@ -23,7 +23,8 @@
             '<tr><td>$ΔU$</td><td><b>variația energiei interne</b></td></tr>' +
             '<tr><td>$L$</td><td><b>lucrul mecanic efectuat</b></td></tr></tbody></table></div>' +
             K('key', 'Căldura primită de sistem = variația energiei interne + lucrul mecanic efectuat.', 'Reține') +
-            K('tip', 'Imaginează-ți un gaz într-un cilindru cu piston. Îi dai căldură: o parte rămâne în gaz (ΔU), iar o parte este folosită ca gazul să împingă pistonul (L).');
+            K('tip', 'Imaginează-ți un gaz într-un cilindru cu piston. Îi dai căldură: o parte rămâne în gaz (ΔU), iar o parte este folosită ca gazul să împingă pistonul (L).') +
+            K('tip', '<b>Energia internă</b> $U$ este energia tuturor particulelor din sistem: energia lor de mișcare (cinetică) plus cea datorată forțelor dintre ele și legăturilor chimice (potențială).', 'Ce este energia internă?');
         }
       },
       {
@@ -53,6 +54,7 @@
         html: function () {
           return K('exo', 'Reacții la care are loc o <b>degajare de căldură</b>.', 'Definiție') +
             '<div class="eqn exo">[[reactanți -> produși + Q]] &nbsp;,&nbsp; $Q < 0$ (față de sistem)</div>' +
+            K('why', 'În ecuație, „+ Q” este <b>cantitatea de căldură degajată</b> (un număr pozitiv, scris la produși). $Q < 0$ este <b>semnul față de sistem</b>: sistemul cedează căldură (lecția 2). Sunt două moduri de a vorbi despre aceeași căldură; mai multe la „Capcana semnului”, în 6.3.', 'De ce „+ Q” în ecuație, dar Q negativ?') +
             K('ex', '<b>Neutralizarea</b> (exemplul din caiet):<div class="eqn">[[2NaOH(aq) + H2SO4(aq) -> Na2SO4(aq) + 2H2O(l) + Q]]</div>La amestecarea soluțiilor: <b>$T_f > T_i$</b>.') +
             '<p>Alte reacții exoterme din caiet, în exerciții: arderea metanului, reacția din exercițiul 4/14 (+ 852 kJ), transformarea glucozei în acid piruvic (+ 483 kJ).</p>';
         }
@@ -105,6 +107,7 @@
             '<div class="grid-2"><div class="callout exo"><div class="ct">exotermă</div><div class="cb"><div class="eqn" style="margin:0">[[reactanți -> produși + Q]]</div></div></div>' +
             '<div class="callout endo"><div class="ct">endotermă</div><div class="cb"><div class="eqn" style="margin:0">[[reactanți + Q -> produși]]</div></div></div></div>' +
             '<p>Trebuie să <b>precizezi stările de agregare</b>:</p><div class="chips"><span class="chip">(s) = solid</span><span class="chip">(l) = lichid</span><span class="chip">(g) = gaz</span><span class="chip">(aq) = soluție apoasă</span></div>' +
+            K('why', 'Căldura reacției depinde de starea în care sunt substanțele, pentru că și schimbările de stare absorb sau degajă căldură (lecția 8). De exemplu, la formarea apei din hidrogen și oxigen se degajă 285,8 kJ/mol dacă apa e lichidă și doar 241,8 kJ/mol dacă e vapori: diferența, ≈ 44 kJ, este căldura necesară vaporizării unui mol de apă.', 'De ce se precizează stările de agregare?') +
             K('ex', 'Arderea metanului: <div class="eqn">[[CH4(g) + 2O2(g) -> CO2(g) + 2H2O(g) + Q]]</div>') +
             K('note', 'Căldura poate fi scrisă și de partea reactanților, cu semn schimbat: $A + B -> C + D + Q$ este același lucru cu $A + B − Q -> C + D$ (reacție exotermă, „căldură degajată”). Așa apare în exercițiul 4/14.', 'Două scrieri echivalente');
         }
@@ -135,7 +138,7 @@
             W('moleScale') +
             W('thermoEq') +
             K('ex', '<b>Ce căldură se degajă la arderea a 36 g de carbon?</b> ($M_C = 12$ g/mol)<br>$ν = (36)//(12) = 3$ mol ⟹ $Q = 3 · 393,5 = 1180,5$ kJ.') +
-            K('warn', '<b>Verifică:</b> unitățile ($kJ$ / $J$ / $kcal$ și $g$ / $kg$) și că ai folosit coeficienții din ecuație. La gaze, în caiet: la c.n. $V_m = 22,4$ L/mol.');
+            K('warn', '<b>Verifică:</b> unitățile ($kJ$ / $J$ / $kcal$ și $g$ / $kg$) și că ai folosit coeficienții din ecuație. La gaze, în caiet: la <b>c.n.</b> (condiții normale: 0 °C și 1 atm) un mol de gaz ocupă $V_m = 22,4$ L. Nu le confunda cu condițiile standard (25 °C, lecția 8): la altă temperatură, volumul molar este altul.');
         }
       }
     ]
@@ -154,6 +157,7 @@
         id: 'leg', h: 'Energia legăturilor chimice',
         html: function () {
           return K('key', '<b>Ruperea</b> unei legături = <b>absorbție</b> de energie.<br><b>Formarea</b> unei legături = <b>degajare</b> de energie.', 'Reține') +
+            K('why', 'O legătură ține atomii uniți (între ei se exercită forțe de atracție). Ca să-i desparți trebuie să consumi energie, iar când legătura se formează, aceeași energie se eliberează.', 'De ce se absoarbe energie la rupere și se degajă la formare?') +
             W('bondsScene') +
             MQ('Ce se întâmplă cu energia când se formează o legătură chimică?', ['Se absoarbe energie', 'Se degajă energie', 'Nu se schimbă energie', 'Depinde de temperatură'], 1, 'Formarea unei legături = degajare de energie; ruperea = absorbție.');
         }
@@ -165,15 +169,17 @@
             '<div class="callout endo"><div class="ct">necesită absorbție de căldură (endoterme)</div><div class="cb"><b>topire, vaporizare, sublimare</b></div></div>' +
             '<div class="callout exo"><div class="ct">degajă căldură (exoterme)</div><div class="cb"><b>solidificare, condensare, desublimare</b></div></div></div>' +
             W('stateWheel') +
-            K('key', 'Procesele din coloana a doua sunt <b>inversele</b> celor din prima (topire ↔ solidificare, vaporizare ↔ condensare, sublimare ↔ desublimare), deci degajă exact căldura pe care cele directe o absorb (lecția 4: procese inverse).');
+            K('key', 'Procesele din coloana a doua sunt <b>inversele</b> celor din prima (topire ↔ solidificare, vaporizare ↔ condensare, sublimare ↔ desublimare), deci degajă exact căldura pe care cele directe o absorb (lecția 4: procese inverse).') +
+            K('why', 'La topire, vaporizare și sublimare particulele trebuie depărtate unele de altele, împotriva forțelor dintre ele, iar asta cere energie (de aceea temperatura nu crește cât timp durează transformarea, lecția 3). La procesele inverse particulele se apropie și aceeași energie se degajă.', 'De ce topirea, vaporizarea și sublimarea absorb căldură?');
         }
       },
       {
         id: 'cond', h: 'Condiții standard',
         html: function () {
           return K('imp', 'Condiții standard: &nbsp;<b>$T = 298 K = 25 °C$</b> &nbsp;și&nbsp; <b>$p = 1 atm$</b>.', 'Marcat în caiet') +
+            K('why', 'Căldura unei reacții depinde (puțin) de temperatură și de presiune. Ca valorile din tabele să poată fi comparate între ele, toate se raportează la aceleași condiții.', 'De ce există condiții standard?') +
             '<p>Notația $ΔH_f^{298}$ din lecția 11 se referă la aceste condiții. Legătura dintre scări: $T(K) = t(°C) + 273$.</p>' +
-            K('note', 'La problemele cu volume de gaze, caietul folosește <b>c.n.</b>: $V_m = 22,4$ L/mol (Tema 5).') +
+            K('note', 'La problemele cu volume de gaze, caietul folosește <b>c.n.</b> (condiții normale: 0 °C și 1 atm): $V_m = 22,4$ L/mol (Tema 5). Sunt alte condiții decât cele standard.') +
             MQ('Cât este $T = 298$ K în grade Celsius?', ['25 °C', '571 °C', '−25 °C', '0 °C'], 0, '$t(°C) = T(K) − 273 = 298 − 273 = 25$ °C (ca în caiet: $298 K = 25 °C$).');
         }
       }

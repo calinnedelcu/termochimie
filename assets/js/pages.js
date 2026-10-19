@@ -357,7 +357,7 @@
       row('Cantitatea de substanță', '$ν = (m)//(M)$ &nbsp;·&nbsp; gaz la c.n.: $ν = (V)//(22,4)$'),
       row('Proporția', 'coeficient (mol) ↔ căldura din ecuație &nbsp;=&nbsp; cantitatea dată ↔ $x$'),
       row('Condiții standard', '$T = 298 K = 25 °C$, &nbsp; $p = 1 atm$'),
-      row('La c.n. (volume de gaze)', '$V_m = 22,4 L/mol$'),
+      row('La c.n. (condiții normale: 0 °C, 1 atm)', '$V_m = 22,4 L/mol$ &nbsp; (volume de gaze)'),
       row('Temperatura absolută', '$T(K) = t(°C) + 273$')
     ]);
     h += card('Căldura de formare și legea lui Hess', [

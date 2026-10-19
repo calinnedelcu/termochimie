@@ -128,7 +128,7 @@
         '<p><b>a)</b> Determină căldura $Q$ din ecuația termochimică (în kJ), corespunzătoare coeficienților de mai sus.</p>' +
         '<p><b>b)</b> Folosind valoarea lui $Q$ obținută la a), ce masă de ' + C(pr.f) + ' se formează când se degajă <b>' + N(Qb, 1) + ' kJ</b>?</p>',
       data: mchips([mainSp.f, pr.f]),
-      method: 'Mai întâi afli căldura pentru cantitatea din ecuație (ν·M grame), prin proporție inversă. Abia apoi o folosești la întrebarea b).',
+      method: 'Mai întâi afli căldura pentru cantitatea din ecuație (ν·M grame), printr-o proporție: căldura dată corespunde unei cantități mai mici, iar ecuația unei cantități mai mari. Abia apoi o folosești la întrebarea b).',
       parts: [
         {
           id: 'a', ask: 'Căldura din ecuația termochimică', a: r.Q, unit: 'kJ', tol: 0.02, dec: 1, steps: [
@@ -157,7 +157,7 @@
   /* =====================================================
      2. Gaze la condiții normale și căldura de reacție (etan)
      ===================================================== */
-  var ENDO_GAS = ['etan', 'azot', 'gazapa'];     // au un reactant gazos
+  var ENDO_GAS = ['etan', 'azot', 'gazapa'];     // au cel puțin un gaz (altul decât vaporii de apă)
   var VM = 22.4;
 
   function etanOriginal() {
@@ -181,10 +181,10 @@
   function etanMake(seed, level) {
     var R = T.rng(seed);
     if (level === 1) {
-      var r = T.RXN[R.pick(ENDO_GAS)], gs = side(r).filter(function (x) { return T.isGas(x.f); }), sp = R.pick(gs);
+      var r = T.RXN[R.pick(ENDO_GAS)], gs = side(r).concat(prod(r)).filter(function (x) { return T.isGas(x.f); }), sp = R.pick(gs), kind1 = side(r).some(function (x) { return x.f === sp.f; }) ? 'reacționează' : 'se formează';
       var kk = R.pick([0.5, 1, 2, 2.5, 3, 4, 5, 10, 20]), V = kk * sp.nu * VM, Q = kk * r.Q;
       return {
-        statement: '<p>Se dă ecuația termochimică:</p>' + eqBlock(r) + '<p><b>a)</b> Reacția este exotermă sau endotermă? Cum se vede din ecuație?</p><p><b>b)</b> Ce căldură se absoarbe când reacționează <b>' + N(V, 1) + ' L</b> de ' + C(sp.f) + ', măsurați în condiții normale?</p>',
+        statement: '<p>Se dă ecuația termochimică:</p>' + eqBlock(r) + '<p><b>a)</b> Reacția este exotermă sau endotermă? Cum se vede din ecuație?</p><p><b>b)</b> Ce căldură se absoarbe când ' + kind1 + ' <b>' + N(V, 1) + ' L</b> de ' + C(sp.f) + ', măsurați în condiții normale?</p>',
         data: ['$V_m = 22,4 L/mol$ (c.n.)'], method: 'ν = V / 22,4; apoi regula de trei cu căldura din ecuație.',
         parts: [
           { id: 'a', type: 'mc', ask: 'Alege afirmația corectă:', opts: ['Endotermă: $Q$ apare în stânga, căldura se absoarbe', 'Exotermă: $Q$ apare în stânga, căldura se degajă', 'Endotermă: $Q$ apare în dreapta', 'Nu se poate stabili'], correct: 0, steps: ['$Q$ este scris lângă reactanți ⟹ căldura este <b>absorbită</b> ⟹ endotermă.'] },
@@ -245,7 +245,7 @@
     id: 'etan', short: 'Gaze și volume (c.n.)', title: 'Căldura de reacție și volumele gazelor la condiții normale',
     blurb: 'Volum de gaz → moli → căldură (și invers). Recunoști o reacție endotermă din ecuație.',
     skill: 'ν = V/22,4 · reacții endoterme',
-    intro: T.callout('tip', '<b>Reține:</b> la c.n. un mol de gaz ocupă $22,4$ L ($V_m = 22,4$ L/mol). Transformi volumul în moli, apoi folosești căldura din ecuație pentru acei moli. Dacă $Q$ e în <b>stânga</b> ecuației, reacția este <b>endotermă</b> (absoarbe căldură).'),
+    intro: T.callout('tip', '<b>Reține:</b> la c.n. (condiții normale: 0 °C și 1 atm) un mol de gaz ocupă $22,4$ L ($V_m = 22,4$ L/mol). Transformi volumul în moli, apoi folosești căldura din ecuație pentru acei moli. Dacă $Q$ e în <b>stânga</b> ecuației, reacția este <b>endotermă</b> (absoarbe căldură).'),
     original: etanOriginal, make: etanMake
   });
 
@@ -412,7 +412,7 @@
     var lossg = R.pick([20, 25, 30, 40]), etag = (100 - lossg) / 100, dTg = tt2 - tt1, Qwg = mwg * 4.18 * dTg / 1000, Qtg = Qwg / etag, ng2 = Qtg / fg.Hc, Vg = ng2 * 22.4, Vco2 = ng2 * fg.co2 * 22.4;
     return {
       statement: '<p>Se încălzesc <b>' + N(mwg, 0) + ' g</b> de apă de la <b>' + tt1 + ' °C</b> la <b>' + tt2 + ' °C</b> prin arderea ' + fg.n + ' (căldura de ardere <b>' + N(fg.Hc, 1) + ' kJ/mol</b>). <b>' + lossg + '%</b> din căldură se pierde.</p><p><b>a)</b> Ce căldură utilă primește apa?</p><p><b>b)</b> Ce volum de ' + C(fg.f) + ' (c.n.) trebuie ars?</p><p><b>c)</b> Ce volum de ' + C('CO2(g)') + ' (c.n.) se degajă la ardere? <span class="muted">(1 mol de ' + C(fg.f) + ' dă ' + fg.co2 + ' mol de ' + C('CO2') + ')</span></p>',
-      data: ['$c_{apă} = 4,18 J/(g·K)$', '$V_m = 22,4 L/mol$ (c.n.)'], method: 'a) $Q = m·c·ΔT$. b) Căldura totală = utilă / randament, apoi $ν = Q/ΔH$ și $V = ν·22,4$. c) Din raportul molar al arderii.',
+      data: ['$c_{apă} = 4,18 J/(g·K)$', '$V_m = 22,4 L/mol$ (c.n.)'], method: 'a) $Q = m·c·ΔT$. b) Doar (100 − p)% din căldura degajată ajunge la apă, deci $Q_{total} = Q_{utilă} / ((100 − p)/100)$; apoi $ν = Q_{total}/Q_{ardere}$ și $V = ν·22,4$. c) Din raportul molar al arderii.',
       parts: [
         { id: 'a', ask: 'Căldura utilă', a: Qwg, unit: 'kJ', dec: 1, steps: ['$m = ' + N(mwg, 0) + ' g$; $ΔT = ' + dTg + ' K$.', '$Q = ' + N(mwg, 0) + ' · 4,18 · ' + dTg + ' = ' + N(Qwg * 1000, 0) + ' J = <b>' + N(Qwg, 1) + ' kJ</b>$.'] },
         { id: 'b', ask: 'Volumul de ' + C(fg.f) + ' (c.n.)', a: Vg, unit: 'L', dec: 1, steps: ['$Q_{total} = (' + N(Qwg, 1) + ')//(' + N(etag, 2) + ') = ' + N(Qtg, 1) + ' kJ$.', '$ν = (' + N(Qtg, 1) + ')//(' + N(fg.Hc, 1) + ') = ' + N(ng2, 3) + ' mol$.', '$V = ν · 22,4 = ' + N(ng2, 3) + ' · 22,4 = <b>' + N(Vg, 1) + ' L</b>$.'] },

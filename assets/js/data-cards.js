@@ -19,7 +19,7 @@
   C('caldura', 'Ce înseamnă $Q > 0$?', 'Sistemul <b>primește / absoarbe</b> căldură.');
   C('caldura', 'Ce înseamnă $Q < 0$?', 'Sistemul <b>cedează</b> căldură mediului.');
   C('caldura', 'Ce poate produce căldura primită de un corp?', '① creșterea <b>temperaturii</b><br>② efectuarea unui <b>lucru mecanic</b><br>③ <b>schimbarea stării</b> de agregare');
-  C('caldura', 'Cât este o calorie în joule?', '$1 cal ≈ 4,186 J$ &nbsp;(și $1 kcal = 1000 cal$, $1 kJ = 1000 J$).');
+  C('caldura', 'Cât este o calorie în joule?', '$1 cal ≈ 4,186 J$ &nbsp;(și $1 kcal = 1000 cal$, $1 kJ = 1000 J$). O calorie = căldura necesară ca <b>1 g de apă</b> să se încălzească cu <b>1 °C</b>.');
 
   /* 3 */
   C('marimi', 'Capacitatea calorică: definiție, formulă, unitate', 'Căldura necesară pentru a crește temperatura unui <b>corp</b> cu un grad.<br>$C = (Q)//(ΔT)$ &nbsp; $[C] = J/K$');
@@ -36,7 +36,7 @@
 
   /* 5 */
   C('principiul1', 'Enunțul primului principiu al termodinamicii', '$Q = ΔU + L$<br>căldura primită = variația energiei interne + lucrul mecanic efectuat de sistem.');
-  C('principiul1', 'Ce știi despre energia internă $U$?', '„U” <b>nu poate fi măsurată experimental</b> (de aceea nici entalpia nu poate fi măsurată direct).');
+  C('principiul1', 'Ce știi despre energia internă $U$?', 'Energia tuturor particulelor din sistem (de mișcare + de interacțiune). „U” <b>nu poate fi măsurată experimental</b>: se măsoară doar variația $ΔU$ (de aceea nici entalpia nu poate fi măsurată direct).');
 
   /* 6 */
   C('exo-endo', 'Reacție exotermă: definiție și ecuație', 'Reacție cu <b>degajare</b> de căldură: [[reactanți -> produși + Q]]<br>$Q < 0$ (față de sistem), $ΔH < 0$. Ex.: neutralizarea.');
@@ -55,7 +55,7 @@
   C('legaturi-stari', 'Care schimbări de stare sunt exoterme?', '<b>Solidificare, condensare, desublimare</b> — degajă căldură.');
   C('legaturi-stari', 'Temperatura în kelvini', '$T(K) = t(°C) + 273$ (ex.: $298 K = 25 °C$).');
   C('legaturi-stari', 'Condiții standard', '$T = 298 K = 25 °C$ și $p = 1 atm$.');
-  C('legaturi-stari', 'Volumul molar la condiții normale (c.n.)', 'La c.n.: $V_m = 22,4 L/mol$ (Tema 5: $ν = V//V_m$).');
+  C('legaturi-stari', 'Volumul molar la condiții normale (c.n.)', 'La c.n. (condiții normale: 0 °C și 1 atm): $V_m = 22,4 L/mol$ (Tema 5: $ν = V//V_m$).');
 
   /* 9 */
   C('entalpie', 'Cât este $Q_V$ (căldura la volum constant)?', '$Q_V = ΔU$, pentru că la $V = ct.$ avem $pΔV = 0$.');
@@ -67,8 +67,8 @@
   C('diagrame', 'Diagrama de entalpie a unei reacții endoterme', '$H_P > H_R$ ⟹ $ΔH > 0$ (produșii sunt mai sus decât reactanții).');
   C('diagrame', 'Diagrama de entalpie a unei reacții exoterme', '$H_P < H_R$ ⟹ $ΔH < 0$ (produșii sunt mai jos decât reactanții).');
   C('diagrame', 'Ce este energia de activare $E_a$?', 'Energia minimă (de prag) necesară pentru ca o ciocnire să fie eficientă: $E_a = H_{CA}^* − H_R$.');
-  C('diagrame', 'Ce este $CA^*$ în diagrama de entalpie?', 'Complexul activat: vârful curbei; entalpia lui este $H_{CA}^*$.');
-  C('diagrame', 'Condiția energetică a unei ciocniri eficiente', 'Ciocnirea trebuie să aibă o valoare <b>cel puțin egală</b> cu energia de prag (de activare), $E_a$.<br><span class="muted">(Caietul anunță „două condiții”, dar o scrie doar pe aceasta.)</span>');
+  C('diagrame', 'Ce este $CA^*$ în diagrama de entalpie?', 'Complexul activat: starea trecătoare de energie maximă dintre reactanți și produși (legături vechi slăbite, legături noi abia începute); este vârful curbei, iar entalpia lui este $H_{CA}^*$.');
+  C('diagrame', 'Condiția energetică a unei ciocniri eficiente', 'Ciocnirea trebuie să aibă o valoare <b>cel puțin egală</b> cu energia de prag (de activare), $E_a$.<br><span class="muted">A doua condiție (scrisă pe site, nu în caiet): <b>orientarea favorabilă</b> a moleculelor la ciocnire (condiția geometrică).</span>');
 
   /* 11 */
   C('formare', 'Ce este căldura de formare?', 'Căldura schimbată pentru <b>formarea unui mol</b> de substanță <b>din elemente</b> aflate în stare standard. Notație: $ΔH_f$ (în caiet: J/mol).');

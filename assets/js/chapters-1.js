@@ -33,7 +33,8 @@
             '<li><b>sistemul</b> = substanțele participante la reacție <b>+ recipientul</b> în care are loc;</li>' +
             '<li><b>mediul exterior</b> = tot ceea ce se află în afara sistemului.</li></ul>' +
             W('systemEnv') +
-            K('warn', 'Recipientul (paharul, eprubeta) <b>face parte din sistem</b>. Aerul din laborator, masa și mâna ta sunt <b>mediu exterior</b>.');
+            K('warn', 'Recipientul (paharul, eprubeta) <b>face parte din sistem</b>. Aerul din laborator, masa și mâna ta sunt <b>mediu exterior</b>.') +
+            K('why', 'Definiția cere corpuri „care pot face schimb de energie între ele”. Substanțele care reacționează schimbă căldură cu paharul (și el se încălzește sau se răcește), deci paharul trebuie socotit împreună cu ele. Abia de la pahar spre aer și spre mână începe mediul exterior.', 'De ce face recipientul parte din sistem?');
         }
       },
       {
@@ -93,10 +94,11 @@
         id: 'unitati', h: 'Unități: joule și calorie',
         html: function () {
           return K('key', '$1 cal ≈ 4,186 J$', 'Reține') +
+            K('why', 'O <b>calorie</b> este căldura necesară pentru ca <b>1 g de apă</b> să se încălzească cu <b>1 °C</b>. Căldura specifică a apei este deci 1 cal/(g·°C), adică ≈ 4,18 J/(g·K) (lecția 3): de aceea 1 cal ≈ 4,18 J.', 'Ce este o calorie?') +
             '<p>Exemplu de conversie, folosit chiar în problemele din caiet:</p>' +
             '<div class="formula">$256,57 kcal = 256,57 · 10^3 cal ≈ 256,57 · 10^3 · 4,18 J ≈ 1 072 463 J ≈ 1072,5 kJ$</div>' +
             W('calConv') +
-            K('warn', 'În caiet, la teorie: $1 cal ≈ 4,186 J$, iar în exercițiul 4/14 se folosește $4,18$ J. Folosește <b>valoarea din enunț</b>.');
+            K('warn', 'În caiet, la teorie: $1 cal ≈ 4,186 J$, iar în exercițiul 4/14 se folosește $4,18$ J. Valorile diferă puțin (4,18 / 4,184 / 4,186) pentru că și căldura specifică a apei se schimbă ușor cu temperatura. Folosește <b>valoarea din enunț</b>.');
         }
       }
     ]
@@ -149,6 +151,7 @@
           return K('key', 'Cantitatea de căldură necesară <b>transformării de stare</b> a unității de masă dintr-o substanță, <b>fără modificarea temperaturii</b>.', 'Definiție') +
             '<div class="formula">$λ = (Q)//(m)$ &nbsp;&nbsp;&nbsp; $[λ] = J/g$</div>' +
             '<p>Se întâlnește la <b>topire</b>, <b>vaporizare</b> și <b>sublimare</b>.</p>' +
+            K('why', 'Căldura primită nu mai mărește agitația particulelor (ea se vede în temperatură), ci este folosită ca să le depărteze unele de altele, învingând forțele dintre ele. Cât timp durează transformarea, temperatura rămâne constantă; abia după ce s-a terminat începe din nou să crească.', 'De ce rămâne temperatura constantă?') +
             K('warn', 'Uită-te mereu la <b>unitatea</b> lui $λ$: dacă e în <b>J/g</b>, înmulțești cu masa ($Q = m·λ$). În problema cu sodiul din caiet, $λ = 2,6$ <b>kJ/mol</b>, deci se înmulțește cu numărul de moli: $Q = ν·λ$.');
         }
       },
@@ -188,13 +191,15 @@
         html: function () {
           return K('key', '$Q_{cedată} = Q_{primită}$ &nbsp;&nbsp;sau&nbsp;&nbsp; $Q_1 + Q_2 = 0$', 'Enunț') +
             '<p>Cele două scrieri spun același lucru: în prima, căldurile sunt luate <b>în modul</b> (valori pozitive); în a doua, <b>cu semn</b> — cel care cedează are $Q < 0$, cel care primește are $Q > 0$, iar suma lor e zero.</p>' +
-            '<p>Pentru fiecare corp, $Q = m·c·ΔT$ (cu $ΔT = T_f − T_i$); condiția $Q_1 + Q_2 = 0$ le leagă între ele.</p>';
+            '<p>Pentru fiecare corp, $Q = m·c·ΔT$ (cu $ΔT = T_f − T_i$); condiția $Q_1 + Q_2 = 0$ le leagă între ele.</p>' +
+            K('why', 'Un <b>sistem izolat</b> nu schimbă energie cu exteriorul, deci nimic nu se pierde: căldura trece de la corpul mai cald la cel mai rece până când temperaturile se egalează (echilibrul termic), iar toată căldura cedată de unul este primită de celălalt.', 'De ce sunt egale căldurile?');
         }
       },
       {
         id: 'inverse', h: 'Procese inverse',
         html: function () {
           return K('imp', 'Cantitatea de căldură <b>absorbită</b> într-o transformare este egală, <b>ca valoare</b>, cu cea <b>degajată</b> în transformarea inversă. Exemplu: <b>topire ↔ solidificare</b>.', 'Marcat în caiet') +
+            K('why', 'Ca să se întoarcă la starea de la care a plecat, sistemul trebuie să dea înapoi exact energia pe care a primit-o (și invers). Altfel, la fiecare „dus-întors” ar apărea sau ar dispărea energie din nimic, iar energia se conservă.', 'De ce sunt egale?') +
             W('inverseProc') +
             MQ('Topirea unei cantități de gheață absoarbe 3300 J. Ce căldură se degajă la solidificarea aceleiași cantități (în aceleași condiții)?', ['3300 J (se degajă)', '3300 J (se absoarbe)', 'Nicio căldură', 'Nu se poate afla'], 0,
               'Procese inverse (topire ↔ solidificare) ⟹ aceeași valoare: solidificarea <b>degajă</b> 3300 J.');

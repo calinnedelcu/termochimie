@@ -42,7 +42,8 @@
     if (o.noQ) return '[[' + side(r.L) + ' -> ' + side(r.R) + ']]';
     return '[[' + (r.type === 'exo' ? side(r.L) + ' -> ' + side(r.R) + ' + ' + qs : side(r.L) + ' + ' + qs + ' -> ' + side(r.R)) + ']]';
   };
-  T.isGas = function (f) { return /\(g\)$/.test(f); };
+  // „gaz” pentru volume la c.n. (0 °C, 1 atm): vaporii de apă și SO3 nu sunt gaze la 0 °C, deci nu li se calculează volume
+  T.isGas = function (f) { return /\(g\)$/.test(f) && !/^(H2O|SO3)\(g\)$/.test(f); };
   T.massOf = function (f) {
     var map = { 'CH3-CO-COOH': 88 };
     return map[f.replace(/\((s|l|g|aq)\)$/, '')] || T.molarMass(f);

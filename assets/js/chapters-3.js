@@ -19,7 +19,8 @@
         html: function () {
           return '<p>Poate fi exprimat simplu printr-o relație care corelează <b>3 mărimi termodinamice</b>:</p>' +
             '<div class="formula">$Q = ΔU + L$ &nbsp;&nbsp;⟹&nbsp;&nbsp; $Q = ΔU + pΔV$</div>' +
-            K('tip', 'Lucrul mecanic al reacției se scrie $L = pΔV$. Rezultă două cazuri, după ce rămâne constant: <b>volumul</b> ($V = ct.$) sau <b>presiunea</b> ($p = ct.$).');
+            K('tip', 'Lucrul mecanic al reacției se scrie $L = pΔV$. Rezultă două cazuri, după ce rămâne constant: <b>volumul</b> ($V = ct.$) sau <b>presiunea</b> ($p = ct.$).') +
+            K('why', 'Gazul împinge un piston de arie $A$ cu forța $F = p·A$ pe o distanță $d$, deci $L = F·d = p·A·d$. Dar $A·d$ este chiar variația de volum, $ΔV$, așa că $L = pΔV$ (la presiune constantă).', 'De ce L = pΔV?');
         }
       },
       {
@@ -33,7 +34,7 @@
       {
         id: 'p', h: 'Cazul II: presiune constantă — apare entalpia',
         html: function () {
-          return '<p>$p = ct.$ Atunci:</p>' +
+          return '<p>$p = ct.$ Cum $p$ este constantă, $pΔV = Δ(pV)$ (iese în fața variației). Atunci:</p>' +
             '<div class="formula">$Q = ΔU + Δ(pV)$ &nbsp;&nbsp;⟹&nbsp;&nbsp; $Q_P = Δ(U + pV)$ &nbsp;(<b>entalpie</b>)</div>' +
             '<div class="formula">$Q_P = ΔH$</div>' +
             K('key', 'La <b>presiune constantă</b>, căldura de reacție este egală cu variația de entalpie: $Q_P = ΔH$ (expresia principiului I la $p = ct.$).') +
@@ -44,7 +45,8 @@
         id: 'ent', h: 'Entalpia',
         html: function () {
           return K('key', '<b>Entalpia</b> este suma dintre energia internă și lucrul mecanic efectuat de sistem pentru a-și ocupa volumul propriu: $H = U + pV$.', 'Definiție') +
-            '<ul><li>Entalpia <b>nu poate fi măsurată experimental</b>, deoarece $U$ nu poate fi măsurată experimental.</li>' +
+            K('why', 'Un sistem aflat sub presiunea $p$ a mediului trebuie să împingă mediul ca să-și facă loc: pentru volumul $V$ pe care îl ocupă, efectuează lucrul mecanic $pV$. Entalpia adună acest lucru la energia internă.', 'Ce înseamnă „pV”?') +
+            '<ul><li>Entalpia <b>nu poate fi măsurată experimental</b>, deoarece $U$ nu poate fi măsurată experimental: se pot măsura doar <b>schimburile</b> de energie (căldura, lucrul mecanic), adică <b>variații</b> ($ΔU$), nu energia totală a sistemului.</li>' +
             '<li>$ΔH$ <b>se poate determina</b> experimental, <b>indirect</b>, prin calcularea <b>căldurii de reacție</b>.</li></ul>' +
             '<div class="formula">$Q_P = ΔH$ &nbsp;·&nbsp; căldura de reacție = variația de entalpie</div>' +
             MQ('Care relație exprimă corect principiul I la presiune constantă?', ['$Q_P = ΔH$', '$Q_P = ΔU$', '$Q_P = pΔV$', '$Q_P = ΔH − ΔU$'], 0,
@@ -77,6 +79,7 @@
             '<tr><td>$E_a$</td><td>energia de activare: de la $H_R$ până la vârf, $E_a = H_{CA}^* − H_R$</td></tr>' +
             '<tr><td>$ΔH$</td><td>$ΔH = H_P − H_R$</td></tr></tbody></table></div>' +
             '<div class="grid-2"><div class="callout endo"><div class="ct">endotermă</div><div class="cb">$H_P > H_R$ ⟹ $ΔH > 0$</div></div><div class="callout exo"><div class="ct">exotermă</div><div class="cb">$H_P < H_R$ ⟹ $ΔH < 0$</div></div></div>' +
+            K('tip', '<b>Complexul activat (CA*)</b> este starea trecătoare, de energie maximă, prin care trece sistemul între reactanți și produși: legăturile vechi sunt slăbite, iar cele noi abia încep să se formeze. Este foarte instabil și se descompune imediat în produșii reacției. De aceea reacția are nevoie de energie de activare chiar și când este exotermă: întâi se slăbesc legăturile vechi (lecția 8), abia apoi se formează cele noi.', 'Ce este complexul activat?') +
             W('energyDiagram');
         }
       },
@@ -86,7 +89,8 @@
           return K('key', '<b>Energia de activare</b> = minimul necesar pentru ca reacția să aibă loc (<b>prag</b>).') +
             '<p>Reacțiile chimice se produc în urma <b>ciocnirilor eficiente</b> ale moleculelor. O ciocnire este <b>eficientă</b> dacă duce la <b>ruperea de legături</b>, iar pentru aceasta trebuie îndeplinite <b>două condiții</b>:</p>' +
             '<div class="callout key"><div class="ct">1 · condiția energetică</div><div class="cb">Moleculele dau ciocniri eficiente dacă ciocnirea lor are o valoare cel puțin egală cu un minim numit <b>„energie de prag”</b> sau <b>„energie de activare”</b> ($E_a$).</div></div>' +
-            K('note', 'Caietul anunță „două condiții”, dar o scrie doar pe prima. Dacă ai notat-o și pe a doua la oră, completeaz-o în caiet — aici nu am pus-o, ca să nu adaug nimic care nu e în caiet.') +
+            '<div class="callout key"><div class="ct">2 · condiția geometrică</div><div class="cb">Moleculele trebuie să se ciocnească cu o <b>orientare favorabilă</b> (cu „partea potrivită” una spre alta). Altfel, chiar dacă energia ciocnirii este suficientă, legăturile nu se rup și moleculele se despart neschimbate.</div></div>' +
+            K('note', 'În caiet este scrisă doar prima condiție, deși anunță două. A doua, cea geometrică, este completată aici. Numai ciocnirile care le îndeplinesc pe amândouă formează complexul activat.', 'Completare') +
             W('reactionPath') +
             MQ('Două molecule se ciocnesc cu o energie mai mică decât $E_a$. Condiția energetică este îndeplinită?', ['Da', 'Nu: energia trebuie să fie cel puțin egală cu $E_a$', 'Depinde de $ΔH$', 'Nu se poate stabili'], 1,
               'Ciocnirea este eficientă (energetic) dacă energia ei este cel puțin egală cu energia de prag (de activare), $E_a$.');
@@ -136,6 +140,7 @@
         html: function () {
           return K('key', 'Cu cât căldura de formare este <b>mai mică</b> (sau mai negativă), cu atât substanța este <b>mai stabilă</b>.', 'Regulă') +
             '<p>Caietul adaugă: $ΔH < 0$ ⟹ reacție exotermă.</p>' +
+            K('why', 'Cu cât $ΔH_f$ e mai negativă, cu atât mai multă energie s-a degajat la formarea substanței. Ca s-o descompui înapoi în elemente trebuie să-i dai exact aceeași energie (procese inverse, lecția 4): cu cât a degajat mai mult la formare, cu atât e mai greu de descompus, deci mai stabilă.', 'De ce e mai stabilă?') +
             MQ('Substanța A are $ΔH_f = −300$ kJ/mol, iar substanța B are $ΔH_f = −100$ kJ/mol. Care este mai stabilă?', ['A', 'B', 'Sunt la fel de stabile', 'Nu se poate stabili'], 0,
               'Cu cât $ΔH_f$ este mai mică (mai negativă), cu atât substanța e mai stabilă: −300 < −100 ⟹ A.');
         }
@@ -146,6 +151,7 @@
           return '<p>Pentru o reacție $aA + bB → cC + dD$:</p>' +
             '<div class="formula">$ΔH_r = Σ ν_P·ΔH_f(produși) − Σ ν_R·ΔH_f(reactanți)$</div>' +
             '<p>Suma pentru <b>produși</b> ($C$, $D$) minus suma pentru <b>reactanți</b> ($A$, $B$), fiecare termen înmulțit cu <b>coeficientul</b> ($ν_P$, $ν_R$) substanței.</p>' +
+            K('why', 'Ca să ajungi de la reactanți la produși poți merge prin elemente: întâi „desfaci” reactanții în elementele lor (inversul formării, deci cu semn schimbat: $−ΔH_f$), apoi formezi produșii din elemente ($+ΔH_f$). Căldura nu depinde de drum (legea lui Hess, lecția 12), de aceea se adună $ΔH_f$ ale produșilor și se scad cele ale reactanților. Elementele au $ΔH_f = 0$, deci nu schimbă nimic în sume.', 'De ce produși minus reactanți?') +
             K('ex', '<b>Problema 8 (ultima pagină din caiet) — arderea a 5 mol de metan:</b> [[CH4(g) + 2O2(g) -> CO2(g) + 2H2O(g)]]<div class="formula">$ΔH = [ΔH_f(CO_2) + 2·ΔH_f(H_2O)] − ΔH_f(CH_4)$</div>($ΔH_f(O_2) = 0$, element.) Apoi $|Q| = 5 · ΔH$.<br>Exemplu numeric (valorile $ΔH_f$ se dau în enunț): $ΔH_f(CO_2) = −393,5$; $ΔH_f(H_2O, g) = −241,8$; $ΔH_f(CH_4) = −74,8$ kJ/mol ⟹ $ΔH = [−393,5 + 2·(−241,8)] − (−74,8) = −802,3$ kJ; pentru 5 mol: $|Q| = 4011,5$ kJ.') +
             W('formationCalc') +
             K('warn', 'Atenție: (1) înmulțește fiecare $ΔH_f$ cu <b>coeficientul</b> din ecuație; (2) <b>produși − reactanți</b> (nu invers); (3) elementele au $ΔH_f = 0$.');
@@ -170,7 +176,8 @@
             '<div class="formula">$ΔH = ΔH_1 + ΔH_2 + ΔH_3$</div>' +
             W('hessCycle') +
             K('tip', 'Gândește-te la <b>altitudine</b>: diferența dintre baza și vârful unui munte este aceeași, indiferent pe ce potecă urci. Contează doar de unde pleci și unde ajungi.') +
-            K('note', 'În marginea paginii din caiet este o notă greu de citit, de forma: „sinteză organică, reacții …, etape posibil de măsurat experimental”. Verific-o în caiet.');
+            K('why', 'Entalpia $H$ depinde doar de <b>starea</b> sistemului (ca altitudinea unui punct), nu de drumul pe care a ajuns acolo. Atunci $ΔH = H_{final} − H_{inițial}$ are aceeași valoare pe orice drum, oricâte etape intermediare ar fi.', 'De ce nu depinde de drum?') +
+            K('imp', 'În marginea paginii, în caiet: „sinteză organică, reacții mai mici, etape posibil de măsurat experimental”. Adică legea e utilă când o reacție nu se poate măsura direct (de exemplu într-o sinteză organică): o împarți în reacții mai mici, ale căror $ΔH$ se pot măsura experimental, și le aduni.', 'Marcat în caiet');
         }
       },
       {
@@ -180,6 +187,7 @@
             '<tr><td><b>Inversare</b> (înmulțire cu −1)</td><td>reactanții și produșii își schimbă locul</td><td>își schimbă <b>semnul</b></td></tr>' +
             '<tr><td><b>Înmulțire cu $k$</b></td><td>toți coeficienții se înmulțesc cu $k$</td><td>se înmulțește cu $k$</td></tr>' +
             '<tr><td><b>Adunare</b></td><td>se adună ecuațiile; ce apare de ambele părți se simplifică</td><td>se <b>adună</b></td></tr></tbody></table></div>' +
+            K('why', '<ul><li><b>Inversare:</b> procesul invers absoarbe exact căldura pe care o degaja cel direct (lecția 4), deci $ΔH$ își schimbă semnul.</li><li><b>Înmulțire cu $k$:</b> $ΔH$ se referă la cantitățile din ecuație (lecția 7), deci de $k$ ori mai multă substanță înseamnă de $k$ ori mai multă căldură.</li><li><b>Adunare:</b> legea lui Hess — $ΔH$ al drumului întreg este suma $ΔH$-urilor etapelor.</li></ul>', 'De ce se întâmplă așa cu ΔH?') +
             '<h3>Pașii (dedusi din exercițiul din caiet)</h3><ol>' +
             '<li>Pentru fiecare substanță din reacția cerută, alege o ecuație dată în care apare.</li>' +
             '<li>Dacă e în <b>partea opusă</b> față de reacția cerută, <b>inversezi</b> ecuația.</li>' +

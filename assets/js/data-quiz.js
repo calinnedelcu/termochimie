@@ -246,7 +246,7 @@
     },
     { t: 'num', q: 'Exprimă temperatura de 37 °C în kelvini.', a: 310, unit: 'K', tol: 0.005, dec: 0, why: '$T(K) = t(°C) + 273 = 37 + 273 = 310$ K.' },
     {
-      t: 'mc', q: 'La c.n., un mol de gaz ocupă (volumul molar $V_m$)…',
+      t: 'mc', q: 'La c.n. (condiții normale: 0 °C și 1 atm), un mol de gaz ocupă (volumul molar $V_m$)…',
       opts: ['22,4 L', '24,5 L', '1 L', '100 L'], a: 0, why: 'În caiet (Tema 5): la c.n. $V_m = 22,4$ L/mol.'
     },
     {

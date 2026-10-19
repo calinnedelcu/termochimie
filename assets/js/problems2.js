@@ -130,6 +130,9 @@
     var sp = r.R.reduce(function (s, p) { return s + p[0] * T.HF[p[1]]; }, 0), sr = r.L.reduce(function (s, p) { return s + p[0] * T.HF[p[1]]; }, 0);
     return { P: P, R: Rr, sp: sp, sr: sr };
   }
+  function knownTerms(list, skip) {
+    return list.filter(function (p) { return p[1] !== skip && isComp(p[1]); }).map(function (p) { return '$' + N(p[0], 1) + '·(' + N(T.HF[p[1]], 1) + ')$'; }).join(' + ');
+  }
   function frStepsDH(r) {
     var a = frArith(r), dH = frDH(r);
     return ['Formula: $ΔH = Σ ν_P·ΔH_f(produși) − Σ ν_R·ΔH_f(reactanți)$. Elementele au $ΔH_f = 0$ (ca în caiet, ex. [[O2]]).',
@@ -175,6 +178,7 @@
       var parts = [{
         id: 'a', ask: '$ΔH_f$(' + C(u) + ')', a: x, unit: 'kJ/mol', dec: 1, tol: 0.004, steps: [
           'Scriu formula: $ΔH = Σ ν_P·ΔH_f(P) − Σ ν_R·ΔH_f(R)$ și înlocuiesc ce cunosc ($ΔH_f$ pentru elemente = 0).',
+          'Termenii cunoscuți: produși ' + (knownTerms(r.R, u) || '0') + '; reactanți ' + (knownTerms(r.L, u) || '0') + '; necunoscuta ' + N(nu, 1) + '·x este la ' + (inR ? 'reactanți' : 'produși') + '.',
           inR ? '$' + N(dH, 1) + ' = [' + N(P_known, 2) + '] − [' + N(R_known, 2) + ' + ' + N(nu, 1) + '·x]$' : '$' + N(dH, 1) + ' = [' + N(P_known, 2) + ' + ' + N(nu, 1) + '·x] − [' + N(R_known, 2) + ']$',
           '$x = ΔH_f(' + nm(u) + ') = <b>' + N(x, 1) + ' kJ/mol</b>$.']
       }];
