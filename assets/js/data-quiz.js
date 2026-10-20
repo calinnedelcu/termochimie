@@ -222,7 +222,12 @@
       t: 'mc', q: 'Reacția inversă reacției $A + B → C + D + 80 kJ$ este…',
       opts: ['$C + D + 80 kJ → A + B$ (endotermă)', '$C + D → A + B + 80 kJ$ (exotermă)', '$C + D → A + B + 40 kJ$', 'imposibilă'], a: 0, why: 'Procese inverse: aceeași căldură ca valoare, dar absorbită în loc de degajată.'
     },
-    { t: 'num', q: 'Câtă căldură se degajă la arderea a 3,2 g de metan? ($CH_4 + 2O_2 → CO_2 + 2H_2O(g) + 802$ kJ; $M_{CH_4} = 16$ g/mol)', a: 160.4, unit: 'kJ', tol: 0.01, dec: 1, why: '$ν = 3,2/16 = 0,2$ mol ⟹ $Q = 0,2 · 802 = 160,4$ kJ.' }
+    { t: 'num', q: 'Câtă căldură se degajă la arderea a 3,2 g de metan? ($CH_4 + 2O_2 → CO_2 + 2H_2O(g) + 802$ kJ; $M_{CH_4} = 16$ g/mol)', a: 160.4, unit: 'kJ', tol: 0.01, dec: 1, why: '$ν = 3,2/16 = 0,2$ mol ⟹ $Q = 0,2 · 802 = 160,4$ kJ.' },
+    {
+      t: 'multi', q: 'Stabiliți care dintre afirmațiile despre <b>căldura de reacție</b> sunt adevărate:',
+      opts: ['reprezintă cantitatea de căldură absorbită în procesele de topire și vaporizare ale reactanților', 'reprezintă efectul termic ce însoțește o reacție chimică', 'reprezintă cantitatea de căldură degajată într-o reacție exotermă sau absorbită într-o reacție endotermă', 'se exprimă numai în kcal'],
+      a: [1, 2], why: 'Căldura de reacție este efectul termic al unei <b>reacții chimice</b>: căldura degajată (exo) sau absorbită (endo). Topirea și vaporizarea sunt schimbări de stare (lecția 8), nu reacții chimice. Iar căldura se poate exprima în J, kJ, cal sau kcal, nu doar în kcal.'
+    }
   ];
 
   /* ---------- 8. Legături, schimbări de stare, condiții standard ---------- */

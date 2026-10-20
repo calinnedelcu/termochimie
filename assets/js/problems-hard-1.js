@@ -14,6 +14,7 @@
   var CAL = 4.18, VM = 22.4;
   function eqBlock(r, o) { return '<div class="eqn ' + r.type + '">' + T.eqStr(r, o) + '</div>'; }
   function mchips(list) { return list.map(function (f) { return 'M(' + C(f) + ') = ' + N(T.massOf(f), 1) + ' g/mol'; }); }
+  var Cn = T.cname, gen = T.cgen;
   function qline(id, txt) { return '<p><b>' + id + ')</b> ' + txt + '</p>'; }
   function near(a, b) { return Math.abs(a - b) <= 1e-6 * Math.max(1, Math.abs(b)); }
   /** înlocuiește generatorul de nivel 4 al unui tip de problemă; nivelurile 1–3 rămân neschimbate */
@@ -22,7 +23,7 @@
     P.make = function (seed, level) { if (level !== 4) return base(seed, level); var R = T.rng(seed), fn = R.pick(gens), inst = fn(R); inst.tpl = gens.indexOf(fn); return inst; };
     P.maxLevel = 4;
   }
-  T.hard = { N: N, nm: nm, C: C, CAL: CAL, VM: VM, eqBlock: eqBlock, mchips: mchips, qline: qline, near: near, reg: reg };
+  T.hard = { N: N, nm: nm, C: C, Cn: Cn, gen: gen, CAL: CAL, VM: VM, eqBlock: eqBlock, mchips: mchips, qline: qline, near: near, reg: reg };
 
   /* arderea unei substanțe simple: din ecuația din T.RXN */
   function burnInfo(key) {
@@ -51,7 +52,7 @@
      1. Ecuația termochimică (termita)
      ===================================================== */
   /* 1a. amestec de două substanțe care ard complet: sistem cu două necunoscute */
-  var BURN = ['carbon', 'sulf', 'magneziu', 'hidrogen'];
+  var BURN = ['carbon', 'sulf', 'magneziu'];   // toate solide: amestec de substanțe în aceeași stare de agregare
   function termitaMix(R) {
     var pair = R.shuffle(BURN).slice(0, 2).map(burnInfo), A = pair[0], B = pair[1];
     var amt = function (x) { return x.f === 'C(s)' ? R.pick([1, 2, 3, 4]) : R.pick([0.5, 1, 1.5, 2, 2.5, 3]); };
@@ -60,9 +61,9 @@
     var nA = x / A.M, nB = y / B.M, VO2 = (nA * A.o2 + nB * B.o2) * VM, pct = nA * A.qm / Q * 100;
     var ok = x > 0 && y > 0;
     return {
-      statement: '<p>Un amestec de ' + C(A.f) + ' și ' + C(B.f) + ', cu masa totală de <b>' + N(m, 1) + ' g</b>, arde complet în oxigen, conform ecuațiilor termochimice:</p>' + eqBlock(A.r) + eqBlock(B.r) +
-        '<p>În total se degajă <b>' + N(Q, 1) + ' kJ</b>.</p>' + qline('a', 'Ce masă de ' + C(A.f) + ' conține amestecul?') + qline('b', 'Ce masă de ' + C(B.f) + ' conține amestecul?') +
-        qline('c', 'Ce volum de ' + C('O2') + ' (c.n.) se consumă la ardere?') + qline('d', 'Ce procent din căldura totală provine din arderea lui ' + C(A.f) + '?'),
+      statement: '<p>Un amestec de ' + Cn(A.f) + ' și ' + Cn(B.f) + ', cu masa totală de <b>' + N(m, 1) + ' g</b>, arde complet în oxigen, conform ecuațiilor termochimice:</p>' + eqBlock(A.r) + eqBlock(B.r) +
+        '<p>În total se degajă <b>' + N(Q, 1) + ' kJ</b>.</p>' + qline('a', 'Calculați masa de ' + Cn(A.f) + ' din amestec.') + qline('b', 'Calculați masa de ' + Cn(B.f) + ' din amestec.') +
+        qline('c', 'Calculați volumul de ' + C('O2') + ' (c.n.) consumat la ardere.') + qline('d', 'Calculați ce procent din căldura totală provine din arderea ' + gen(A.f) + '.'),
       data: mchips([A.f, B.f]).concat(['$V_m = 22,4 L/mol$ (c.n.)']),
       method: 'Din fiecare ecuație afli căldura pe <b>gram</b> de substanță. Apoi scrii două ecuații cu necunoscutele $x$ și $y$ (masele): una pentru masă și una pentru căldură.',
       check: function () { return ok && near(hA * x + hB * y, Q) && near(x + y, m); },
@@ -95,16 +96,16 @@
     var Qe = k * er.Q, Qtot = Qe / eta, nf = Qtot / fu.qm, mf = nf * fu.M, Vf = nf * VM, Vco2 = nf * fu.co2 * VM;
     var verb = ob.side === 'L' ? 'reacționează' : 'se formează';
     var first = mode === 'mass'
-      ? qline('a', 'Ce căldură (în <b>kcal</b>) absoarbe reacția endotermă? <span class="muted">(1 cal ≈ 4,18 J)</span>')
-      : qline('a', 'Ce căldură (în <b>kJ</b>) absoarbe reacția endotermă?');
+      ? qline('a', 'Calculați cantitatea de căldură, exprimată în <b>kcal</b>, absorbită în reacția endotermă.')
+      : qline('a', 'Calculați cantitatea de căldură (în <b>kJ</b>) absorbită în reacția endotermă.');
     var aAns = mode === 'mass' ? Qe * 1000 / CAL / 1000 : Qe;
-    var fuelAsk = mode === 'mass' ? qline('c', 'Ce masă de ' + C(fu.f) + ' trebuie arsă?') : qline('c', 'Ce volum de ' + C(fu.f) + ' (c.n.) trebuie ars?');
+    var fuelAsk = mode === 'mass' ? qline('c', 'Calculați masa de ' + Cn(fu.f) + ' care trebuie arsă.') : qline('c', 'Calculați volumul de ' + Cn(fu.f) + ' (c.n.) care trebuie ars.');
     var fuelAns = mode === 'mass' ? mf : Vf, fuelUnit = mode === 'mass' ? 'g' : 'L';
     return {
-      statement: '<p>O reacție endotermă are loc după ecuația:</p>' + eqBlock(er) + '<p>Căldura necesară provine din arderea ' + C(fu.f) + ', după ecuația:</p>' + eqBlock(fu.r) +
-        '<p><b>' + p + '%</b> din căldura degajată prin ardere se pierde în mediu. În reacția endotermă ' + verb + ' <b>' + N(qty, 1) + ' ' + unitQ + '</b> de ' + C(ob.f) + (ob.kind === 'vol' ? ' (c.n.)' : '') + '.</p>' +
-        first + qline('b', 'Ce căldură (în kJ) trebuie degajată prin arderea combustibilului?') + fuelAsk + qline('d', 'Ce volum de ' + C('CO2') + ' (c.n.) se degajă la ardere?'),
-      data: mchips(ob.kind === 'mass' ? [ob.f, fu.f] : [fu.f]).concat(['$V_m = 22,4 L/mol$ (c.n.)']),
+      statement: '<p>' + T.lead(er) + '</p>' + eqBlock(er) + '<p>Căldura necesară provine din arderea ' + gen(fu.f) + ', conform ecuației termochimice:</p>' + eqBlock(fu.r) +
+        '<p><b>' + p + '%</b> din căldura eliberată prin ardere se pierde în mediu. În reacția endotermă ' + verb + ' <b>' + N(qty, 1) + ' ' + unitQ + '</b>' + (ob.kind === 'vol' ? ' (c.n.)' : '') + ' de ' + Cn(ob.f) + '.</p>' +
+        first + qline('b', 'Calculați cantitatea de căldură (în kJ) care trebuie eliberată prin arderea combustibilului.') + fuelAsk + qline('d', 'Calculați volumul de ' + C('CO2') + ' (c.n.) care se degajă la ardere.'),
+      data: mchips(ob.kind === 'mass' ? [ob.f, fu.f] : [fu.f]).concat(['$V_m = 22,4 L/mol$ (c.n.)'], mode === 'mass' ? ['1 cal = 4,18 J'] : []),
       method: 'a) Câte „ecuații” se petrec: cantitatea dată / cantitatea de pe ecuație; apoi $Q = k · Q_{ecuație}$. b) La reacția endotermă ajunge doar $(100 − p)%$ din căldura degajată prin ardere. c), d) Proporții pe ecuația de ardere.',
       check: function () { return near(Qtot * eta, Qe) && near(nf * fu.qm, Qtot); },
       parts: [
@@ -136,10 +137,10 @@
     var r = T.RXN[R.pick(['etan', 'amoniac-desc'])], main = r.L[0], V1 = R.pick([44.8, 67.2, 89.6, 112, 134.4, 224, 448]), x = R.pick([40, 50, 60, 75, 80, 90]) / 100;
     var n0 = V1 / VM, nd = x * n0, k = nd / main[0], Q = k * r.Q;
     var gases = r.R.filter(function (p) { return T.isGas(p[1]); }), nprod = gases.reduce(function (s, p) { return s + p[0]; }, 0) * k, Vprod = nprod * VM, Vrest = V1 - nd * VM, Vtot = Vrest + Vprod;
-    var prodNames = gases.map(function (p) { return C(p[1]); }).join(' și ');
+    var prodNames = gases.map(function (p) { return Cn(p[1]); }).join(' și ');
     return {
-      statement: '<p>Se dă ecuația termochimică a descompunerii:</p>' + eqBlock(r) + '<p>Se încălzește o probă de <b>' + N(V1, 1) + ' L</b> de ' + C(main[1]) + ' (c.n.), dar doar <b>' + N(x * 100, 0) + '%</b> din cantitatea de ' + C(main[1]) + ' se descompune.</p>' +
-        qline('a', 'Ce căldură se absoarbe?') + qline('b', 'Ce volum total de produși gazoși (' + prodNames + ') se formează, la c.n.?') + qline('c', 'Ce volum de ' + C(main[1]) + ' rămâne nedescompus (c.n.)?') + qline('d', 'Ce volum are amestecul final de gaze (c.n.)?'),
+      statement: '<p>' + T.lead(r) + '</p>' + eqBlock(r) + '<p>Se încălzește o probă de <b>' + N(V1, 1) + ' L</b> (c.n.) de ' + Cn(main[1]) + ', dar doar <b>' + N(x * 100, 0) + '%</b> din cantitatea de ' + Cn(main[1]) + ' se descompune.</p>' +
+        qline('a', 'Calculați cantitatea de căldură absorbită, considerând că nu au loc pierderi de căldură.') + qline('b', 'Calculați volumul total de produși gazoși (' + prodNames + ') care se formează, la c.n.') + qline('c', 'Calculați volumul de ' + Cn(main[1]) + ' (c.n.) care rămâne nedescompus.') + qline('d', 'Calculați volumul amestecului final de gaze (c.n.).'),
       data: ['$V_m = 22,4 L/mol$ (c.n.)'],
       method: 'Mai întâi afli câți moli se descompun: $x%$ din numărul total de moli. Apoi raportezi la ecuație: căldura, produșii și reactantul rămas.',
       check: function () { return near(Vrest + nd * VM, V1) && near(k * r.Q, Q); },
@@ -157,11 +158,11 @@
     var r1 = T.RXN.calcar, r2 = T.RXN.boudouard, m = R.pick([50, 100, 150, 200, 250, 400, 500]), f = R.pick([40, 50, 60, 75, 80]) / 100;
     var n1 = m / 100, Q1 = n1 * r1.Q, VCO2 = n1 * VM, nr = f * n1, Q2 = nr * r2.Q, VCO = 2 * nr * VM, mC = nr * 12, Qt = Q1 + Q2, Vend = n1 * (1 + f) * VM;
     return {
-      statement: '<p>Carbonatul de calciu se descompune termic, iar dioxidul de carbon format trece peste cărbune incandescent. Ecuațiile celor două procese:</p>' + eqBlock(r1) + eqBlock(r2) +
-        '<p>Se descompun <b>' + N(m, 0) + ' g</b> de ' + C('CaCO3') + '. Din dioxidul de carbon obținut, doar <b>' + N(f * 100, 0) + '%</b> reacționează cu cărbunele (restul rămâne).</p>' +
-        qline('a', 'Ce căldură absoarbe descompunerea carbonatului?') + qline('b', 'Ce căldură absoarbe reacția cu cărbunele?') + qline('c', 'Care este căldura totală absorbită, în <b>kcal</b>? <span class="muted">(1 cal ≈ 4,18 J)</span>') +
-        qline('d', 'Ce masă de cărbune se consumă?') + qline('e', 'Ce volum de ' + C('CO') + ' (c.n.) se formează?') + qline('f', 'Ce volum au gazele rămase la sfârșit (c.n.): ' + C('CO2') + ' nereacționat și ' + C('CO') + '?'),
-      data: mchips(['CaCO3(s)', 'C(s)']).concat(['$V_m = 22,4 L/mol$ (c.n.)']),
+      statement: '<p>' + T.lead(r1) + '</p>' + eqBlock(r1) + '<p>Dioxidul de carbon format reacționează apoi cu cărbunele incandescent, conform ecuației termochimice:</p>' + eqBlock(r2) +
+        '<p>Se descompun <b>' + N(m, 0) + ' g</b> de ' + C('CaCO3') + '. Din dioxidul de carbon obținut, numai <b>' + N(f * 100, 0) + '%</b> reacționează cu cărbunele (restul rămâne nereacționat).</p>' +
+        qline('a', 'Calculați cantitatea de căldură absorbită la descompunerea carbonatului de calciu.') + qline('b', 'Calculați cantitatea de căldură absorbită în reacția cu cărbunele.') + qline('c', 'Calculați cantitatea totală de căldură absorbită, exprimată în <b>kcal</b>.') +
+        qline('d', 'Calculați masa de cărbune consumat.') + qline('e', 'Calculați volumul de ' + C('CO') + ' (c.n.) care se formează.') + qline('f', 'Calculați volumul gazelor rămase la sfârșit (c.n.): ' + C('CO2') + ' nereacționat și ' + C('CO') + '.'),
+      data: mchips(['CaCO3(s)', 'C(s)']).concat(['$V_m = 22,4 L/mol$ (c.n.)', '1 cal = 4,18 J']),
       method: 'Lucrezi pe rând: prima ecuație dă $ν(CO_2)$; doar o fracțiune din el intră în a doua ecuație. Apoi aduni căldurile și numeri gazele de la sfârșit.',
       check: function () { return near(Qt, Q1 + Q2) && near(Vend, (n1 - nr) * VM + VCO); },
       parts: [
@@ -192,12 +193,12 @@
     var Pc, n1, n2, Q1, Q2, Qt, VCO2;
     if (direct) { Pc = p; } else { Pc = (r2.Q * n - Qtot) / ((r2.Q - r1.Q) * n); }
     n1 = Pc * n; n2 = (1 - Pc) * n; Q1 = n1 * r1.Q; Q2 = n2 * r2.Q; Qt = Q1 + Q2; VCO2 = 6 * n2 * VM;
-    var head = '<p>Glucoza se poate oxida în două moduri. Ecuațiile termochimice:</p>' + eqBlock(r1) + eqBlock(r2) + '<p>Se oxidează <b>' + N(mk, 2) + ' kg</b> de glucoză';
+    var head = '<p>Glucoza se poate oxida în două moduri, conform ecuațiilor termochimice:</p>' + eqBlock(r1) + eqBlock(r2) + '<p>Se oxidează <b>' + N(mk, 2) + ' kg</b> de glucoză';
     var stmt, parts;
     var mm = n * 1000;
     if (direct) {
-      stmt = head + ', din care <b>' + N(p * 100, 0) + '%</b> (din numărul de moli) după prima ecuație, iar restul după a doua.</p>' + qline('a', 'Câți <b>mmol</b> de glucoză se oxidează în total?') + qline('b', 'Ce căldură se degajă prin prima reacție?') + qline('c', 'Ce căldură se degajă prin a doua reacție?') +
-        qline('d', 'Care este căldura totală, în <b>kcal</b>? <span class="muted">(1 cal ≈ 4,18 J)</span>') + qline('e', 'Ce volum de ' + C('CO2') + ' (c.n.) se degajă?');
+      stmt = head + ', din care <b>' + N(p * 100, 0) + '%</b> (din numărul de moli) conform primei ecuații, iar restul conform celei de-a doua.</p>' + qline('a', 'Calculați cantitatea totală de glucoză oxidată, exprimată în <b>mmoli</b>.') + qline('b', 'Calculați cantitatea de căldură degajată prin prima reacție.') + qline('c', 'Calculați cantitatea de căldură degajată prin a doua reacție.') +
+        qline('d', 'Calculați cantitatea totală de căldură degajată, exprimată în <b>kcal</b>.') + qline('e', 'Calculați volumul de ' + C('CO2') + ' (c.n.) care se degajă.');
       parts = [
         { id: 'a', ask: 'Cantitatea totală de glucoză', a: mm, unit: 'mmol', dec: 0, tol: 0.02, steps: ['$m = ' + N(mk, 2) + ' kg = ' + N(mk * 1000, 0) + ' g$ ⟹ $ν = (' + N(mk * 1000, 0) + ')//(180) = ' + N(n, 3) + ' mol$.', '$' + N(n, 3) + ' mol = <b>' + N(mm, 0) + ' mmol</b>$.'] },
         { id: 'b', ask: 'Căldura din prima reacție', a: Q1, unit: 'kJ', dec: 1, tol: 0.02, steps: ['Prima reacție: $' + N(p * 100, 0) + '%$ din ' + N(n, 3) + ' mol $= ' + N(n1, 3) + ' mol$.', 'Pe ecuație $1 mol ↔ ' + N(r1.Q, 0) + ' kJ$ ⟹ $Q_1 = ' + N(n1, 3) + ' · ' + N(r1.Q, 0) + ' = <b>' + N(Q1, 1) + ' kJ</b>$.'] },
@@ -206,7 +207,7 @@
         { id: 'e', ask: 'Volumul de ' + C('CO2') + ' (c.n.)', a: VCO2, unit: 'L', dec: 1, tol: 0.02, steps: ['Doar a doua reacție dă ' + C('CO2') + ': $1 mol$ glucoză ⟹ $6 mol$ ' + C('CO2') + '.', '$ν(CO_2) = 6 · ' + N(n2, 3) + ' = ' + N(6 * n2, 3) + ' mol$ ⟹ $V = ' + N(6 * n2, 3) + ' · 22,4 = <b>' + N(VCO2, 1) + ' L</b>$.'] }
       ];
     } else {
-      stmt = head + '. În total se degajă <b>' + N(Qtot, 1) + ' kJ</b>.</p>' + qline('a', 'Câți <b>mmol</b> de glucoză se oxidează în total?') + qline('b', 'Ce procent din glucoză (din numărul de moli) se oxidează după prima ecuație?') + qline('c', 'Câți mmol de glucoză se oxidează după fiecare ecuație?') + qline('d', 'Ce volum de ' + C('CO2') + ' (c.n.) se degajă?');
+      stmt = head + '. În total se degajă <b>' + N(Qtot, 1) + ' kJ</b>.</p>' + qline('a', 'Calculați cantitatea totală de glucoză oxidată, exprimată în <b>mmoli</b>.') + qline('b', 'Calculați ce procent din glucoză (din numărul de moli) se oxidează conform primei ecuații.') + qline('c', 'Calculați câți <b>mmoli</b> de glucoză se oxidează conform primei ecuații.') + qline('d', 'Calculați volumul de ' + C('CO2') + ' (c.n.) care se degajă.');
       var nGap = n1 * 1000;
       parts = [
         { id: 'a', ask: 'Cantitatea totală de glucoză', a: mm, unit: 'mmol', dec: 0, tol: 0.02, steps: ['$m = ' + N(mk, 2) + ' kg = ' + N(mk * 1000, 0) + ' g$ ⟹ $ν = (' + N(mk * 1000, 0) + ')//(180) = ' + N(n, 3) + ' mol = <b>' + N(mm, 0) + ' mmol</b>$.'] },
@@ -222,7 +223,7 @@
       ];
     }
     return {
-      statement: stmt, data: ['M(glucoză) = 180 g/mol', '1 mmol = 10⁻³ mol', '$V_m = 22,4 L/mol$ (c.n.)'],
+      statement: stmt, data: ['M(glucoză) = 180 g/mol', '1 mmol = 10⁻³ mol', '$V_m = 22,4 L/mol$ (c.n.)'].concat(direct ? ['1 cal = 4,18 J'] : []),
       method: direct ? 'Împarte numărul total de moli între cele două reacții, calculează fiecare căldură pe ecuația ei și adună-le.' : 'Notează cu $a$ moli după prima ecuație și $n − a$ după a doua; scrie că suma căldurilor este cea dată și rezolvă ecuația.',
       check: function () { return near(Q1 + Q2, Qt) && (direct || near(Qt, Qtot)) && Pc > 0 && Pc < 1; },
       parts: parts
@@ -235,9 +236,9 @@
     var m = R.pick([12, 24, 36, 48, 60, 120]), n = m / 12, direct = R.pick([true, false]), p = R.pick([20, 25, 40, 50, 60, 75]) / 100;
     var Qtot = T.round(n * (p * rC.Q + (1 - p) * rF.Q), 1), Pc = direct ? p : (rF.Q * n - Qtot) / ((rF.Q - rC.Q) * n);
     var n1 = Pc * n, n2 = (1 - Pc) * n, Q1 = n1 * rC.Q, Q2 = n2 * rF.Q, Qt = Q1 + Q2, VCO = n1 * VM, VCO2 = n2 * VM, mO2 = (0.5 * n1 + n2) * 32;
-    var stmt = '<p>Carbonul poate arde incomplet (la monoxid de carbon) sau complet (la dioxid de carbon). Ecuațiile termochimice:</p>' + eqBlock(rC) + eqBlock(rF) + '<p>Ard <b>' + N(m, 0) + ' g</b> de carbon' +
-      (direct ? ', <b>' + N(p * 100, 0) + '%</b> din cantitate (din numărul de moli) după prima ecuație, iar restul după a doua.</p>' : '. În total se degajă <b>' + N(Qtot, 1) + ' kJ</b>.</p>') +
-      (direct ? qline('a', 'Ce căldură totală se degajă?') : qline('a', 'Ce procent din carbon arde incomplet?')) + qline('b', 'Ce volum de ' + C('CO') + ' (c.n.) se formează?') + qline('c', 'Ce volum de ' + C('CO2') + ' (c.n.) se formează?') + qline('d', 'Ce masă de ' + C('O2') + ' se consumă?');
+    var stmt = '<p>Carbonul poate arde incomplet (la monoxid de carbon) sau complet (la dioxid de carbon), conform ecuațiilor termochimice:</p>' + eqBlock(rC) + eqBlock(rF) + '<p>Se ard <b>' + N(m, 0) + ' g</b> de carbon' +
+      (direct ? ', <b>' + N(p * 100, 0) + '%</b> din cantitate (din numărul de moli) conform primei ecuații, iar restul conform celei de-a doua.</p>' : '. În total se degajă <b>' + N(Qtot, 1) + ' kJ</b>.</p>') +
+      (direct ? qline('a', 'Calculați cantitatea totală de căldură degajată.') : qline('a', 'Calculați ce procent din carbon arde incomplet.')) + qline('b', 'Calculați volumul de ' + C('CO') + ' (c.n.) care se formează.') + qline('c', 'Calculați volumul de ' + C('CO2') + ' (c.n.) care se formează.') + qline('d', 'Calculați masa de ' + C('O2') + ' consumat.');
     var firstPart = direct
       ? { id: 'a', ask: 'Căldura totală', a: Qt, unit: 'kJ', dec: 1, tol: 0.02, steps: ['$ν(C) = (' + N(m, 0) + ')//(12) = ' + N(n, 2) + ' mol$; incomplet: $' + N(p * 100, 0) + '%$ ⟹ $' + N(n1, 3) + ' mol$; complet: $' + N(n2, 3) + ' mol$.', 'Pe ecuații: $1 mol$ ' + C('C') + ' ⟹ $' + N(rC.Q, 1) + ' kJ$ (incomplet), respectiv $' + N(rF.Q, 1) + ' kJ$ (complet).', '$Q = ' + N(n1, 3) + ' · ' + N(rC.Q, 1) + ' + ' + N(n2, 3) + ' · ' + N(rF.Q, 1) + ' = ' + N(Q1, 1) + ' + ' + N(Q2, 1) + ' = <b>' + N(Qt, 1) + ' kJ</b>$.'] }
       : {
@@ -273,9 +274,9 @@
     if (gasP) parts.push({ id: 'd', ask: 'Volumul de ' + C(pr[1]) + ' (c.n.)', a: nP * VM, unit: 'L', dec: 2, tol: 0.02, steps: ['$V = ν · 22,4 = ' + N(nP, 4) + ' · 22,4 = <b>' + N(nP * VM, 2) + ' L</b>$.'] });
     parts.push({ id: gasP ? 'e' : 'd', ask: 'Căldura la formarea a ' + N(y, 1) + ' kg de ' + C(pr[1]), a: QY, unit: 'kJ', dec: 1, tol: 0.02, steps: ['$' + N(y, 1) + ' kg = ' + N(y * 1000, 0) + ' g$ ⟹ $ν = (' + N(y * 1000, 0) + ')//(' + N(mp, 1) + ') = ' + N(nY, 3) + ' mol$.', 'Pe ecuație: $' + N(pr[0], 1) + ' mol$ ' + C(pr[1]) + ' ↔ $' + N(r.Q, 1) + ' kJ$ ⟹ $Q = (' + N(nY, 3) + ' · ' + N(r.Q, 1) + ')//(' + N(pr[0], 1) + ') = <b>' + N(QY, 1) + ' kJ</b>$.'] });
     return {
-      statement: '<p>Se dă ecuația termochimică:</p>' + eqBlock(r) + '<p>La reacție se degajă <b>' + N(kcal, 2) + ' kcal</b> <span class="muted">(1 cal ≈ 4,18 J)</span>.</p>' + qline('a', 'Câți kJ s-au degajat?') + qline('b', 'Câți <b>mmol</b> de ' + C(main[1]) + ' au reacționat?') + qline('c', 'Ce masă de ' + C(pr[1]) + ' s-a format?') +
-        (gasP ? qline('d', 'Ce volum de ' + C(pr[1]) + ' (c.n.) s-a format?') : '') + qline(gasP ? 'e' : 'd', 'Ce căldură (kJ) se degajă la formarea a <b>' + N(y, 1) + ' kg</b> de ' + C(pr[1]) + '?'),
-      data: mchips([main[1], pr[1]]).concat(['1 mmol = 10⁻³ mol'], gasP ? ['$V_m = 22,4 L/mol$ (c.n.)'] : []),
+      statement: '<p>' + T.lead(r) + '</p>' + eqBlock(r) + '<p>În reacție se degajă <b>' + N(kcal, 2) + ' kcal</b>.</p>' + qline('a', 'Calculați cantitatea de căldură degajată, exprimată în kJ.') + qline('b', 'Calculați cantitatea de ' + Cn(main[1]) + ' care a reacționat, exprimată în <b>mmoli</b>.') + qline('c', 'Calculați masa de ' + Cn(pr[1]) + ' care s-a format.') +
+        (gasP ? qline('d', 'Calculați volumul de ' + Cn(pr[1]) + ' (c.n.) care s-a format.') : '') + qline(gasP ? 'e' : 'd', 'Calculați cantitatea de căldură (în kJ) degajată la formarea a <b>' + N(y, 1) + ' kg</b> de ' + Cn(pr[1]) + '.'),
+      data: mchips([main[1], pr[1]]).concat(['1 mmol = 10⁻³ mol', '1 cal = 4,18 J'], gasP ? ['$V_m = 22,4 L/mol$ (c.n.)'] : []),
       method: 'Lanț de conversii: kcal → J → kJ; kJ → moli (regula de trei pe ecuație); moli → mmol, grame, litri. La final, invers: kg → moli → kJ.',
       check: function () { return near(nMain * r.Q / main[0], Qkj2) && near(QY, nY / pr[0] * r.Q); },
       parts: parts

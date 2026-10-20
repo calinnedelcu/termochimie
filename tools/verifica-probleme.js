@@ -28,6 +28,14 @@ function checkInst(inst, id, tag) {
     if (!p.steps || !p.steps.length) fail(w + ': fără pași');
     (p.steps || []).forEach((s, i) => checkStr(s, w + ' pas' + (i + 1)));
   });
+  // stilul manualului: imperative la persoana a II-a plural (Calculați, Determinați, Precizați…), fără întrebări informale
+  if (/<b>[a-f]\)<\/b> (Ce|Cât|Câți|Câte|Care|Cum|Când|La ce)(?![a-zăâîșțA-Z])|\b(Calculează|Determină|Află|Alege|Scrie)(?![a-zăâîșțA-Z])|Se dă ecuația|Se dau ecuațiile/.test(inst.statement)) fail(id + ' ' + tag + ': enunț în stil informal → ' + inst.statement.replace(/<[^>]+>/g, '').slice(0, 140));
+  // plauzibilitate: procente ≤ 100; temperatura finală a apei lichide sub 100 °C; variantele unui item cu răspunsuri multiple sunt diferite
+  inst.parts.forEach(p => {
+    if (p.type !== 'mc' && p.unit === '%' && !(p.a > 0 && p.a <= 100.0001)) fail(id + ' ' + tag + ' ' + p.id + ': procent în afara (0, 100] → ' + p.a);
+    if (p.type !== 'mc' && p.unit === '°C' && /apei/.test(p.ask) && !(p.a < 100)) fail(id + ' ' + tag + ' ' + p.id + ': apa depășește 100 °C → ' + p.a);
+    if (p.type === 'mc' && new Set(p.opts).size !== p.opts.length) fail(id + ' ' + tag + ' ' + p.id + ': variante de răspuns identice');
+  });
   // o masă dată în enunț ("<b>150 g</b> de [[X]]") cere masa molară a lui X printre datele problemei
   (inst.statement.match(/<b>[^<]*\bk?g<\/b> de \[\[[^\]]+\]\]/g) || []).forEach(m => { const x = m.match(/\[\[([^\]]+)\]\]/)[1]; if (!(inst.data || []).some(d => d.indexOf('M([[' + x + ']])') === 0)) fail(id + ' ' + tag + ': în enunț e dată masa lui ' + x + ', dar M(' + x + ') lipsește din date'); });
   if (typeof inst.check === 'function') { let ok = false; try { ok = inst.check(); } catch (e) { fail(id + ' ' + tag + ': check() a aruncat ' + e.message); } if (!ok) fail(id + ' ' + tag + ': check() a eșuat (răspunsurile nu sunt coerente cu enunțul)'); }
@@ -45,7 +53,8 @@ function near(a, b, tol, what) { if (Math.abs(a - b) > tol * Math.max(1, Math.ab
 const O = {}; T.problemOrder.forEach(id => { O[id] = T.problems[id].original(); checkInst(O[id], id, 'orig'); });
 near(O.termita.parts[0].a, 67.97, 0.001, 'termita a'); near(O.termita.parts[1].a, 426, 1e-9, 'termita b');
 near(O.etan.parts[1].a, 2740, 1e-9, 'etan b');
-near(O.glucoza.parts[1].a, 48.3, 1e-9, 'glucoza b'); near(O.glucoza.parts[2].a, 2.7, 1e-9, 'glucoza c');
+const mcRight = (p) => p.opts[p.correct];
+if (mcRight(O.glucoza.parts[0]) !== 'exotermă' || mcRight(O.glucoza.parts[1]) !== '48,3 kJ' || mcRight(O.glucoza.parts[2]) !== '2,7 kg de glucoză') fail('glucoza: răspunsurile corecte din manual (C, A, B) nu sunt cele așteptate');
 near(O['apa-etanol'].parts[0].a, 50.208, 1e-6, 'apa a'); near(O['apa-etanol'].parts[1].a, 2.672, 0.002, 'apa b');
 near(O.sodiu.parts[0].a, 2.08983, 0.0005, 'sodiu a'); near(O.sodiu.parts[1].a, 2.656, 0.002, 'sodiu b');
 near(O.hess.parts[0].a, -128.1, 1e-9, 'hess a'); near(O.hess.parts[1].a, 320, 1e-9, 'hess b');

@@ -109,6 +109,48 @@
         E([[4, 'HCl(g)'], [1, 'O2(g)']], [[2, 'Cl2(g)'], [2, 'H2O(g)']], -114.4, 'HCl(g)', -0.5)]
     },
     {
+      id: 'so3-formare', name: 'Formarea trioxidului de sulf în două etape',
+      target: { L: [[1, 'S(s)'], [1.5, 'O2(g)']], R: [[1, 'SO3(g)']] },
+      eqs: [E([[1, 'S(s)'], [1, 'O2(g)']], [[1, 'SO2(g)']], -297, 'S(s)', 1),
+        E([[1, 'SO2(g)'], [0.5, 'O2(g)']], [[1, 'SO3(g)']], -98.2, 'SO3(g)', 1)]
+    },
+    {
+      id: 'hidrogenare-propina', name: 'Hidrogenarea parțială a propinei', ask: 'hidrogenare parțială a unui mol de propină',
+      target: { L: [[1, 'C3H4(g)'], [1, 'H2(g)']], R: [[1, 'C3H6(g)']] },
+      eqs: [E([[1, 'C3H6(g)'], [1, 'H2(g)']], [[1, 'C3H8(g)']], -124.3, 'C3H6(g)', -1),
+        E([[1, 'C3H4(g)'], [2, 'H2(g)']], [[1, 'C3H8(g)']], -288.9, 'C3H4(g)', 1)]
+    },
+    {
+      id: 'hidrogenare-etina', name: 'Hidrogenarea parțială a etinei', ask: 'hidrogenare parțială a unui mol de acetilenă',
+      target: { L: [[1, 'C2H2(g)'], [1, 'H2(g)']], R: [[1, 'C2H4(g)']] },
+      eqs: [E([[1, 'C2H4(g)'], [1, 'H2(g)']], [[1, 'C2H6(g)']], -137, 'C2H4(g)', -1),
+        E([[1, 'C2H2(g)'], [2, 'H2(g)']], [[1, 'C2H6(g)']], -311.4, 'C2H2(g)', 1)]
+    },
+    {
+      id: 'hidrogenare-butadiena', name: 'Hidrogenarea parțială a butadienei', ask: 'hidrogenare parțială a unui mol de butadienă',
+      target: { L: [[1, 'C4H6(g)'], [1, 'H2(g)']], R: [[1, 'C4H8(g)']] },
+      eqs: [E([[1, 'C4H8(g)'], [1, 'H2(g)']], [[1, 'C4H10(g)']], -125.87, 'C4H8(g)', -1),
+        E([[1, 'C4H6(g)'], [2, 'H2(g)']], [[1, 'C4H10(g)']], -236.6, 'C4H6(g)', 1)]
+    },
+    {
+      id: 'dehidrogenare-butan', name: 'Dehidrogenarea avansată a n-butanului', ask: 'dehidrogenare avansată a n-butanului',
+      target: { L: [[1, 'C4H10(g)']], R: [[1, 'C4H6(g)'], [2, 'H2(g)']] },
+      eqs: [E([[1, 'C4H10(g)']], [[1, 'C4H8(g)'], [1, 'H2(g)']], 125.87, 'C4H10(g)', 1),
+        E([[1, 'C4H8(g)']], [[1, 'C4H6(g)'], [1, 'H2(g)']], 110.73, 'C4H6(g)', 1)]
+    },
+    {
+      id: 'dehidrogenare-propan', name: 'Dehidrogenarea avansată a propanului', ask: 'dehidrogenare avansată a propanului',
+      target: { L: [[1, 'C3H8(g)']], R: [[1, 'C3H4(g)'], [2, 'H2(g)']] },
+      eqs: [E([[1, 'C3H8(g)']], [[1, 'C3H6(g)'], [1, 'H2(g)']], 124.3, 'C3H8(g)', 1),
+        E([[1, 'C3H6(g)']], [[1, 'C3H4(g)'], [1, 'H2(g)']], 164.6, 'C3H4(g)', 1)]
+    },
+    {
+      id: 'dehidrogenare-etan', name: 'Dehidrogenarea avansată a etanului', ask: 'dehidrogenare avansată a etanului',
+      target: { L: [[1, 'C2H6(g)']], R: [[1, 'C2H2(g)'], [2, 'H2(g)']] },
+      eqs: [E([[1, 'C2H6(g)']], [[1, 'C2H4(g)'], [1, 'H2(g)']], 137, 'C2H6(g)', 1),
+        E([[1, 'C2H4(g)']], [[1, 'C2H2(g)'], [1, 'H2(g)']], 174.4, 'C2H2(g)', 1)]
+    },
+    {
       id: 'calcar', name: 'Descompunerea carbonatului de calciu',
       target: { L: [[1, 'CaCO3(s)']], R: [[1, 'CaO(s)'], [1, 'CO2(g)']] },
       eqs: [E([[1, 'Ca(s)'], [0.5, 'O2(g)']], [[1, 'CaO(s)']], -635.1, 'CaO(s)', 1),
@@ -138,14 +180,14 @@
     var ks = Object.keys(a).concat(Object.keys(b));
     return ks.every(function (k) { return Math.abs((a[k] || 0) - (b[k] || 0)) < 1e-9; });
   };
-  function eqOf(L, R) { return L.map(function (p) { return T.coef(p[0]) + p[1]; }).join(' + ') + ' -> ' + R.map(function (p) { return T.coef(p[0]) + p[1]; }).join(' + '); }
+  function eqOf(L, R) { return L.map(function (p) { return T.coef(p[0]) + T.sform(p[1]); }).join(' + ') + ' -> ' + R.map(function (p) { return T.coef(p[0]) + T.sform(p[1]); }).join(' + '); }
   T.hessEqStr = function (e) { return '[[' + eqOf(e.L, e.R) + ']]'; };
   T.hessNetStr = function (net, order) {
     var keys = Object.keys(net).sort(function (a, b) { var ia = order.indexOf(a), ib = order.indexOf(b); return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib); });
     var L = [], R = [];
     keys.forEach(function (k) { (net[k] < 0 ? L : R).push([Math.abs(net[k]), k]); });
     if (!L.length && !R.length) return 'ecuația nulă (0 = 0)';
-    return '[[' + (L.length ? eqOf(L, R) : '? -> ' + R.map(function (p) { return T.coef(p[0]) + p[1]; }).join(' + ')) + ']]';
+    return '[[' + (L.length ? eqOf(L, R) : '? -> ' + R.map(function (p) { return T.coef(p[0]) + T.sform(p[1]); }).join(' + ')) + ']]';
   };
   T.hessOrder = function (t) { return t.L.concat(t.R).map(function (p) { return p[1]; }); };
 

@@ -7,7 +7,7 @@
 (function (g) {
   'use strict';
   var T = g.T, H = T.hard;
-  var N = H.N, C = H.C, eqBlock = H.eqBlock, mchips = H.mchips, qline = H.qline, near = H.near, reg = H.reg, VM = H.VM;
+  var N = H.N, C = H.C, Cn = H.Cn, gen = H.gen, eqBlock = H.eqBlock, mchips = H.mchips, qline = H.qline, near = H.near, reg = H.reg, VM = H.VM;
 
   /* =====================================================
      4. Apa + ardere (Tema 7)
@@ -18,10 +18,10 @@
     var fu = R.pick(T.FUELS), cg = 2.09, lam = 334, cw = R.pick([4.18, 4.184]);
     var Q1 = mi * cg * t0, Q2 = mi * lam, Q3 = mi * cw * tf, Qu = Q1 + Q2 + Q3, Qt = Qu / eta, n = Qt / 1000 / fu.Hc, mf = n * fu.M, pm = Q2 / Qu * 100;
     return {
-      statement: '<p>Se încălzesc <b>' + mi + ' g</b> de gheață, aflată la <b>−' + t0 + ' °C</b>, până când se transformă în apă lichidă la <b>' + tf + ' °C</b>. Căldura se obține prin arderea ' + fu.n + ' (căldura de ardere <b>' + N(fu.Hc, 1) + ' kJ/mol</b>); <b>' + p + '%</b> din căldura degajată se pierde în mediu.</p>' +
-        qline('a', 'Ce căldură (kJ) este necesară încălzirii gheții până la 0 °C?') + qline('b', 'Ce căldură (kJ) este necesară topirii ei?') + qline('c', 'Ce căldură (kJ) este necesară încălzirii apei de la 0 °C la ' + tf + ' °C?') +
-        qline('d', 'Ce masă de ' + C(fu.f) + ' trebuie arsă?') + qline('e', 'Ce procent din căldura utilă se consumă pentru topire?'),
-      data: ['$c_{gheață} = 2,09 J/(g·K)$', '$λ_{topire} = 334 J/g$ (la 0 °C)', '$c_{apă} = ' + N(cw, 3) + ' J/(g·K)$', 'M(' + C(fu.f) + ') = ' + N(fu.M, 1) + ' g/mol'],
+      statement: '<p>Se încălzesc într-un pahar Berzelius <b>' + mi + ' g</b> de gheață, aflată la temperatura de <b>−' + t0 + ' °C</b>, până când se transformă în apă lichidă la temperatura de <b>' + tf + ' °C</b>. Căldura se obține prin arderea ' + fu.n + ' (la arderea unui mol de ' + Cn(fu.f) + ' se eliberează o cantitate de căldură de <b>' + N(fu.Hc, 1) + ' kJ</b>); <b>' + p + '%</b> din căldura eliberată se pierde în mediu.</p>' +
+        qline('a', 'Calculați cantitatea de căldură (în kJ) necesară încălzirii gheții până la 0 °C.') + qline('b', 'Calculați cantitatea de căldură (în kJ) necesară topirii gheții.') + qline('c', 'Calculați cantitatea de căldură (în kJ) necesară încălzirii apei de la 0 °C la ' + tf + ' °C.') +
+        qline('d', 'Calculați masa de ' + Cn(fu.f) + ' care trebuie arsă.') + qline('e', 'Calculați ce procent din căldura utilă se consumă pentru topire.'),
+      data: ['căldura specifică a gheții $c = 2,09 J/g·K$', 'căldura latentă de topire a gheții $λ = 334 J/g$', 'căldura specifică a apei $c = ' + N(cw, 3) + ' J/g·K$', 'M(' + C(fu.f) + ') = ' + N(fu.M, 1) + ' g/mol'],
       method: 'Trei etape, fiecare cu formula ei: gheață ($m·c·ΔT$), topire ($m·λ$, la 0 °C), apă ($m·c·ΔT$). Le aduni, apoi corectezi cu pierderile și treci la moli de combustibil.',
       check: function () { return near(Qu * 1, Q1 + Q2 + Q3) && near(Qt * eta, Qu); },
       parts: [
@@ -43,15 +43,16 @@
   function apaMix(R) {
     for (var tries = 0; tries < 30; tries++) {
       var pair = R.shuffle(T.FUELS).slice(0, 2), A = pair[0], B = pair[1], a = R.pick([0.1, 0.2, 0.25, 0.4, 0.5]), b = R.pick([0.1, 0.2, 0.25, 0.4, 0.5]);
+      if (!!A.gas !== !!B.gas || (A.f === 'C(s)') !== (B.f === 'C(s)')) continue;   // amestec de substanțe în aceeași stare de agregare
       var p = R.pick([20, 25, 30, 40]), eta = (100 - p) / 100, c = 4.18, t1 = R.pick([15, 20, 25]), dT = R.pick([40, 50, 60, 70]), t2 = t1 + dT;
       var m = a * A.M + b * B.M, Qt0 = a * A.Hc + b * B.Hc, Qu0 = eta * Qt0, mw = Math.round(Qu0 * 1000 / (c * dT));
       var Qu = mw * c * dT / 1000, Qt = Qu / eta, hA = A.Hc / A.M, hB = B.Hc / B.M, x = (Qt - hB * m) / (hA - hB), y = m - x;
       if (!(x > 0.05 * m && y > 0.05 * m) || mw < 100) continue;
       var nA = x / A.M, nB = y / B.M;
       return {
-        statement: '<p>Un amestec de ' + C(A.f) + ' și ' + C(B.f) + ', cu masa totală de <b>' + N(m, 2) + ' g</b>, este ars complet. Căldura degajată încălzește <b>' + N(mw, 0) + ' g</b> de apă de la <b>' + t1 + ' °C</b> la <b>' + t2 + ' °C</b>; <b>' + p + '%</b> din căldură se pierde în mediu. Căldurile de ardere: ' + C(A.f) + ' — <b>' + N(A.Hc, 1) + ' kJ/mol</b>; ' + C(B.f) + ' — <b>' + N(B.Hc, 1) + ' kJ/mol</b>.</p>' +
-          qline('a', 'Ce căldură utilă primește apa?') + qline('b', 'Ce căldură se degajă în total la ardere?') + qline('c', 'Ce masă de ' + C(A.f) + ' conține amestecul?') + qline('d', 'Ce masă de ' + C(B.f) + ' conține amestecul?'),
-        data: ['$c_{apă} = 4,18 J/(g·K)$'].concat(mchips([A.f, B.f])),
+        statement: '<p>Un amestec de ' + Cn(A.f) + ' și ' + Cn(B.f) + ', cu masa totală de <b>' + N(m, 2) + ' g</b>, este ars complet. Căldura eliberată încălzește într-un pahar Berzelius <b>' + N(mw, 0) + ' g</b> de apă, de la temperatura de <b>' + t1 + ' °C</b> la temperatura de <b>' + t2 + ' °C</b>; <b>' + p + '%</b> din căldura eliberată se pierde în mediu. La arderea unui mol de ' + Cn(A.f) + ' se eliberează <b>' + N(A.Hc, 1) + ' kJ</b>, iar la arderea unui mol de ' + Cn(B.f) + ' se eliberează <b>' + N(B.Hc, 1) + ' kJ</b>.</p>' +
+          qline('a', 'Calculați cantitatea de căldură utilă primită de apă.') + qline('b', 'Calculați cantitatea totală de căldură eliberată prin ardere.') + qline('c', 'Calculați masa de ' + Cn(A.f) + ' din amestec.') + qline('d', 'Calculați masa de ' + Cn(B.f) + ' din amestec.'),
+        data: ['căldura specifică a apei $c = 4,18 J/g·K$'].concat(mchips([A.f, B.f])),
         method: 'Din căldura de ardere pe mol afli căldura pe gram pentru fiecare combustibil. Apoi scrii un sistem cu necunoscutele $x$, $y$ (mase): una pentru masă și una pentru căldura totală.',
         check: function () { return near(hA * x + hB * y, Qt) && near(x + y, m) && x > 0 && y > 0; },
         parts: [
@@ -75,9 +76,9 @@
     var fu = R.pick(T.FUELS), n = R.pick([0.05, 0.1, 0.15, 0.2]), mfu = n * fu.M, p = R.pick([20, 25, 30, 40]), eta = (100 - p) / 100, c = 4.18, t1 = R.pick([15, 18, 20, 22, 25]), dT = R.pick([40, 50, 55, 60, 70]), t2 = t1 + dT;
     var mw = Math.round(eta * n * fu.Hc * 1000 / (c * dT)), Qu = mw * c * dT / 1000, Qt = Qu / eta, Hx = Qt / n, VCO2 = n * fu.co2 * VM;
     return {
-      statement: '<p>Prin arderea completă a <b>' + N(mfu, 2) + ' g</b> de ' + C(fu.f) + ' se încălzesc <b>' + N(mw, 0) + ' g</b> de apă de la <b>' + t1 + ' °C</b> la <b>' + t2 + ' °C</b>. <b>' + p + '%</b> din căldura degajată se pierde în mediu. Din 1 mol de ' + C(fu.f) + ' rezultă ' + N(fu.co2, 0) + ' mol de ' + C('CO2') + '.</p>' +
-        qline('a', 'Ce căldură primește apa?') + qline('b', 'Ce căldură se degajă în total la ardere?') + qline('c', 'Care este căldura de ardere a ' + fu.n + ', în kJ/mol?') + qline('d', 'Ce volum de ' + C('CO2') + ' (c.n.) se degajă?'),
-      data: ['$c_{apă} = 4,18 J/(g·K)$'].concat(mchips([fu.f]), ['$V_m = 22,4 L/mol$ (c.n.)']),
+      statement: '<p>Prin arderea completă a <b>' + N(mfu, 2) + ' g</b> de ' + Cn(fu.f) + ' se încălzesc într-un pahar Berzelius <b>' + N(mw, 0) + ' g</b> de apă, de la temperatura de <b>' + t1 + ' °C</b> la temperatura de <b>' + t2 + ' °C</b>. <b>' + p + '%</b> din căldura eliberată se pierde în mediu. Din 1 mol de ' + Cn(fu.f) + ' rezultă ' + N(fu.co2, 0) + ' mol de ' + C('CO2') + '.</p>' +
+        qline('a', 'Calculați cantitatea de căldură primită de apă.') + qline('b', 'Calculați cantitatea totală de căldură eliberată la ardere.') + qline('c', 'Calculați căldura de ardere a ' + fu.n + ', exprimată în kJ/mol.') + qline('d', 'Calculați volumul de ' + C('CO2') + ' (c.n.) care se degajă.'),
+      data: ['căldura specifică a apei $c = 4,18 J/g·K$'].concat(mchips([fu.f]), ['$V_m = 22,4 L/mol$ (c.n.)']),
       method: 'a) $Q = m·c·ΔT$. b) Doar $(100 − p)%$ din căldura degajată ajunge la apă. c) Căldura de ardere = căldura degajată / numărul de moli arși. d) Din raportul molar al arderii.',
       check: function () { return near(Qt * eta, Qu) && near(Hx * n, Qt); },
       parts: [
@@ -96,16 +97,16 @@
      ===================================================== */
   var FUEL_S = ['carbon', 'metan', 'metanol'];
   function fuelOf(key) { var r = T.RXN[key], l = r.L[0]; return { r: r, f: l[1], nu: l[0], M: T.massOf(l[1]), qm: r.Q / l[0], co2: r.R.filter(function (p) { return p[1] === 'CO2(g)'; })[0][0] / l[0] }; }
-  function metalData(me) { return ['$c_{solid} = ' + N(me.c, 2) + ' J/(g·K)$', '$λ_{topire} = ' + N(me.lam, 2) + ' kJ/mol$ (pe mol)', '$c_{lichid} = ' + N(me.cl, 2) + ' J/(g·K)$', 'temperatura de topire: ' + me.tm + ' °C', 'M(' + me.f + ') = ' + me.M + ' g/mol']; }
+  function metalData(me) { return T.metalChips(me, true); }
 
   /* 5a. metal încălzit, topit și încălzit lichid, cu căldura unei arderi (cu pierderi) */
   function sodiuFuel(R) {
     var me = R.pick(T.METALS), ti = R.pick([20, 25]), m = R.pick([10, 20, 25, 40, 50, 100]), tf = me.tm + R.pick([20, 30, 50, 80, 100]), fu = fuelOf(R.pick(FUEL_S)), p = R.pick([20, 25, 30, 40]), eta = (100 - p) / 100;
     var d1 = me.tm - ti, d2 = tf - me.tm, nu = m / me.M, Q1 = m * me.c * d1, Q2 = nu * me.lam * 1000, Q3 = m * me.cl * d2, Qn = Q1 + Q2 + Q3, Qd = Qn / 1000 / eta, nf = Qd / fu.qm, mf = nf * fu.M, pm = Q2 / Qn * 100;
     return {
-      statement: '<p>Se încălzesc <b>' + m + ' g</b> de ' + me.n + ' de la <b>' + ti + ' °C</b> până la <b>' + tf + ' °C</b>, trecând prin topire. Căldura provine din arderea ' + C(fu.f) + ', după ecuația:</p>' + eqBlock(fu.r) + '<p><b>' + p + '%</b> din căldura degajată se pierde în mediu.</p>' +
-        qline('a', 'Ce căldură (kJ) se consumă pentru încălzirea metalului solid?') + qline('b', 'Ce căldură (kJ) se consumă pentru topire?') + qline('c', 'Ce căldură (kJ) se consumă pentru încălzirea metalului lichid?') +
-        qline('d', 'Ce masă de ' + C(fu.f) + ' trebuie arsă?') + qline('e', 'Ce procent din căldura necesară metalului se consumă pentru topire?'),
+      statement: '<p>Se încălzesc <b>' + m + ' g</b> de ' + me.n + ', de la temperatura de <b>' + ti + ' °C</b> până la temperatura de <b>' + tf + ' °C</b>, trecând prin topire. Căldura provine din arderea ' + gen(fu.f) + ', conform ecuației termochimice:</p>' + eqBlock(fu.r) + '<p><b>' + p + '%</b> din căldura eliberată se pierde în mediu.</p>' +
+        qline('a', 'Calculați cantitatea de căldură (în kJ) consumată pentru încălzirea metalului solid.') + qline('b', 'Calculați cantitatea de căldură (în kJ) consumată pentru topire.') + qline('c', 'Calculați cantitatea de căldură (în kJ) consumată pentru încălzirea metalului lichid.') +
+        qline('d', 'Calculați masa de ' + Cn(fu.f) + ' care trebuie arsă.') + qline('e', 'Calculați ce procent din căldura necesară metalului se consumă pentru topire.'),
       data: metalData(me).concat(mchips([fu.f])),
       method: 'Trei etape pentru metal: solid ($m·c·ΔT$), topire ($ν·λ$), lichid ($m·c_{lichid}·ΔT$). Apoi, ținând cont de pierderi, afli căldura care trebuie degajată și, din ecuația arderii, masa de combustibil.',
       check: function () { return near(Qd * eta * 1000, Qn) && near(nf * fu.qm, Qd); },
@@ -130,8 +131,8 @@
     var d1 = me.tm - ti, d2 = tf - me.tm, q = me.c * d1 + me.lam * 1000 / me.M + me.cl * d2, m0 = R.pick([20, 40, 50, 80, 100, 200]);
     var mfuel = T.round(m0 * q / 1000 / eta / fu.qm * fu.M, 1), Qd = mfuel / fu.M * fu.qm, Qu = eta * Qd, mm = Qu * 1000 / q;
     return {
-      statement: '<p>Se ard <b>' + N(mfuel, 1) + ' g</b> de ' + C(fu.f) + ', după ecuația:</p>' + eqBlock(fu.r) + '<p><b>' + p + '%</b> din căldura degajată se pierde în mediu; restul încălzește ' + me.n + ' de la <b>' + ti + ' °C</b> până la <b>' + tf + ' °C</b>, trecând prin topire.</p>' +
-        qline('a', 'Ce căldură (kJ) se degajă la ardere?') + qline('b', 'Ce căldură (kJ) este folosită pentru metal?') + qline('c', 'Ce căldură (J) este necesară pentru <b>1 g</b> de ' + me.n + ' (încălzire + topire + încălzire lichid)?') + qline('d', 'Ce masă de ' + me.n + ' poate fi încălzită și topită?'),
+      statement: '<p>Se ard <b>' + N(mfuel, 1) + ' g</b> de ' + Cn(fu.f) + ', conform ecuației termochimice:</p>' + eqBlock(fu.r) + '<p><b>' + p + '%</b> din căldura eliberată se pierde în mediu; restul încălzește o bucată de ' + me.n + ', de la temperatura de <b>' + ti + ' °C</b> până la temperatura de <b>' + tf + ' °C</b>, trecând prin topire.</p>' +
+        qline('a', 'Calculați cantitatea de căldură (în kJ) eliberată prin ardere.') + qline('b', 'Calculați cantitatea de căldură (în kJ) folosită pentru încălzirea și topirea metalului.') + qline('c', 'Calculați cantitatea de căldură (în J) necesară pentru <b>1 g</b> de ' + me.n + ' (încălzire + topire + încălzirea lichidului).') + qline('d', 'Calculați masa de ' + me.n + ' care poate fi încălzită și topită.'),
       data: metalData(me).concat(mchips([fu.f])),
       method: 'Calculează întâi căldura pentru <b>1 g</b> de metal: $c·ΔT_1 + λ/M + c_{lichid}·ΔT_2$. Apoi masa de metal = căldura utilă / căldura pe gram.',
       check: function () { return near(mm * q / 1000, Qu); },
@@ -161,8 +162,8 @@
         '$Q_{' + id + '} = ' + N(t.Q1, 1) + ' + ' + N(t.Q2, 1) + ' + ' + N(t.Q3, 1) + ' = ' + N(t.Q1 + t.Q2 + t.Q3, 1) + ' J = <b>' + N((t.Q1 + t.Q2 + t.Q3) / 1000, 3) + ' kJ</b>$.'];
     }
     return {
-      statement: '<p>Se încălzesc împreună <b>' + mA + ' g</b> de ' + A.n + ' și <b>' + mB + ' g</b> de ' + B.n + ', de la <b>' + ti + ' °C</b> până la <b>' + tf + ' °C</b>; ambele metale se topesc pe parcurs. Căldura provine din arderea ' + C(fu.f) + ' (ecuația):</p>' + eqBlock(fu.r) + '<p><b>' + p + '%</b> din căldura degajată se pierde în mediu.</p>' +
-        qline('a', 'Ce căldură (kJ) necesită ' + A.n + '?') + qline('b', 'Ce căldură (kJ) necesită ' + B.n + '?') + qline('c', 'Ce procent din căldura totală necesară metalelor revine lui ' + A.n + '?') + qline('d', 'Ce masă de ' + C(fu.f) + ' trebuie arsă?'),
+      statement: '<p>Se încălzesc împreună <b>' + mA + ' g</b> de ' + A.n + ' și <b>' + mB + ' g</b> de ' + B.n + ', de la temperatura de <b>' + ti + ' °C</b> până la temperatura de <b>' + tf + ' °C</b>; ambele metale se topesc pe parcurs. Căldura provine din arderea ' + gen(fu.f) + ', conform ecuației termochimice:</p>' + eqBlock(fu.r) + '<p><b>' + p + '%</b> din căldura eliberată se pierde în mediu.</p>' +
+        qline('a', 'Calculați cantitatea de căldură (în kJ) necesară pentru ' + A.n + '.') + qline('b', 'Calculați cantitatea de căldură (în kJ) necesară pentru ' + B.n + '.') + qline('c', 'Calculați ce procent din căldura totală necesară metalelor revine ' + T.GEN[A.n] + '.') + qline('d', 'Calculați masa de ' + Cn(fu.f) + ' care trebuie arsă.'),
       data: ['<b>' + A.n + '</b>:'].concat(metalData(A), ['<b>' + B.n + '</b>:'], metalData(B), mchips([fu.f])),
       method: 'Pentru fiecare metal: încălzire solid + topire + încălzire lichid (fiecare etapă are formula ei). Apoi procentul, iar căldura degajată se află ținând cont de pierderi.',
       check: function () { return near(QA + QB, Qn) && near(nf * fu.qm, Qd); },

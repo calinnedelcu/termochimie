@@ -10,40 +10,66 @@
   /* ---------- biblioteca de reacții ----------
      L, R: [[coeficient, formulă cu stare]]; Q = căldura (kJ) pe ecuație, valoare pozitivă; type: 'exo' | 'endo' */
   T.RXN = {
-    termita: { name: 'Reacția din exercițiul 4/14', type: 'exo', Q: 852, L: [[2, 'Al(s)'], [1, 'Fe2O3(s)']], R: [[2, 'Fe(s)'], [1, 'Al2O3(s)']] },
-    carbon: { name: 'Arderea carbonului', type: 'exo', Q: 393.5, L: [[1, 'C(s)'], [1, 'O2(g)']], R: [[1, 'CO2(g)']] },
-    metan: { name: 'Arderea metanului', type: 'exo', Q: 802.3, L: [[1, 'CH4(g)'], [2, 'O2(g)']], R: [[1, 'CO2(g)'], [2, 'H2O(g)']] },
-    hidrogen: { name: 'Arderea hidrogenului', type: 'exo', Q: 571.6, L: [[2, 'H2(g)'], [1, 'O2(g)']], R: [[2, 'H2O(l)']] },
-    neutr: { name: 'Neutralizarea (NaOH + H2SO4)', type: 'exo', Q: 114.6, L: [[2, 'NaOH(aq)'], [1, 'H2SO4(aq)']], R: [[1, 'Na2SO4(aq)'], [2, 'H2O(l)']] },
+    termita: { ctx: 'Sudarea prin aluminotermie se bazează pe reacția:', name: 'Reacția din exercițiul 4/14', type: 'exo', Q: 852, L: [[2, 'Al(s)'], [1, 'Fe2O3(s)']], R: [[2, 'Fe(s)'], [1, 'Al2O3(s)']] },
+    carbon: { ctx: 'Arderea completă a carbonului în oxigen este descrisă de ecuația termochimică:', name: 'Arderea carbonului', type: 'exo', Q: 393.5, L: [[1, 'C(s)'], [1, 'O2(g)']], R: [[1, 'CO2(g)']] },
+    metan: { ctx: 'Arderea metanului are loc conform ecuației termochimice:', name: 'Arderea metanului', type: 'exo', Q: 802.3, L: [[1, 'CH4(g)'], [2, 'O2(g)']], R: [[1, 'CO2(g)'], [2, 'H2O(g)']] },
+    hidrogen: { ctx: 'Hidrogenul arde în oxigen conform ecuației termochimice:', name: 'Arderea hidrogenului', type: 'exo', Q: 571.6, L: [[2, 'H2(g)'], [1, 'O2(g)']], R: [[2, 'H2O(l)']] },
+    neutr: { ctx: 'Neutralizarea hidroxidului de sodiu cu acid sulfuric are loc conform ecuației termochimice:', name: 'Neutralizarea (NaOH + H2SO4)', type: 'exo', Q: 114.6, L: [[2, 'NaOH(aq)'], [1, 'H2SO4(aq)']], R: [[1, 'Na2SO4(aq)'], [2, 'H2O(l)']] },
     glucoza: { name: 'Glucoză → acid piruvic', type: 'exo', Q: 483, L: [[1, 'C6H12O6'], [1, 'O2']], R: [[2, 'CH3-CO-COOH'], [2, 'H2O']] },
-    amoniac: { name: 'Sinteza amoniacului', type: 'exo', Q: 92.2, L: [[1, 'N2(g)'], [3, 'H2(g)']], R: [[2, 'NH3(g)']] },
-    magneziu: { name: 'Arderea magneziului', type: 'exo', Q: 1203.6, L: [[2, 'Mg(s)'], [1, 'O2(g)']], R: [[2, 'MgO(s)']] },
-    sulf: { name: 'Arderea sulfului', type: 'exo', Q: 296.8, L: [[1, 'S(s)'], [1, 'O2(g)']], R: [[1, 'SO2(g)']] },
-    metanol: { name: 'Arderea metanolului', type: 'exo', Q: 726.5, L: [[1, 'CH3OH(l)'], [1.5, 'O2(g)']], R: [[1, 'CO2(g)'], [2, 'H2O(l)']] },
-    etan: { name: 'Descompunerea etanului (Tema 5)', type: 'endo', Q: 137, L: [[1, 'C2H6(g)']], R: [[1, 'C2H4(g)'], [1, 'H2(g)']] },
-    calcar: { name: 'Descompunerea carbonatului de calciu', type: 'endo', Q: 178.3, L: [[1, 'CaCO3(s)']], R: [[1, 'CaO(s)'], [1, 'CO2(g)']] },
-    azot: { name: 'Formarea oxidului de azot', type: 'endo', Q: 180.6, L: [[1, 'N2(g)'], [1, 'O2(g)']], R: [[2, 'NO(g)']] },
-    gazapa: { name: 'Cărbune + vapori de apă', type: 'endo', Q: 131.3, L: [[1, 'C(s)'], [1, 'H2O(g)']], R: [[1, 'CO(g)'], [1, 'H2(g)']] },
+    amoniac: { ctx: 'Industrial, amoniacul se obține din azot și hidrogen, conform ecuației termochimice:', name: 'Sinteza amoniacului', type: 'exo', Q: 92.2, L: [[1, 'N2(g)'], [3, 'H2(g)']], R: [[2, 'NH3(g)']] },
+    magneziu: { ctx: 'Magneziul arde în oxigen conform ecuației termochimice:', name: 'Arderea magneziului', type: 'exo', Q: 1203.6, L: [[2, 'Mg(s)'], [1, 'O2(g)']], R: [[2, 'MgO(s)']] },
+    sulf: { ctx: 'Sulful arde în oxigen conform ecuației termochimice:', name: 'Arderea sulfului', type: 'exo', Q: 296.8, L: [[1, 'S(s)'], [1, 'O2(g)']], R: [[1, 'SO2(g)']] },
+    metanol: { ctx: 'Arderea metanolului are loc conform ecuației termochimice:', name: 'Arderea metanolului', type: 'exo', Q: 726.5, L: [[1, 'CH3OH(l)'], [1.5, 'O2(g)']], R: [[1, 'CO2(g)'], [2, 'H2O(l)']] },
+    etan: { ctx: 'Industrial, etena se obține prin dehidrogenarea etanului, conform ecuației termochimice:', name: 'Descompunerea etanului (Tema 5)', type: 'endo', Q: 137, L: [[1, 'C2H6(g)']], R: [[1, 'C2H4(g)'], [1, 'H2(g)']] },
+    calcar: { ctx: 'Descompunerea termică a carbonatului de calciu are loc conform ecuației termochimice:', name: 'Descompunerea carbonatului de calciu', type: 'endo', Q: 178.3, L: [[1, 'CaCO3(s)']], R: [[1, 'CaO(s)'], [1, 'CO2(g)']] },
+    azot: { ctx: 'În timpul descărcărilor electrice, azotul și oxigenul din aer se combină, conform ecuației termochimice:', name: 'Formarea oxidului de azot', type: 'endo', Q: 180.6, L: [[1, 'N2(g)'], [1, 'O2(g)']], R: [[2, 'NO(g)']] },
+    gazapa: { ctx: 'Cărbunele reacționează cu vaporii de apă conform ecuației termochimice:', name: 'Cărbune + vapori de apă', type: 'endo', Q: 131.3, L: [[1, 'C(s)'], [1, 'H2O(g)']], R: [[1, 'CO(g)'], [1, 'H2(g)']] },
     klorat: { name: 'Descompunerea clorat de potasiu', type: 'endo', Q: null, L: [[2, 'KClO3(s)']], R: [[2, 'KCl(s)'], [3, 'O2(g)']] },
     /* reacții folosite în variațiile problemelor (valori calculate din entalpiile de formare) */
-    reformare: { name: 'Reformarea metanului cu vapori de apă', type: 'endo', Q: 206.1, L: [[1, 'CH4(g)'], [1, 'H2O(g)']], R: [[1, 'CO(g)'], [3, 'H2(g)']] },
-    boudouard: { name: 'Dioxid de carbon + cărbune', type: 'endo', Q: 172.5, L: [[1, 'C(s)'], [1, 'CO2(g)']], R: [[2, 'CO(g)']] },
-    'amoniac-desc': { name: 'Descompunerea amoniacului', type: 'endo', Q: 92.2, L: [[2, 'NH3(g)']], R: [[1, 'N2(g)'], [3, 'H2(g)']] },
-    'apa-desc': { name: 'Descompunerea apei', type: 'endo', Q: 571.6, L: [[2, 'H2O(l)']], R: [[2, 'H2(g)'], [1, 'O2(g)']] },
-    no2: { name: 'Formarea dioxidului de azot', type: 'endo', Q: 66.4, L: [[1, 'N2(g)'], [2, 'O2(g)']], R: [[2, 'NO2(g)']] },
-    hcl: { name: 'Sinteza acidului clorhidric', type: 'exo', Q: 184.6, L: [[1, 'H2(g)'], [1, 'Cl2(g)']], R: [[2, 'HCl(g)']] },
-    monoxid: { name: 'Arderea monoxidului de carbon', type: 'exo', Q: 566, L: [[2, 'CO(g)'], [1, 'O2(g)']], R: [[2, 'CO2(g)']] },
-    'etena-h': { name: 'Hidrogenarea etenei', type: 'exo', Q: 137, L: [[1, 'C2H4(g)'], [1, 'H2(g)']], R: [[1, 'C2H6(g)']] },
-    so3: { name: 'Oxidarea dioxidului de sulf', type: 'exo', Q: 197.8, L: [[2, 'SO2(g)'], [1, 'O2(g)']], R: [[2, 'SO3(g)']] }
+    reformare: { ctx: 'Metanul reacționează cu vaporii de apă conform ecuației termochimice:', name: 'Reformarea metanului cu vapori de apă', type: 'endo', Q: 206.1, L: [[1, 'CH4(g)'], [1, 'H2O(g)']], R: [[1, 'CO(g)'], [3, 'H2(g)']] },
+    boudouard: { ctx: 'Dioxidul de carbon reacționează cu cărbunele conform ecuației termochimice:', name: 'Dioxid de carbon + cărbune', type: 'endo', Q: 172.5, L: [[1, 'C(s)'], [1, 'CO2(g)']], R: [[2, 'CO(g)']] },
+    'amoniac-desc': { ctx: 'Descompunerea amoniacului are loc conform ecuației termochimice:', name: 'Descompunerea amoniacului', type: 'endo', Q: 92.2, L: [[2, 'NH3(g)']], R: [[1, 'N2(g)'], [3, 'H2(g)']] },
+    'apa-desc': { ctx: 'Descompunerea apei în elementele componente este descrisă de ecuația termochimică:', name: 'Descompunerea apei', type: 'endo', Q: 571.6, L: [[2, 'H2O(l)']], R: [[2, 'H2(g)'], [1, 'O2(g)']] },
+    no2: { ctx: 'Formarea dioxidului de azot din elemente este descrisă de ecuația termochimică:', name: 'Formarea dioxidului de azot', type: 'endo', Q: 66.4, L: [[1, 'N2(g)'], [2, 'O2(g)']], R: [[2, 'NO2(g)']] },
+    hcl: { ctx: 'Sinteza acidului clorhidric din elemente are loc conform ecuației termochimice:', name: 'Sinteza acidului clorhidric', type: 'exo', Q: 184.6, L: [[1, 'H2(g)'], [1, 'Cl2(g)']], R: [[2, 'HCl(g)']] },
+    monoxid: { ctx: 'Arderea monoxidului de carbon are loc conform ecuației termochimice:', name: 'Arderea monoxidului de carbon', type: 'exo', Q: 566, L: [[2, 'CO(g)'], [1, 'O2(g)']], R: [[2, 'CO2(g)']] },
+    'etena-h': { ctx: 'Hidrogenarea etenei are loc conform ecuației termochimice:', name: 'Hidrogenarea etenei', type: 'exo', Q: 137, L: [[1, 'C2H4(g)'], [1, 'H2(g)']], R: [[1, 'C2H6(g)']] },
+    'sodiu-apa': { ctx: 'Sodiul reacționează cu apa conform ecuației termochimice:', name: 'Sodiul reacționează cu apa', type: 'exo', Q: 361.9, L: [[2, 'Na(s)'], [2, 'H2O(l)']], R: [[2, 'NaOH(aq)'], [1, 'H2(g)']] },
+    so3: { ctx: 'Oxidarea dioxidului de sulf la trioxid de sulf are loc conform ecuației termochimice:', name: 'Oxidarea dioxidului de sulf', type: 'exo', Q: 197.8, L: [[2, 'SO2(g)'], [1, 'O2(g)']], R: [[2, 'SO3(g)']] }
   };
+
+  /* formule structurale condensate (ca în caiet și în manual) — doar la afișarea ecuațiilor */
+  T.STRUCT = {
+    'C2H6': 'CH3—CH3', 'C2H4': 'CH2=CH2', 'C2H2': 'CH≡CH', 'C3H8': 'CH3—CH2—CH3', 'C3H6': 'CH3—CH=CH2', 'C3H4': 'CH3—C≡CH',
+    'C4H10': 'CH3—CH2—CH2—CH3', 'C4H8': 'CH2=CH—CH2—CH3', 'C4H6': 'CH2=CH—CH=CH2', 'CH3-CO-COOH': 'CH3—CO—COOH'
+  };
+  T.sform = function (f) {
+    var m = /^(.*?)(\((?:s|l|g|aq)\))?$/.exec(f);
+    return (T.STRUCT[m[1]] || m[1]).replace(/—/g, '\u2060—\u2060') + (m[2] || '');   // U+2060: formula structurală nu se rupe pe rânduri la liniuță
+  };
+  /* denumiri (nominativ) pentru enunțuri: elemente atomice și compuși organici; restul rămân formule */
+  T.NAME = {
+    Al: 'aluminiu', C: 'carbon', Mg: 'magneziu', S: 'sulf', Na: 'sodiu', K: 'potasiu', Li: 'litiu', Sn: 'staniu', Pb: 'plumb', Zn: 'zinc', Cu: 'cupru', Fe: 'fier', Ca: 'calciu',
+    CH4: 'metan', C2H6: 'etan', C2H4: 'etenă', C2H2: 'acetilenă', C3H8: 'propan', C3H6: 'propenă', C3H4: 'propină', C4H10: 'butan', C4H8: '1-butenă', C4H6: 'butadienă',
+    C6H6: 'benzen', CH3OH: 'metanol', C2H5OH: 'etanol', C6H12O6: 'glucoză'
+  };
+  T.cname = function (f) { var b = f.replace(/\((s|l|g|aq)\)$/, ''); return T.NAME[b] || '[[' + b + ']]'; };
+  /* genitiv-dativ (etanolului, carbonului); pentru formule: «lui H2» */
+  T.GEN = {
+    aluminiu: 'aluminiului', carbon: 'carbonului', magneziu: 'magneziului', sulf: 'sulfului', sodiu: 'sodiului', potasiu: 'potasiului', litiu: 'litiului', staniu: 'staniului', plumb: 'plumbului', zinc: 'zincului', cupru: 'cuprului', fier: 'fierului', calciu: 'calciului',
+    metan: 'metanului', etan: 'etanului', 'etenă': 'etenei', 'acetilenă': 'acetilenei', propan: 'propanului', 'propenă': 'propenei', 'propină': 'propinei', butan: 'butanului', '1-butenă': '1-butenei', 'butadienă': 'butadienei', benzen: 'benzenului', metanol: 'metanolului', etanol: 'etanolului', 'glucoză': 'glucozei'
+  };
+  T.cgen = function (f) { var n = T.cname(f); return T.GEN[n] || 'lui ' + n; };
+  /** fraza care introduce ecuația unei reacții (în stilul manualului) */
+  T.lead = function (r) { return r.ctx || 'Se consideră ecuația termochimică:'; };
 
   function coefS(c) {
     if (c === 1) return '';
     if (Math.abs(c - Math.round(c)) < 1e-9) return String(Math.round(c));
-    if (Math.abs(c * 2 - Math.round(c * 2)) < 1e-9) return Math.round(c * 2) + '/2 ';
+    if (Math.abs(c * 2 - Math.round(c * 2)) < 1e-9) return Math.abs(c - 0.5) < 1e-9 ? '½' : Math.round(c * 2) + '/2';
     return T.fmt(c, 2);
   }
-  function side(arr) { return arr.map(function (p) { return coefS(p[0]) + p[1]; }).join(' + '); }
+  function side(arr) { return arr.map(function (p) { return coefS(p[0]) + T.sform(p[1]); }).join(' + '); }
   /** ecuația termochimică în notația [[…]] */
   T.eqStr = function (r, o) {
     o = o || {};

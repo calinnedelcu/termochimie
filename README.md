@@ -18,7 +18,7 @@ python3 -m http.server 8000
 | Secțiune | Ce găsești |
 | --- | --- |
 | **Lecții (12)** | explicații scurte, ilustrații animate și simulări interactive, mini-verificări, „Reține din lecție” și un quiz la fiecare lecție |
-| **Probleme (11 tipuri)** | tipurile 1–7: problemele din caiet rezolvate pas cu pas + variații la 4 niveluri (ușor / mediu / dificil / foarte greu: amestecuri, reacții cuplate, mărimi cerute „invers”, lanțuri Hess → ΔH_f); tipurile 8–11: exerciții pe noțiunile din caiet (model rezolvat + variații), cu numere noi la fiecare apăsare |
+| **Probleme (12 tipuri)** | tipurile 1–7: problemele din caiet, cu enunțul ca în manual, rezolvate pas cu pas + variații la 4 niveluri (ușor / mediu / dificil / foarte greu: amestecuri, reacții cuplate, mărimi cerute „invers”, lanțuri Hess → ΔH_f, identificarea unei hidrocarburi, dehidrogenarea avansată); tipurile 8–12: exerciții pe noțiunile din caiet (model rezolvat + variații), cu numere noi la fiecare apăsare |
 | **Cartonașe** | definiții și reguli din caiet, cu repetiție (cele nestăpânite revin mai des) |
 | **Test** | întrebări + probleme generate aleatoriu, cronometru opțional, scor și rezolvări |
 | **Formule** | toate formulele și regulile pe o pagină (se poate printa) |
@@ -42,7 +42,7 @@ assets/js/
   chapters-*.js    textul lecțiilor
   data-quiz.js     întrebările de la finalul lecțiilor
   data-cards.js    cartonașele
-  problems*.js     generatoarele de probleme (originalul din caiet + variații); problems-hard-1..3.js = nivelul 4, „Foarte greu”
+  problems*.js     generatoarele de probleme (originalul din caiet + variații); problems-hard-1..3.js = nivelul 4, „Foarte greu”. Enunțurile sunt scrise ca în manual (Calculați…, Determinați…, Precizați…, „Alegeți și subliniați varianta corectă”)
   pages.js, app.js pagini, rutare, temă
 ```
 
@@ -63,7 +63,7 @@ assets/js/
 node tools/verifica-probleme.js
 ```
 
-Generează mii de variații de probleme și verifică: structura, că toate numerele sunt finite, că nu apar `NaN`/`undefined`, că valorile problemelor din caiet ies exact (67,97 g; 2740 kJ; −128,1 kJ ...) și că exercițiile Hess se adună corect la ecuația-țintă.
+Generează mii de variații de probleme și verifică: structura, că toate numerele sunt finite, că nu apar `NaN`/`undefined`, că valorile problemelor din caiet ies exact (67,97 g; 2740 kJ; −128,1 kJ ...) că exercițiile Hess se adună corect la ecuația-țintă, că fiecare instanță de nivel 4 trece o verificare independentă (`check()`), că enunțurile sunt în stilul manualului (fără întrebări informale) și că rezultatele sunt plauzibile (procente sub 100%, apă lichidă sub 100 °C, variante de răspuns diferite).
 
 ## Publicare (GitHub Pages)
 

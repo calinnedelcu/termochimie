@@ -120,7 +120,7 @@
   /* ---------- probleme ---------- */
   function problemsHub() {
     var h = '<div class="page"><div class="kicker">Exersare</div><h1>Probleme și variații</h1>' +
-      '<p class="lead">Tipurile 1–7 pornesc de la <b>problemele din caiet</b>, rezolvate pas cu pas, și continuă cu <b>variații cu numere noi</b> la patru niveluri: ușor, mediu, dificil și <b>foarte greu</b> (probleme lungi, cu mai multe etape legate între ele). Tipurile 8–11 sunt exerciții pe noțiunile din caiet, cu un model rezolvat și variații.</p>' +
+      '<p class="lead">Tipurile 1–7 pornesc de la <b>problemele din caiet</b>, rezolvate pas cu pas, și continuă cu <b>variații cu numere noi</b> la patru niveluri: ușor, mediu, dificil și <b>foarte greu</b> (probleme lungi, cu mai multe etape legate între ele). Tipurile 8–12 sunt exerciții pe noțiunile din caiet, cu un model rezolvat și variații. Enunțurile sunt scrise ca în manual („Calculați…”, „Precizați…”, „Alegeți și subliniați varianta corectă”).</p>' +
       T.callout('tip', 'Metoda sigură: scrie datele, scrie ecuația, alege <b>proporția</b> sau formula potrivită, abia apoi calculează. Verifică mereu <b>unitățile</b> (J ↔ kJ, cal ↔ kcal, g ↔ kg) și <b>semnul</b>.') +
       '<div class="plist">';
     T.problemOrder.forEach(function (id, i) {

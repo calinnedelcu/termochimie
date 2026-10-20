@@ -221,6 +221,7 @@ figure.fig figcaption { padding: 6px 8px 2px; font-size: .88rem; color: var(--in
 .prob-statement .eqn { margin: 10px 0; }
 .prob-data { display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 10px 0 4px; }
 .prob-data .chip { background: var(--paper-2); font-weight: 560; }
+.prob-data-l { align-self: center; font-weight: 650; color: var(--ink-2); font-size: .94rem; }
 .prob-parts { margin-top: 8px; }
 .prob-part { padding: 12px 0; border-top: 1px dashed var(--line-2); }
 .prob-part .qn { padding: 0; border: 0; }

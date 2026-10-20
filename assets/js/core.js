@@ -255,6 +255,7 @@
     if (Math.abs(a - 1.5) < 1e-9) return '3/2';
     if (Math.abs(a - 2.5) < 1e-9) return '5/2';
     if (Math.abs(a - 3.5) < 1e-9) return '7/2';
+    if (Math.abs(a - Math.round(a)) > 1e-9 && Math.abs(a * 2 - Math.round(a * 2)) < 1e-9) return Math.round(a * 2) + '/2';
     return T.fmt(a, 3);
   };
 

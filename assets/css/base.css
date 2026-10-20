@@ -252,6 +252,9 @@ mark, .hl { background: linear-gradient(transparent 55%, var(--hl) 55%); color: 
   .mt { white-space: normal; }
   .eqn .mt, .tbl th .mt, .frac { white-space: nowrap; }
 }
+/* în rezolvări și enunțuri, o formulă lungă se poate rupe la spații (pe orice lățime); fracțiile rămân întregi */
+.step .mt, .prob-statement .mt { white-space: normal; }
+.step .frac, .prob-statement .frac { white-space: nowrap; }
 .ch { font-weight: 540; }
 .ch .st { font-style: normal; font-size: .82em; color: var(--ink-2); font-weight: 500; margin-left: .05em; }
 .frac { display: inline-flex; flex-direction: column; align-items: stretch; vertical-align: middle; text-align: center; margin: 0 .18em; line-height: 1.2; }

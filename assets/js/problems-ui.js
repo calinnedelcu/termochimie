@@ -16,7 +16,7 @@
     var el = T.h('div', { class: 'prob-card' });
     el.append(T.h('div', { class: 'prob-statement', html: inst.statement }));
     if (inst.data && inst.data.length) {
-      el.append(T.h('div', { class: 'prob-data' }, inst.data.map(function (d) { return T.h('span', { class: 'chip', html: d }); })));
+      el.append(T.h('div', { class: 'prob-data' }, [T.h('span', { class: 'prob-data-l', text: 'Se cunosc:' })].concat(inst.data.map(function (d) { return T.h('span', { class: 'chip', html: d }); }))));
     }
     if (inst.note) el.append(T.h('div', { html: inst.note }));
 
