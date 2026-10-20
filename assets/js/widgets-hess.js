@@ -204,7 +204,8 @@
   /* ---------------------------------------------------------
      Combinatorul lui Hess
      --------------------------------------------------------- */
-  var MULT = [-3, -2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2, 3];
+  /* multiplicatori: numere întregi de la −20 la 20, plus jumătățile din apropierea lui 0 (½, 3/2, 5/2 …); problemele grele cer și 9, 12, 18 */
+  var MULT = (function () { var a = []; for (var x = -40; x <= 40; x++) { var v = x / 2; if (Math.abs(v - Math.round(v)) < 1e-9 || Math.abs(v) <= 5) a.push(v); } return a; })();
   function mlab(m) { return m === 0 ? '0' : (m < 0 ? '−' : '') + (Math.abs(m) === 0.5 ? '½' : Math.abs(m) === 1.5 ? '3/2' : T.fmt(Math.abs(m), 1)); }
 
   T.widget('hessCombiner', function (el, o) {
@@ -222,8 +223,9 @@
     cfg.eqs.forEach(function (e, i) {
       var lab = '(' + (i + 1) + ')';
       var mEl = T.h('b', { class: 'hc-m' });
-      var minus = T.h('button', { type: 'button', class: 'btn small', 'aria-label': 'Micșorează multiplicatorul ' + lab, text: '◀', onclick: function () { step(i, -1); } });
-      var plus = T.h('button', { type: 'button', class: 'btn small', 'aria-label': 'Mărește multiplicatorul ' + lab, text: '▶', onclick: function () { step(i, 1); } });
+      var minus = T.h('button', { type: 'button', class: 'btn small', 'aria-label': 'Micșorează multiplicatorul ' + lab, text: '◀' });
+      var plus = T.h('button', { type: 'button', class: 'btn small', 'aria-label': 'Mărește multiplicatorul ' + lab, text: '▶' });
+      holdStep(minus, i, -1); holdStep(plus, i, 1);
       var res = T.h('div', { class: 'hc-res' });
       var row = T.h('div', { class: 'hc-row' },
         T.h('div', { class: 'hc-lab', text: lab }),
@@ -253,6 +255,14 @@
           '<span class="bd-r">' + (c > 0 ? '<i class="cx" style="width:' + wl(c) + '"></i>' : '') + (ro > 0 ? '<i class="keep" style="width:' + wl(ro) + '"></i>' : '') + '</span>' + st + '</div>';
       });
       return '<div class="bd-t">Bilanțul substanțelor (ce se simplifică și ce rămâne)</div>' + h;
+    }
+    /* clic = un pas; apăsare lungă = pași repetați (ca să ajungi repede la 9 sau 18) */
+    function holdStep(btn, i, d) {
+      var t1 = null, t2 = null, did = false;
+      function stop() { clearTimeout(t1); clearInterval(t2); t1 = t2 = null; }
+      btn.addEventListener('pointerdown', function () { did = false; t1 = setTimeout(function () { did = true; t2 = setInterval(function () { step(i, d); }, 55); }, 300); });
+      ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) { btn.addEventListener(ev, stop); });
+      btn.addEventListener('click', function () { if (!did) step(i, d); did = false; });
     }
     function step(i, d) {
       var k = MULT.indexOf(mult[i]); k = T.clamp(k + d, 0, MULT.length - 1); mult[i] = MULT[k]; update();
